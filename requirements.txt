@@ -7,3 +7,5 @@ knitr
 broom
 readr
 tidyr
+nflplotR
+ggrepel
