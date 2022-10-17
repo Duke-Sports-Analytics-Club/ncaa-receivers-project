@@ -15,14 +15,21 @@ library(dplyr)
 library(broom)
 library(knitr)
 library(nflfastR)
-library(gsisdecoder)
 ```
 
-```{r}
-stats_2022 <- load_player_stats(seasons = 2022)
+```{r example nflfastr}
+stats_2022 <- load_player_stats(seasons = 2022) 
+comp_pct_2022 <- stats_2022 %>%
+  filter(position == "QB") %>% 
+  group_by(player_name) %>% 
+  summarise(comp_pct = sum(completions) / sum(attempts)) %>% 
+  arrange(desc(comp_pct))
 week6_2022 <- stats_2022 %>% 
   filter(week == 6) %>% 
+  select(player_name, recent_team, receiving_yards, receiving_tds) %>% 
   arrange(desc(receiving_yards))
+head(comp_pct_2022)
+head(week6_2022)
 ```
 
 

@@ -1,0 +1,9 @@
+Packages to install:
+
+tidyverse
+nflfastR
+dplyr
+knitr
+broom
+readr
+tidyr
