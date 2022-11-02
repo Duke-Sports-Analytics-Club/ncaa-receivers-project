@@ -19,14 +19,41 @@ library(nflplotR)
 library(ggrepel)
 ```
 
-```{r 2021 draft}
-stats_2020_d21 <- read.csv("data/2020stats_2021draft.csv")
-stats_2019_d21 <- read.csv("data/2019stats_2021draft.csv")
-stats_2018_d21 <- read.csv("data/2018stats_2021draft.csv")
-stats_2017_d21 <- read.csv("data/2017stats_2021draft.csv")
-stats_2016_d21 <- read.csv("data/2016stats_2021draft.csv")
-draft_2021_pff <- left_join(stats_2020_d21, stats_2019_d21, by = c("player_id", "player", "position", "team_name"), suffix = c(".final", ".2ndlast"))
-head(draft_2021_pff, 10)
+```{r load PFF data}
+rec_2014 <- read.csv("data_pff_receiver/2014_receiver_pff_data.csv")
+rec_2015 <- read.csv("data_pff_receiver/2015_receiver_pff_data.csv")
+rec_2016 <- read.csv("data_pff_receiver/2016_receiver_pff_data.csv")
+rec_2017 <- read.csv("data_pff_receiver/2017_receiver_pff_data.csv")
+rec_2018 <- read.csv("data_pff_receiver/2018_receiver_pff_data.csv")
+rec_2019 <- read.csv("data_pff_receiver/2019_receiver_pff_data.csv")
+rec_2020 <- read.csv("data_pff_receiver/2020_receiver_pff_data.csv")
+con_2014 <- read.csv("data_pff_receiver/2014_receiving_concept.csv")
+con_2015 <- read.csv("data_pff_receiver/2015_receiving_concept.csv")
+con_2016 <- read.csv("data_pff_receiver/2016_receiving_concept.csv")
+con_2017 <- read.csv("data_pff_receiver/2017_receiving_concept.csv")
+con_2018 <- read.csv("data_pff_receiver/2018_receiving_concept.csv")
+con_2019 <- read.csv("data_pff_receiver/2019_receiving_concept.csv")
+con_2020 <- read.csv("data_pff_receiver/2020_receiving_concept.csv")
+dep_2014 <- read.csv("data_pff_receiver/2014_receiving_depth.csv")
+dep_2015 <- read.csv("data_pff_receiver/2015_receiving_depth.csv")
+dep_2016 <- read.csv("data_pff_receiver/2016_receiving_depth.csv")
+dep_2017 <- read.csv("data_pff_receiver/2017_receiving_depth.csv")
+dep_2018 <- read.csv("data_pff_receiver/2018_receiving_depth.csv")
+dep_2019 <- read.csv("data_pff_receiver/2019_receiving_depth.csv")
+dep_2020 <- read.csv("data_pff_receiver/2020_receiving_depth.csv")
+sch_2015 <- read.csv("data_pff_receiver/2015_receiver_scheme.csv")
+sch_2016 <- read.csv("data_pff_receiver/2016_receiving_scheme.csv")
+sch_2017 <- read.csv("data_pff_receiver/2017_receiving_scheme.csv")
+sch_2018 <- read.csv("data_pff_receiver/2018_receiving_scheme.csv")
+sch_2019 <- read.csv("data_pff_receiver/2019_receiving_scheme.csv")
+sch_2020 <- read.csv("data_pff_receiver/2020_receiving_scheme.csv")
 ```
+
+```{r merge PFF data}
+sta_sch_2020 <- left_join(rec_2020, sch_2020, copy = FALSE, by = c("player", "position", "team_name", "player_game_count", "player_id"))
+con_dep_2020 <- left_join(con_2020, dep_2020, copy = FALSE, by = c("player", "position", "team_name", "player_game_count", "player_id"))
+stats_2020 <- left_join(sta_sch_2020, con_dep_2020, copy = FALSE, by = c("player", "position", "team_name", "player_game_count", "player_id"))
+```
+
 
 
