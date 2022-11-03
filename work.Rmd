@@ -1,6 +1,7 @@
 ---
-name: "Jack Miller, Nahm Lahade, Matther Paul, Caspian Svenson"
 title: "DSAC NFL Project Team 2022"
+name: Jack Miller, Nahm Lahade, Matther Paul, Caspian Svenson
+output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
@@ -50,9 +51,30 @@ sch_2020 <- read.csv("data_pff_receiver/2020_receiving_scheme.csv")
 ```
 
 ```{r merge PFF data}
-sta_sch_2020 <- left_join(rec_2020, sch_2020, copy = FALSE, by = c("player", "position", "team_name", "player_game_count", "player_id"))
-con_dep_2020 <- left_join(con_2020, dep_2020, copy = FALSE, by = c("player", "position", "team_name", "player_game_count", "player_id"))
-stats_2020 <- left_join(sta_sch_2020, con_dep_2020, copy = FALSE, by = c("player", "position", "team_name", "player_game_count", "player_id"))
+sta_sch_2020 <- left_join(rec_2020, sch_2020, copy = FALSE, by = c("player", "position", "team_name", "player_game_count", "player_id", "declined_penalties", "franchise_id")) 
+con_dep_2020 <- left_join(con_2020, dep_2020, copy = FALSE, by = c("player", "position", "team_name", "player_game_count", "player_id", "declined_penalties", "franchise_id"))
+stats_2020 <- left_join(sta_sch_2020, con_dep_2020, copy = FALSE, 
+                        by = c("player", "position", "team_name", "player_game_count", "player_id", "declined_penalties", "franchise_id"))
+
+sta_sch_2019 <- left_join(rec_2019, sch_2019, copy = FALSE, by = c("player", "position", "team_name", "player_game_count", "player_id", "declined_penalties", "franchise_id")) 
+con_dep_2019 <- left_join(con_2019, dep_2019, copy = FALSE, by = c("player", "position", "team_name", "player_game_count", "player_id", "declined_penalties", "franchise_id"))
+stats_2019 <- left_join(sta_sch_2019, con_dep_2019, copy = FALSE, 
+                        by = c("player", "position", "team_name", "player_game_count", "player_id", "declined_penalties", "franchise_id"))
+
+sta_sch_2017 <- left_join(rec_2017, sch_2017, copy = FALSE, by = c("player", "position", "team_name", "player_game_count", "player_id", "declined_penalties", "franchise_id")) 
+con_dep_2017 <- left_join(con_2017, dep_2017, copy = FALSE, by = c("player", "position", "team_name", "player_game_count", "player_id", "declined_penalties", "franchise_id"))
+stats_2017 <- left_join(sta_sch_2017, con_dep_2017, copy = FALSE, 
+                        by = c("player", "position", "team_name", "player_game_count", "player_id", "declined_penalties", "franchise_id"))
+
+sta_sch_2015 <- left_join(rec_2015, sch_2015, copy = FALSE, by = c("player", "position", "team_name", "player_game_count", "player_id", "declined_penalties", "franchise_id")) 
+con_dep_2015 <- left_join(con_2015, dep_2015, copy = FALSE, by = c("player", "position", "team_name", "player_game_count", "player_id", "declined_penalties", "franchise_id"))
+stats_2015 <- left_join(sta_sch_2015, con_dep_2015, copy = FALSE, 
+                        by = c("player", "position", "team_name", "player_game_count", "player_id", "declined_penalties", "franchise_id"))
+
+
+
+
+write.csv(stats_2020, row.names = 1, "pff_data_joined")
 ```
 
 
