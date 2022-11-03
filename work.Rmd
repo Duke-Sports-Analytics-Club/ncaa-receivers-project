@@ -73,8 +73,6 @@ stats_2015 <- left_join(sta_sch_2015, con_dep_2015, copy = FALSE,
 
 
 
-
-write.csv(stats_2020, row.names = 1, "pff_data_joined")
 ```
 
 
