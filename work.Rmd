@@ -1,6 +1,6 @@
 ---
 title: "DSAC NFL Project Team 2022"
-name: Jack Miller, Nahm Lahade, Matther Paul, Caspian Svenson
+name: "Jack Miller, Nahm Lahade, Matther Paul, Caspian Svenson"
 output: pdf_document
 ---
 
@@ -8,7 +8,7 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r load packages}
+```{r load packages, warning = FALSE, message=FALSE}
 library(tidyverse)
 library(tidyr)
 library(readr)
@@ -51,15 +51,24 @@ sch_2020 <- read.csv("data_pff_receiver/2020_receiving_scheme.csv")
 ```
 
 ```{r merge PFF data}
-sta_sch_2020 <- left_join(rec_2020, sch_2020, copy = FALSE, by = c("player", "position", "team_name", "player_game_count", "player_id", "declined_penalties", "franchise_id")) 
-con_dep_2020 <- left_join(con_2020, dep_2020, copy = FALSE, by = c("player", "position", "team_name", "player_game_count", "player_id", "declined_penalties", "franchise_id"))
+sta_sch_2020 <- left_join(rec_2020, sch_2020, copy = FALSE, 
+                          by = c("player", "position", "team_name",
+                                 "player_game_count", "player_id",
+                                 "declined_penalties", "franchise_id")) 
+con_dep_2020 <- left_join(con_2020, dep_2020, copy = FALSE, 
+                          by = c("player", "position", "team_name", "player_game_count", "player_id", "declined_penalties", "franchise_id"))
 stats_2020 <- left_join(sta_sch_2020, con_dep_2020, copy = FALSE, 
                         by = c("player", "position", "team_name", "player_game_count", "player_id", "declined_penalties", "franchise_id"))
 
-sta_sch_2019 <- left_join(rec_2019, sch_2019, copy = FALSE, by = c("player", "position", "team_name", "player_game_count", "player_id", "declined_penalties", "franchise_id")) 
-con_dep_2019 <- left_join(con_2019, dep_2019, copy = FALSE, by = c("player", "position", "team_name", "player_game_count", "player_id", "declined_penalties", "franchise_id"))
+sta_sch_2019 <- left_join(rec_2019, sch_2019, copy = FALSE, 
+                          by = c("player", "position", "team_name", "player_game_count", "player_id", "declined_penalties", "franchise_id")) 
+
+con_dep_2019 <- left_join(con_2019, dep_2019, copy = FALSE, 
+                          by = c("player", "position", "team_name", "player_game_count", "player_id", "declined_penalties", "franchise_id"))
 stats_2019 <- left_join(sta_sch_2019, con_dep_2019, copy = FALSE, 
-                        by = c("player", "position", "team_name", "player_game_count", "player_id", "declined_penalties", "franchise_id"))
+                        by = c("player", "position", "team_name",
+                               "player_game_count", "player_id",
+                               "declined_penalties", "franchise_id"))
 
 sta_sch_2017 <- left_join(rec_2017, sch_2017, copy = FALSE, by = c("player", "position", "team_name", "player_game_count", "player_id", "declined_penalties", "franchise_id")) 
 con_dep_2017 <- left_join(con_2017, dep_2017, copy = FALSE, by = c("player", "position", "team_name", "player_game_count", "player_id", "declined_penalties", "franchise_id"))
@@ -72,8 +81,20 @@ stats_2015 <- left_join(sta_sch_2015, con_dep_2015, copy = FALSE,
                         by = c("player", "position", "team_name", "player_game_count", "player_id", "declined_penalties", "franchise_id"))
 
 
-
 ```
+
+```{r players by draft class}
+#2015 Stats of 2016 DC
+dc_2016 <- c("Josh Doctson", "Rashard Higgins", "Daniel Braverman", "Sterling Shepard", "Corey Coleman", "Tyler Boyd", "Garrett Brown", "Leonte Carroo", "Tajae Sharpe", "De'Marcus Ayers", "Malcolm Mitchell", "Alex Erickson", "Shaq Washington", "Jordan Payton", "Aaron Burbridge", "Mike Thomas", "Laquon Treadwell", "Devin Lucien", "Michael Thomas", "Nelson Spruce", "Pharoh Cooper", "Ricardo Louis", "Canaan Severin", "Keyarris Garrett", "Teddy Ruben", "Hunter Sharp", "Bralon Addison", "Dezmon Epps", "Quinshad Davis", "Jakeem Grant", "Andre Booker", "Casey Martin", "J.D. McKissic", "Jamal Robinson", "De'Runnya Wilson", "Rashawn Scott", "Shane Williams-Rhodes", "Jenson Stoshak", "Ron Willoughby", "Chris Brown", "David Glidden", "Thomas Duarte", "Will Fuller V", "Roger Lewis Jr.", "Imani Davis", "Jaydon Mickens", "Robbie Anderson", "Jared Dangerfield", "Pierre Youngblood-Ary", "Jordan Thompson", "Ed'Marques Batties", "Darius Powe", "K.J. Maye", "Kody Cook", "Johnny Jackson", "Rashon Ceaser", "Josh Grady", "Tres Houston", "Tevaun Smith", "Paul Turner", "Kenny Lawler", "Jordan Williams-Lambert", "Devon Blackmon", "Bryce Treggs", "Von Pearson", "Max Morrison", "Cayleb Jones", "Carlos Wiggins", "Brandon Sheperd", "C.J. Best", "Charone Peake", "Antwane Grant", "Mitch Mathews", "Chris Moore", "Trevor Davis", "Simms McElfresh", "Johnny Holton", "DeAndre Reaves", "Cody Core", "Alonzo Russell", "Donovan Harden", "Maurice Morgan", "Ben Lewis", "Jeff Greene", "Damien Washington", "David Mellstrom", "Kolby Listenbee", "Demarcus Robinson", "Braxton Miller", "Jemond Hazely", "Johnathon Johnson", "Malachi Jones", "Dennis Parks", "Jordan Fredrick", "Devin Fuller", "Mose Frazier", "Davonte Allen", "Brandon Swindall", "Terenn Houk", "Richard Mullaney", "Alex Ludowig", "T.J. Thorpe", "Macgarrett Kings Jr.", "Dom Williams", "Shane Mikesky", "Bubba Poole", "Danny Anthrop", "DeAnthony Arnett", "Herve Coby", "Kenneth Scott", "Justin Berger", "Quinton Pedroza", "Tommylee Lewis", "Daje Johnson", "Devon Cajuste", "Maurice Harris", "Chris Kearney", "Montez McGuire", "D'haquille Williams", "Joe Hansley", "Geronimo Allison", "Tre' Parmalee", "Jordan Bergstrom", "Gary Chambers", "K.J. Brent", "DeAndre Bell", "Trey Page", "Hansell Wilson", "Carlos Harris", "Clinton Taylor", "Thomas Wilson", "Brad Pearson", "Byron Marshall", "Rollins Stallworth", "D.J. Foster", "Alex Chisum", "Amir Carlisle", "Quenton Bundrage", "Ryan Burbrink", "Jay Lee", "Durron Neal", "David Richards", "Devonte Robinson", "Nathan Sassaman", "John Christopher", "Sanford Seay", "Mekale McKay", "Andre Davis", "Valdez Showers", "Marvin Shinn", "Bobo Beathard", "Max McCaffrey", "Damon Graham", "Jafus Gaines", "Aaron Grubb", "Marvin Hall", "Jalin Marshall", "Dustin Creel", "Kevin Asante", "Tevin Jones", "Roger Dixon", "Kyle Klein", "Christian Jones", "Andrew Pratt", "Bryan Holmes", "Jarvis Bentley", "Aaron Criswell", "Elgin Long", "Octavious Andrews", "Kishon Wilcher", "Logan Sweet", "Herb Waters", "NaQuan Brown", "Jamal Turner", "Brandon Oliver", "Ryan Garrey", "Ja'Juan Story", "Avery Sweeting", "Tony Ray Parnell", "Brandon Smith", "Jordan Bianchi", "Hayden Daniels", "Brandon Shippen", "Danny Woodson II", "Daniel Lilienthal", "Conner Floyd", "Alvonta Jenkins", "Marquez North", "P.J. Howard IV", "Kawmae Sawyer", "Tanner McEvoy", "Andrew Stone", "Terrell Johnson", "Demitri Knowles", "AJ Troup", "Stanton Weber", "Kris Strange", "Marken Michel", "Ryan Longoria", "Juwan Brescacin", "Tyler Scott", "K.D. Edenfield", "Chris Shillings", "Cody Blanc", "Melvin Ray", "Joe Morrow", "Connor Arlia", "Shamier Jeffery", "Marcus Johnson", "Claude Garrett", "Taariq Allen", "Christian Collis", "Joshua Bowen", "Wesley Leftwich", "Andre Sims", "KJ Myers", "Tyler Trosin", "Rayvean Moore", "Darius Joseph", "Miles Shuler", "Bobby Swigert", "Kurt Henderson", "Nyiakki Height", "Marquis Bundy", "David Dudeck", "Carlton Heard", "D.J. Vinson", "Garrett Kidd", "Kenny Bias", "Tyler Baker", "Kendrick Roberts", "Ian Dixon", "Justin Johnson")
+dc_2016_2 <- c("Sabian Holmes", "Kendrick Singleton", "Cameron Dickerson", "Jacob Hillyer", "Kris Kentera", "Anthony Williams", "Kameron Doolittle", "Autrey Golden", "Christian Tober", "Derek Keaton", "Josh Boyle")
+dc2016_stats2015 <- stats_2015 %>% 
+  filter(player %in% dc_2016 | player %in% dc_2016_2)
+
+#2014 Stats of 2015 DC
+```
+
+
+
 
 
 
