@@ -1,6 +1,6 @@
 ---
-title: "DSAC NFL Project Team 2022"
-name: "Jack Miller, Nahm Lahade, Matther Paul, Caspian Svenson"
+title: "Predicting NFL Wide Receiver Success Using Combine Measurables and PFF College Data"
+author: "Jack Miller, Nahm Lahade, Matther Paul, Caspian Svenson"
 output: pdf_document
 ---
 
