@@ -1,6 +1,6 @@
 ---
 title: "Predicting NFL Wide Receiver Success Using Combine Measurables and PFF College Data"
-author: "Jack Miller, Nahm Lahade, Matther Paul, Caspian Svenson"
+author: "Jack Miller, Nahm Lahade, Matthew Paul, Caspian Svenson"
 output: pdf_document
 ---
 
@@ -72,10 +72,30 @@ stats_2019 <- left_join(sta_sch_2019, con_dep_2019, copy = FALSE,
                                "player_game_count", "player_id",
                                "declined_penalties", "franchise_id"))
 
+#2018 Stats
+sta_sch_2018 <- left_join(rec_2018, sch_2018, copy = FALSE, 
+                          by = c("player", "position", "team_name",
+                                 "player_game_count", "player_id",
+                                 "declined_penalties", "franchise_id")) 
+con_dep_2018 <- left_join(con_2018, dep_2018, copy = FALSE, 
+                          by = c("player", "position", "team_name", "player_game_count", "player_id", "declined_penalties", "franchise_id"))
+stats_2018 <- left_join(sta_sch_2018, con_dep_2018, copy = FALSE, 
+                        by = c("player", "position", "team_name", "player_game_count", "player_id", "declined_penalties", "franchise_id"))
+
 #2017 Stats
 sta_sch_2017 <- left_join(rec_2017, sch_2017, copy = FALSE, by = c("player", "position", "team_name", "player_game_count", "player_id", "declined_penalties", "franchise_id")) 
 con_dep_2017 <- left_join(con_2017, dep_2017, copy = FALSE, by = c("player", "position", "team_name", "player_game_count", "player_id", "declined_penalties", "franchise_id"))
 stats_2017 <- left_join(sta_sch_2017, con_dep_2017, copy = FALSE, 
+                        by = c("player", "position", "team_name", "player_game_count", "player_id", "declined_penalties", "franchise_id"))
+
+#2016 Stats
+sta_sch_2016 <- left_join(rec_2016, sch_2016, copy = FALSE, 
+                          by = c("player", "position", "team_name",
+                                 "player_game_count", "player_id",
+                                 "declined_penalties", "franchise_id")) 
+con_dep_2016 <- left_join(con_2016, dep_2016, copy = FALSE, 
+                          by = c("player", "position", "team_name", "player_game_count", "player_id", "declined_penalties", "franchise_id"))
+stats_2016 <- left_join(sta_sch_2016, con_dep_2016, copy = FALSE, 
                         by = c("player", "position", "team_name", "player_game_count", "player_id", "declined_penalties", "franchise_id"))
 
 #2015 Stats
@@ -88,8 +108,6 @@ stats_2015 <- left_join(sta_sch_2015, con_dep_2015, copy = FALSE,
 con_dep_2014 <- left_join(con_2014, dep_2014, copy = FALSE, by = c("player", "position", "team_name", "player_game_count", "player_id", "declined_penalties", "franchise_id"))
 stats_2014 <- left_join(rec_2014, con_dep_2014, copy = FALSE, 
                         by = c("player", "position", "team_name", "player_game_count", "player_id", "declined_penalties", "franchise_id"))
-
-
 ```
 
 ```{r players by draft class}
