@@ -51,6 +51,7 @@ sch_2020 <- read.csv("data_pff_receiver/2020_receiving_scheme.csv")
 ```
 
 ```{r merge PFF data}
+#2020 Stats
 sta_sch_2020 <- left_join(rec_2020, sch_2020, copy = FALSE, 
                           by = c("player", "position", "team_name",
                                  "player_game_count", "player_id",
@@ -60,6 +61,7 @@ con_dep_2020 <- left_join(con_2020, dep_2020, copy = FALSE,
 stats_2020 <- left_join(sta_sch_2020, con_dep_2020, copy = FALSE, 
                         by = c("player", "position", "team_name", "player_game_count", "player_id", "declined_penalties", "franchise_id"))
 
+#2019 Stats
 sta_sch_2019 <- left_join(rec_2019, sch_2019, copy = FALSE, 
                           by = c("player", "position", "team_name", "player_game_count", "player_id", "declined_penalties", "franchise_id")) 
 
@@ -70,14 +72,21 @@ stats_2019 <- left_join(sta_sch_2019, con_dep_2019, copy = FALSE,
                                "player_game_count", "player_id",
                                "declined_penalties", "franchise_id"))
 
+#2017 Stats
 sta_sch_2017 <- left_join(rec_2017, sch_2017, copy = FALSE, by = c("player", "position", "team_name", "player_game_count", "player_id", "declined_penalties", "franchise_id")) 
 con_dep_2017 <- left_join(con_2017, dep_2017, copy = FALSE, by = c("player", "position", "team_name", "player_game_count", "player_id", "declined_penalties", "franchise_id"))
 stats_2017 <- left_join(sta_sch_2017, con_dep_2017, copy = FALSE, 
                         by = c("player", "position", "team_name", "player_game_count", "player_id", "declined_penalties", "franchise_id"))
 
+#2015 Stats
 sta_sch_2015 <- left_join(rec_2015, sch_2015, copy = FALSE, by = c("player", "position", "team_name", "player_game_count", "player_id", "declined_penalties", "franchise_id")) 
 con_dep_2015 <- left_join(con_2015, dep_2015, copy = FALSE, by = c("player", "position", "team_name", "player_game_count", "player_id", "declined_penalties", "franchise_id"))
 stats_2015 <- left_join(sta_sch_2015, con_dep_2015, copy = FALSE, 
+                        by = c("player", "position", "team_name", "player_game_count", "player_id", "declined_penalties", "franchise_id"))
+
+#2014 Stats
+con_dep_2014 <- left_join(con_2014, dep_2014, copy = FALSE, by = c("player", "position", "team_name", "player_game_count", "player_id", "declined_penalties", "franchise_id"))
+stats_2014 <- left_join(rec_2014, con_dep_2014, copy = FALSE, 
                         by = c("player", "position", "team_name", "player_game_count", "player_id", "declined_penalties", "franchise_id"))
 
 
@@ -91,474 +100,69 @@ dc2016_stats2015 <- stats_2015 %>%
   filter(player %in% dc_2016 | player %in% dc_2016_2)
 
 #2014 Stats of 2015 DC
-
 dc_2015 <- c("Amari Cooper", "Tyler Lockett", "DeVante Parker", 
  "Jonathon Rumph", "Nelson Agholor", "Tony Lippett", "DeAndre Smelter", 
  "Titus Davis", "Justin Hardy", "Jaelen Strong", "Darren Waller", 
- "Rashad Greene Sr."
-,
-"Devin Smith"
-,
-"Curry Sexton"
-,
-"Kenny Bell"
-,
-"Bud Sasser"
-,
-"Tommy Shuler"
-,
-"Ezell Ruffin"
-,
-"Stefon Diggs"
-,
-"Matthew Miller"
-,
-"Kevin White"
-,
-"Jordan Taylor"
-,
-"John Harris"
-,
-"Michael McNeely"
-,
-"Joshua McCain"
-,
-"Cam Worthy"
-,
-"David Frazier"
-,
-"Lucky Whitehead"
-,
-"Andre Davis"
-,
-"Sammie Coates"
-,
-"Vince Mayle"
-,
-"Christopher Harper"
-,
-"Ty Montgomery"
-,
-"Da'Ron Brown"
-,
-"Antonio Vaughan"
-,
-"Chris Conley"
-,
-"Geremy Davis"
-,
-"Jamison Crowder"
-,
-"Darius Jennings"
-,
-"Shane Wynn"
-,
-"Jeff Trojan"
-,
-"Keiwone Malone"
-,
-"Jalen Claiborne"
-,
-"Josh Harper"
-,
-"Vince Sanders"
-,
-"Bradley Marquez"
-,
-Lynquez Blair
-,
-Breshad Perriman
-,
-Devin Funchess
-,
-Phillip Dorsett
-,
-Miles Gooch
-,
-Marcus Henry
-,
-Kyle Prater
-,
-Andrew Turzilli
-,
-Keith Mumphery
-,
-Quan Bray
-,
-Jordan Leslie
-,
-Rannell Hall
-,
-Michael Bennett
-,
-Shakim Phillips
-,
-Clay Fuller
-,
-Ronald Butler
-,
-Devante Davis
-,
-Ian Hamilton
-,
-Jarrod West
-,
-Isiah Myers
-,
-Jack Rhoades
-,
-Jalen Fitzpatrick
-,
-Dominic Rufran
-,
-Willie McNeal
-,
-Levi Norwood
-,
-Chandler Worthy
-,
-Antwan Goodley
-,
-Earon Holmes
-,
-J.J. Worton
-,
-Jordan Davis
-,
-Deontay Greenberry
-,
-DeAndrew White
-,
-Eli Rogers
-,
-Josh Reese
-,
-Joel German
-,
-Kentrellis Showers
-,
-Javess Blue
-,
-Malcome Kennedy
-,
-Devin Clarke
-,
-Demarco Robinson
-,
-Jarred Haggins
-,
-George Farmer
-,
-E.J. Scott
-,
-Hunter Lee
-,
-Tyler McCulloch
-,
-Jimmie Hunt
-,
-Matt James
-,
-Richy Turner
-,
-Kenzee Jackson
-,
-Devon Hughes
-,
-Jameon Lewis
-
-Nick Jones
-
-Manasseh Garner
-
-"Jamarcus Nelson"
-
-"Zach D'Orazio"
-,
-"Sterling Griffin"
-,
-Tyler Duncan
-,
-Jaxon Shipley
-,
-Jacob Carter
-,
-Mario Hull
-,
-Demetrius Wilson
-,
-Ben Ijah
-,
-Nigel King
-,
-Willie Byrn
-,
-Jeric Magnant
-,
-Jordan Pratt
-,
-Deon Long
-,
-Cameron Peterson
-,
-Adrian Henderson
-,
-Tacoi Sumler
-,
-Keith Sconiers
-,
-Chris Humphrey
-,
-David Porter Jr.
-,
-Nick Stoner
-,
-Issac Blakeney
-,
-Mario Alford
-,
-Isaac Fruechte
-,
-Markese Triplett
-,
-Marcus Cunningham
-,
-Kasen Williams
-,
-Keanon Lowe
-,
-Maudrecus Humphrey
-,
-Justyn Shackleford
-,
-Daniel Spencer
-,
-Glenn Coleman
-,
-Josiah Monroe
-,
-Kevonte Martin-Manley
-,
-Zach Walker
-,
-Damond Powell
-,
-Scott Harding
-,
-Joe Craig
-,
-Kendall Brock
-,
-Kaelin Clay
-,
-John Chelf
-,
-Dres Anderson
-,
-Nick Harwell
-,
-William Boyd
-,
-Andre Lewis
-,
-Kai De La Cruz
-,
-Brendan Dudeck
-,
-Kevin Weatherspoon
-,
-Marcellus Mack
-,
-L.T. Smith
-,
-Alex Kenney
-,
-Dwight Macon
-,
-D.D. Goodson
-,
-Johnathan Loyd
-,
-Keanu Nelson
-,
-Isaiah Roundtree
-,
-Kenzel Doe
-,
-Darius Terrell
-,
-Chase Cochran
-,
-Brandon Terry
-,
-Charles Lovett
-,
-Damiere Byrd
-,
-Maika Mataele
-,
-Tony Jones
-,
-B.J. Chitty
-,
-Shane Ros
-,
-Ralph David Abernathy IV
-,
-Terome Grant
-,
-Trey Norman
-,
-Jack Spady
-,
-Markeith Ambles
-,
-Tyler Williams
-,
-"Der'rikk Thompson"
-,
-"Christion Jones"
-,
-"Quinton Dunbar"
-,
-Rickey Galvin
-,
-John Jakubik
-,
-Brent Mitcham
-,
-Martize Barr
-,
-Deshon Foxx
-,
-Jeremé Jones
-,
-Kristoff Williams
-,
-Donnie King Jr.
-,
-Michael Erdman
-,
-Jackie Williams
-,
-Jabari Carr
-,
-Aaron Bradley
-,
-Brandon Freeman
-,
-Austin Hill
-,
-Daniel Bradbury
-,
-Drake Whitehurst
-,
-Andrew Maass
-,
-Christian Green
-,
-Kinderick Dent
-,
-Greg Watson
-,
-Seth Grubb
-,
-Jarrad Shaw
-,
-Lonnie Turner
-,
-Clinton Jones
-,
-Justin Olack
-,
-Adam Shapiro
-,
-Wayne Beadle
-,
-Landon Smith
-,
-Jeremiah Kobena
-,
-Demetrius Evans
-,
-DiAndre Campbell
-,
-Jeffrey Jay
-,
-Chris Perkins
-,
-Heath Jackson
-,
-Keenan Montgomery
-,
-Evan Spencer
-,
-Jarvis West
-,
-Chevaughn Lawrence
-,
-Daniel Rodriguez
-,
-Stephen Nelson
-,
-Kam Jones
-,
-T.J. Glover
-,
-Michaelee Harris
-,
-Craig Wilkins
-,
-"Adam Humphries"
-,
-"Rahmaan Patterson"
-,
-"Matt Milton"
-,
-"Kenny Harrison"
-,
-"Courtney Williams"
-,
-Robert Johnson
-,
-John Dunmore
-,
-Malcolm Trail
-,
-Tyler Allen
-,
-Deonte Welch
-,
-Jake Howton
-,
-Justin McCay
-,
-Adrian Flemming
-
-William Dukes
-
-Bryan Underwood
-
-Trey Wilkins
-
-Gavin Otte
-
-Carl Caldwell
-
-Ross Apo
-
-Logan Hutton
-
-Jordan Duval
-
-LeKendrick Williams
-
-Dallas Burroughs
-
-"Corey Dennis"
-"Andre Debose"
-)
-
+ "Rashad Greene Sr.", "Devin Smith", "Curry Sexton", "Kenny Bell", 
+ "Bud Sasser", "Tommy Shuler", "Ezell Ruffin", "Stefon Diggs", 
+ "Matthew Miller", "Kevin White", "Jordan Taylor", "John Harris", 
+ "Michael McNeely", "Joshua McCain", "Cam Worthy", "David Frazier", 
+ "Lucky Whitehead", "Andre Davis", "Sammie Coates", "Vince Mayle", 
+ "Christopher Harper", "Ty Montgomery", "Da'Ron Brown", "Antonio Vaughan",  
+ "Chris Conley", "Geremy Davis", "Jamison Crowder", "Darius Jennings", 
+ "Shane Wynn", "Jeff Trojan", "Keiwone Malone", "Jalen Claiborne", 
+ "Josh Harper", "Vince Sanders", "Bradley Marquez", "Lynquez Blair", 
+ "Breshad Perriman", "Devin Funchess", "Phillip Dorsett", "Miles Gooch",
+ "Marcus Henry", "Kyle Prater", "Andrew Turzilli", "Keith Mumphery", 
+ "Quan Bray", "Jordan Leslie", "Rannell Hall", "Michael Bennett", 
+ "Shakim Phillips", "Clay Fuller", "Ronald Butler", "Devante Davis",
+ "Ian Hamilton", "Jarrod West", "Isiah Myers", "Jack Rhoades", 
+ "Jalen Fitzpatrick", "Dominic Rufran", "Willie McNeal", "Levi Norwood", 
+ "Chandler Worthy", "Antwan Goodley", "Earon Holmes", "J.J. Worton", 
+ "Jordan Davis", "Deontay Greenberry", "DeAndrew White", "Eli Rogers",
+ "Josh Reese", "Joel German", "Kentrellis Showers", "Javess Blue", 
+ "Malcome Kennedy", "Devin Clarke", "Demarco Robinson", "Jarred Haggins",
+ "George Farmer", "E.J. Scott", "Hunter Lee", "Tyler McCulloch", "Jimmie Hunt",
+  "Matt James", "Richy Turner", "Kenzee Jackson", "Devon Hughes", 
+ "Jameon Lewis", "Nick Jones", "Manasseh Garner", "Jamarcus Nelson", 
+ "Zach D'Orazio", "Sterling Griffin", "Tyler Duncan", "Jaxon Shipley", 
+ "Jacob Carter", "Mario Hull", "Demetrius Wilson", "Ben Ijah", "Nigel King", 
+ "Willie Byrn", "Jeric Magnant", "Jordan Pratt", "Deon Long", 
+ "Cameron Peterson", "Adrian Henderson", "Tacoi Sumler", "Keith Sconiers",
+  "Chris Humphrey", "David Porter Jr.")
+dc_2015_2 <- c("Nick Stoner", "Issac Blakeney", "Mario Alford", 
+  "Isaac Fruechte", "Markese Triplett", "Marcus Cunningham", "Kasen Williams", 
+  "Keanon Lowe", "Maudrecus Humphrey", "Justyn Shackleford", "Daniel Spencer",
+  "Glenn Coleman", "Josiah Monroe", "Kevonte Martin-Manley", "Zach Walker",
+  "Damond Powell", "Scott Harding", "Joe Craig", "Kendall Brock", 
+  "Kaelin Clay", "John Chelf", "Dres Anderson", "Nick Harwell", "William Boyd",
+  "Andre Lewis", "Kai De La Cruz", "Brendan Dudeck", "Kevin Weatherspoon", 
+  "Marcellus Mack", "L.T. Smith", "Alex Kenney", "Dwight Macon", 
+  "D.D. Goodson", "Johnathan Loyd", "Keanu Nelson", "Isaiah Roundtree",
+  "Kenzel Doe", "Darius Terrell", "Chase Cochran", "Brandon Terry", 
+  "Charles Lovett", "Damiere Byrd", "Maika Mataele", "Tony Jones", 
+  "B.J. Chitty", "Shane Ros", "Ralph David Abernathy IV", "Terome Grant",
+  "Trey Norman", "Jack Spady", "Markeith Ambles", "Tyler Williams", 
+  "Der'rikk Thompson", "Christion Jones", "Quinton Dunbar", "Rickey Galvin",
+  "John Jakubik", "Brent Mitcham", "Martize Barr", "Deshon Foxx", 
+  "Jeremé Jones", "Kristoff Williams", "Donnie King Jr.", "Michael Erdman",
+  "Jackie Williams", "Jabari Carr", "Aaron Bradley", "Brandon Freeman", 
+  "Austin Hill", "Daniel Bradbury", "Drake Whitehurst", "Andrew Maass",
+  "Christian Green", "Kinderick Dent", "Greg Watson", "Seth Grubb", 
+  "Jarrad Shaw", "Lonnie Turner", "Clinton Jones", "Justin Olack", 
+  "Adam Shapiro", "Wayne Beadle", "Landon Smith", "Jeremiah Kobena", 
+  "Demetrius Evans", "DiAndre Campbell", "Jeffrey Jay", "Chris Perkins",
+  "Heath Jackson", "Keenan Montgomery", "Evan Spencer", "Jarvis West",
+  "Chevaughn Lawrence", "Daniel Rodriguez", "Stephen Nelson", "Kam Jones",
+  "T.J. Glover", "Michaelee Harris", "Craig Wilkins", "Adam Humphries", 
+  "Rahmaan Patterson", "Matt Milton", "Kenny Harrison", 
+  "Courtney Williams", "Robert Johnson", "John Dunmore","Malcolm Trail", 
+  "Tyler Allen", "Deonte Welch", "Jake Howton", "Justin McCay", 
+  "Adrian Flemming", "William Dukes", "Bryan Underwood", "Trey Wilkins", 
+  "Gavin Otte", "Carl Caldwell", "Ross Apo", "Logan Hutton", "Jordan Duval",
+  "LeKendrick Williams", "Dallas Burroughs", "Corey Dennis", "Andre Debose")
+dc2015_stats2014 <- stats_2014 %>% 
+  filter(player %in% dc_2015 | player %in% dc_2015_2)
 ```
 
 
