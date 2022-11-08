@@ -111,6 +111,494 @@ stats_2014 <- left_join(rec_2014, con_dep_2014, copy = FALSE,
 ```
 
 ```{r players by draft class}
+#2016 Stats of 2017 DC
+dc_2016 <- c("Jalen Rowell","Austin Carr","Dede Westbrook","Mike Williams",
+             "Zay Jones","Carlos Henderson"
+,
+"Corey Davis"
+,
+"Taywan Taylor"
+,
+"Jamir Tillman"
+,
+"Tanner Gentry"
+,
+"Trent Taylor"
+,
+"John Ross"
+13
+Chad Hansen
+14
+Kenny Golladay
+15
+Jordan Westerkamp
+16
+Nicholas Norris
+17
+Jordan Frysinger
+18
+Drew Wolitarsky
+19
+Josh Reynolds
+20
+Thomas Sperbeck
+21
+Eugene Lewis
+22
+Daikiel Shorts
+23
+Ryan Switzer
+24
+Noel Thomas
+25
+Isaiah Ford
+26
+Isaiah McKenzie
+27
+Malachi Dupre
+27
+Keon Hatcher
+29
+Edgar Poe
+30
+Zach Pascal
+31
+Amba Etta-Tawo
+32
+BJ Johnson III
+32
+Amara Darboh
+34
+R.J. Shelton
+34
+Marcus Kemp
+36
+KeVonn Mabon
+37
+Drew Morgan
+38
+Josh Atkinson
+39
+Al-Damion Riles
+40
+Tim Patrick
+41
+Chris Godwin
+41
+Sebastian Smith
+43
+K.D. Cannon
+44
+Josh Malone
+45
+Ricky Jones
+46
+Fred Ross
+47
+Keevan Lucas
+48
+Tim Crawley
+49
+Noah Brown
+50
+River Cracraft
+51
+Jerome Lane
+52
+ArDarius Stewart
+53
+Shelton Gibson
+54
+Zach Yousey
+54
+Robert Davis
+56
+JuJu Smith-Schuster
+57
+Garrett Juergens
+57
+Dameon Gamblin
+57
+Rodney Adams
+60
+Josh Magee
+60
+Stacy Coley
+62
+Callen Hightower
+63
+Bug Howard
+64
+Brandon Reilly
+65
+Tim White
+66
+Dontre Wilson
+66
+Hasaan Henderson
+66
+Marcus McGill
+66
+Austin Duke
+70
+Bobo Wilson
+70
+Darreus Rogers
+72
+Torii Hunter Jr.
+73
+Travis Rudolph
+74
+Kendall Sanders
+75
+Jacorey Warrick
+75
+Tony Stevens
+77
+Austin Hays
+78
+Chance Allen
+78
+JoJo Natson
+80
+Cole Freytag
+81
+Gabe Marks
+82
+Jhajuan Seales
+82
+Corey Jones
+84
+DeAndre Lane
+85
+Mitchell Paige
+86
+Cory Butler-Byrd
+87
+Michael Henry
+88
+D.J. Thompson
+89
+Carrington Thompson
+90
+Travin Dural
+91
+JaBryce Taylor
+92
+Damore'ea Stringfellow
+92
+Artavis Scott
+94
+Montay Crockett
+94
+Nate Cole
+96
+Jordan Reid
+97
+Jared Johnson
+98
+Nate Phillips
+99
+Jalen Williams
+100
+Dwayne Stanford
+101
+Alonzo Moore
+102
+Kermit Whitfield
+103
+Chris Black
+103
+Devin Lauderdale
+105
+Ahmad Fulwood
+105
+Temuchin Hodges
+107
+Teldrick Morgan
+107
+Michael Clark
+109
+Dan Jonah
+109
+Mack Hollins
+111
+Robert Wheelwright
+111
+Riley McCarron
+113
+Jared Mapps
+114
+Ishmael Adams
+114
+Jehu Chesson
+114
+Josh Knight
+117
+Colby Pearson
+118
+Cody Hollister
+118
+Nick Kurtz
+120
+Ajalen Holley
+121
+DeAngelo Yancey
+122
+Frederick Gammage
+123
+Demetrius Frazier
+
+
+dc_2016_2 <- c("Larry Dace III", "Stephon Brown","Anthony Nash","Jake Maulhardt"
+,"Andrew Scanlan","Ishmael Zamora","D'Vario Montgomery",
+
+
+Domonique Young
+,
+Shug Oyegunle
+133
+Aaron Peck
+134
+Deon-Tay McManus
+135
+Cywettnie Brown
+135
+Levern Jacobs
+135
+Jamari Staples
+138
+Ryan Timmons
+139
+Robert Ruiz
+140
+Eric Judge
+140
+Michael Rector
+140
+James Quick
+143
+Alvin Cornelius
+143
+Marquise Ricard
+145
+Dominique Reed
+145
+Bernard Davis
+147
+Bug Rivera
+148
+Malcolm Lewis
+148
+Dontez Ford
+150
+Deante Burton
+151
+Cameron Decell
+152
+Mitchell Juergens
+153
+Tyler Cooperwood
+153
+De'Quan Hampton
+155
+Drew Bishop
+156
+Justin Hunt
+157
+Speedy Noil
+158
+Rokeem Williams
+158
+Andre Patton
+160
+Ernest Calhoun
+160
+Aregeros Turner
+162
+Kevin Davis
+162
+Willie Robinson
+162
+Monty Madaris
+165
+Zach Wright
+166
+Charles Chandler
+167
+Jesse Kroll
+167
+Thaddeous Thompson
+169
+Chris Lewis
+169
+Taylor Oldham
+169
+Trey Griffey
+169
+Brisly Estime
+173
+Bra'Lon Cherry
+173
+Keeon Johnson
+175
+Francis Owusu
+175
+Quincy Adeboyejo
+177
+Victor Bolden Jr.
+178
+Andrew Rodriguez
+179
+Bilal Marshall
+179
+Ronnie Moore
+181
+Tony Thomas
+182
+Ethan Cortazzo
+182
+Tyrian Taylor
+184
+Zach Grant
+185
+Kendrick Mathis
+185
+Shawn Brickley
+187
+Jeremy Tabuyo
+188
+Curtis Anderson III
+189
+Jarvis Baxter
+190
+Jarell Aaron
+190
+Patrick Worstell
+192
+Darian Williams
+192
+Ricky Seals-Jones
+194
+Ryan Smith
+195
+Boone Niederhofer
+196
+Justin Hardee
+196
+Kevin Kutchera
+196
+Cameron Posey
+199
+Corey Smith
+199
+Kenneth Walker III
+201
+Tre' Perrier
+201
+Dondre Daley
+203
+Jaquan White
+204
+Austin Moses
+205
+Chaz Anderson
+206
+Kenny Buyers
+207
+Isaac Whitney
+208
+Reggie Davis
+209
+Grant Newell
+209
+Tyre'oune Holmes
+209
+Daniel Hurd
+212
+Deante Gray
+212
+Reginald Davis III
+212
+Samajie Grant
+212
+Dennis Andrews
+216
+Alex Mut
+216
+Austin Stewart
+218
+Kennedy Williams
+218
+Sterling Stowers
+218
+Aaron Hepp
+218
+Jerico Richardson
+222
+Taijuan Thomas
+223
+Lynx Hawthorne
+224
+Fred Nixon
+225
+Rod Ducksworth
+225
+Hayden Jones
+225
+Tyrone Williams
+228
+Keigan Williams
+229
+Brandon Bishop
+229
+Carlton Agudosi
+231
+Shakiem Barbel
+232
+Gio Pascascio
+233
+Gehrig Dieter
+234
+Chris Thompson
+235
+Edward Pope
+236
+Latevius Rayford
+237
+Malcolm Robinson
+238
+Michael Martens
+239
+Devon Breaux
+240
+Devonte Mathis
+241
+John Thompson
+242
+Anthony Rice
+243
+Clayton Glasper
+244
+D.J. Taylor
+245
+Malcolm Culmer
+246
+Sam Shisso
+246
+Marcus Davis
+248
+Eric Laurent
+249
+Jeffrey Coprich
+250
+Brian Lemelle
+251
+Conner Smith
+252
+Darrion Pollard
+
+
 #2015 Stats of 2016 DC
 dc_2016 <- c("Josh Doctson", "Rashard Higgins", "Daniel Braverman", "Sterling Shepard", "Corey Coleman", "Tyler Boyd", "Garrett Brown", "Leonte Carroo", "Tajae Sharpe", "De'Marcus Ayers", "Malcolm Mitchell", "Alex Erickson", "Shaq Washington", "Jordan Payton", "Aaron Burbridge", "Mike Thomas", "Laquon Treadwell", "Devin Lucien", "Michael Thomas", "Nelson Spruce", "Pharoh Cooper", "Ricardo Louis", "Canaan Severin", "Keyarris Garrett", "Teddy Ruben", "Hunter Sharp", "Bralon Addison", "Dezmon Epps", "Quinshad Davis", "Jakeem Grant", "Andre Booker", "Casey Martin", "J.D. McKissic", "Jamal Robinson", "De'Runnya Wilson", "Rashawn Scott", "Shane Williams-Rhodes", "Jenson Stoshak", "Ron Willoughby", "Chris Brown", "David Glidden", "Thomas Duarte", "Will Fuller V", "Roger Lewis Jr.", "Imani Davis", "Jaydon Mickens", "Robbie Anderson", "Jared Dangerfield", "Pierre Youngblood-Ary", "Jordan Thompson", "Ed'Marques Batties", "Darius Powe", "K.J. Maye", "Kody Cook", "Johnny Jackson", "Rashon Ceaser", "Josh Grady", "Tres Houston", "Tevaun Smith", "Paul Turner", "Kenny Lawler", "Jordan Williams-Lambert", "Devon Blackmon", "Bryce Treggs", "Von Pearson", "Max Morrison", "Cayleb Jones", "Carlos Wiggins", "Brandon Sheperd", "C.J. Best", "Charone Peake", "Antwane Grant", "Mitch Mathews", "Chris Moore", "Trevor Davis", "Simms McElfresh", "Johnny Holton", "DeAndre Reaves", "Cody Core", "Alonzo Russell", "Donovan Harden", "Maurice Morgan", "Ben Lewis", "Jeff Greene", "Damien Washington", "David Mellstrom", "Kolby Listenbee", "Demarcus Robinson", "Braxton Miller", "Jemond Hazely", "Johnathon Johnson", "Malachi Jones", "Dennis Parks", "Jordan Fredrick", "Devin Fuller", "Mose Frazier", "Davonte Allen", "Brandon Swindall", "Terenn Houk", "Richard Mullaney", "Alex Ludowig", "T.J. Thorpe", "Macgarrett Kings Jr.", "Dom Williams", "Shane Mikesky", "Bubba Poole", "Danny Anthrop", "DeAnthony Arnett", "Herve Coby", "Kenneth Scott", "Justin Berger", "Quinton Pedroza", "Tommylee Lewis", "Daje Johnson", "Devon Cajuste", "Maurice Harris", "Chris Kearney", "Montez McGuire", "D'haquille Williams", "Joe Hansley", "Geronimo Allison", "Tre' Parmalee", "Jordan Bergstrom", "Gary Chambers", "K.J. Brent", "DeAndre Bell", "Trey Page", "Hansell Wilson", "Carlos Harris", "Clinton Taylor", "Thomas Wilson", "Brad Pearson", "Byron Marshall", "Rollins Stallworth", "D.J. Foster", "Alex Chisum", "Amir Carlisle", "Quenton Bundrage", "Ryan Burbrink", "Jay Lee", "Durron Neal", "David Richards", "Devonte Robinson", "Nathan Sassaman", "John Christopher", "Sanford Seay", "Mekale McKay", "Andre Davis", "Valdez Showers", "Marvin Shinn", "Bobo Beathard", "Max McCaffrey", "Damon Graham", "Jafus Gaines", "Aaron Grubb", "Marvin Hall", "Jalin Marshall", "Dustin Creel", "Kevin Asante", "Tevin Jones", "Roger Dixon", "Kyle Klein", "Christian Jones", "Andrew Pratt", "Bryan Holmes", "Jarvis Bentley", "Aaron Criswell", "Elgin Long", "Octavious Andrews", "Kishon Wilcher", "Logan Sweet", "Herb Waters", "NaQuan Brown", "Jamal Turner", "Brandon Oliver", "Ryan Garrey", "Ja'Juan Story", "Avery Sweeting", "Tony Ray Parnell", "Brandon Smith", "Jordan Bianchi", "Hayden Daniels", "Brandon Shippen", "Danny Woodson II", "Daniel Lilienthal", "Conner Floyd", "Alvonta Jenkins", "Marquez North", "P.J. Howard IV", "Kawmae Sawyer", "Tanner McEvoy", "Andrew Stone", "Terrell Johnson", "Demitri Knowles", "AJ Troup", "Stanton Weber", "Kris Strange", "Marken Michel", "Ryan Longoria", "Juwan Brescacin", "Tyler Scott", "K.D. Edenfield", "Chris Shillings", "Cody Blanc", "Melvin Ray", "Joe Morrow", "Connor Arlia", "Shamier Jeffery", "Marcus Johnson", "Claude Garrett", "Taariq Allen", "Christian Collis", "Joshua Bowen", "Wesley Leftwich", "Andre Sims", "KJ Myers", "Tyler Trosin", "Rayvean Moore", "Darius Joseph", "Miles Shuler", "Bobby Swigert", "Kurt Henderson", "Nyiakki Height", "Marquis Bundy", "David Dudeck", "Carlton Heard", "D.J. Vinson", "Garrett Kidd", "Kenny Bias", "Tyler Baker", "Kendrick Roberts", "Ian Dixon", "Justin Johnson")
 dc_2016_2 <- c("Sabian Holmes", "Kendrick Singleton", "Cameron Dickerson", "Jacob Hillyer", "Kris Kentera", "Anthony Williams", "Kameron Doolittle", "Autrey Golden", "Christian Tober", "Derek Keaton", "Josh Boyle")
@@ -182,6 +670,7 @@ dc_2015_2 <- c("Nick Stoner", "Issac Blakeney", "Mario Alford",
 dc2015_stats2014 <- stats_2014 %>% 
   filter(player %in% dc_2015 | player %in% dc_2015_2)
 ```
+
 
 
 
