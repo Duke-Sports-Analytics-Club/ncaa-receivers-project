@@ -48,6 +48,7 @@ sch_2017 <- read.csv("data_pff_receiver/2017_receiving_scheme.csv")
 sch_2018 <- read.csv("data_pff_receiver/2018_receiving_scheme.csv")
 sch_2019 <- read.csv("data_pff_receiver/2019_receiving_scheme.csv")
 sch_2020 <- read.csv("data_pff_receiver/2020_receiving_scheme.csv")
+pro_day <- read.csv("data/prodaystats.csv")
 ```
 
 ```{r merge PFF data}
@@ -132,6 +133,9 @@ dc_2021 <- c("DeVonta Smith" , "Elijah Moore" , "Jaelon Darden" , "Dax Milne" ,
              "Jeremiah Haydel" , "T.J. Vasher" , "Riley Lees" , "Jacob Harris" ,
              "Racey McMath" , "Rico Bussey Jr." , "Branden Mack" , "Brandon Smith" ,
              "Frank Darby" , "Javon Turner" , "Adam Krumholz")
+
+dc2021_stats2020 <- stats_2020 %>% 
+  filter(player %in% dc_2021)
 
 #2019 Stats of 2020 DC
 dc_2020 <- c("Geraud Sanders" , "Tyler Johnson" , "CeeDee Lamb" , "Tee Higgins" ,
@@ -265,7 +269,6 @@ dc_2019 <- c("Andy Isabella" , "J.J. Arcega-Whiteside" , "Greg Dortch" , "Parris
              "George Rushing" , "Tyraiq Beals" , "Larry Stephens" , "Cam Stewart" ,
              "Ryan Schadler" , "Rafael Hidalgo" , "William Crest Jr." , "Brandon Mitchell" ,
              "Lemar Harris")
-
 
 dc2019_stats2018 <- stats_2018 %>% 
   filter(player %in% dc_2019)
@@ -547,6 +550,15 @@ dc_2015_2 <- c("Nick Stoner", "Issac Blakeney", "Mario Alford",
   "LeKendrick Williams", "Dallas Burroughs", "Corey Dennis", "Andre Debose")
 dc2015_stats2014 <- stats_2014 %>% 
   filter(player %in% dc_2015 | player %in% dc_2015_2)
+```
+
+```{r}
+long_data <- rbind(dc2016_stats2015, dc2017_stats2016, dc2018_stats2017, 
+                   dc2019_stats2018, dc2020_stats2019, dc2021_stats2020)
+```
+
+```{r}
+joined_data <- inner_join(long_data, pro_day, by = c("player" = "Name", "position" = "POS"))
 ```
 
 
