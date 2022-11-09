@@ -1,6 +1,6 @@
 ---
 title: "Predicting NFL Wide Receiver Success Using Combine Measurables and PFF College Data"
-author: "Jack Miller, Nahm Lahade, Matthew Paul, Caspian Svenson"
+author: "Jack Miller, Namh Lahade, Matthew Paul, Caspian Svenson"
 output: pdf_document
 ---
 
@@ -521,7 +521,9 @@ joined_data <- inner_join(long_data, pro_day,
                           by = c("player" = "Name", "position" = "POS")) %>%
   select(-c(Wonderlic, College))
   
-write.csv(joined_data, "full_data.csv", row.names = TRUE)
+write.csv(joined_data, "data/full_data.csv", row.names = TRUE)
+
+head(joined_data)
 ```
 
 
