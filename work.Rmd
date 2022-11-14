@@ -21,53 +21,14 @@ library(ggrepel)
 ```
 
 ```{r load PFF data}
-rec_2014 <- read.csv("data_pff_receiver/2014_receiver_pff_data.csv")
-rec_2015 <- read.csv("data_pff_receiver/2015_receiver_pff_data.csv")
-rec_2016 <- read.csv("data_pff_receiver/2016_receiver_pff_data.csv")
-rec_2017 <- read.csv("data_pff_receiver/2017_receiver_pff_data.csv")
-rec_2018 <- read.csv("data_pff_receiver/2018_receiver_pff_data.csv")
-rec_2019 <- read.csv("data_pff_receiver/2019_receiver_pff_data.csv")
-rec_2020 <- read.csv("data_pff_receiver/2020_receiver_pff_data.csv")
-sch_2015 <- read.csv("data_pff_receiver/2015_receiver_scheme.csv")
-sch_2016 <- read.csv("data_pff_receiver/2016_receiving_scheme.csv")
-sch_2017 <- read.csv("data_pff_receiver/2017_receiving_scheme.csv")
-sch_2018 <- read.csv("data_pff_receiver/2018_receiving_scheme.csv")
-sch_2019 <- read.csv("data_pff_receiver/2019_receiving_scheme.csv")
-sch_2020 <- read.csv("data_pff_receiver/2020_receiving_scheme.csv")
+stats_2014 <- read.csv("data_pff_receiver/2014_receiver_pff_data.csv")
+stats_2015 <- read.csv("data_pff_receiver/2015_receiver_pff_data.csv")
+stats_2016 <- read.csv("data_pff_receiver/2016_receiver_pff_data.csv")
+stats_2017 <- read.csv("data_pff_receiver/2017_receiver_pff_data.csv")
+stats_2018 <- read.csv("data_pff_receiver/2018_receiver_pff_data.csv")
+stats_2019 <- read.csv("data_pff_receiver/2019_receiver_pff_data.csv")
+stats_2020 <- read.csv("data_pff_receiver/2020_receiver_pff_data.csv")
 pro_day <- read.csv("data/prodaystats.csv")
-```
-
-```{r merge PFF data}
-#2020 Stats
-stats_2020 <- left_join(rec_2020, sch_2020, copy = FALSE, 
-                          by = c("player", "position", "team_name",
-                                 "player_game_count", "player_id",
-                                 "declined_penalties", "franchise_id")) 
-
-#2019 Stats
-stats_2019 <- left_join(rec_2019, sch_2019, copy = FALSE, 
-                          by = c("player", "position", "team_name", "player_game_count", "player_id", "declined_penalties", "franchise_id")) 
-
-#2018 Stats
-stats_2018 <- left_join(rec_2018, sch_2018, copy = FALSE, 
-                          by = c("player", "position", "team_name",
-                                 "player_game_count", "player_id",
-                                 "declined_penalties", "franchise_id")) 
-
-#2017 Stats
-stats_2017 <- left_join(rec_2017, sch_2017, copy = FALSE, by = c("player", "position", "team_name", "player_game_count", "player_id", "declined_penalties", "franchise_id")) 
-
-
-#2016 Stats
-stats_2016 <- left_join(rec_2016, sch_2016, copy = FALSE, 
-                          by = c("player", "position", "team_name",
-                                 "player_game_count", "player_id",
-                                 "declined_penalties", "franchise_id")) 
-#2015 Stats
-stats_2015 <- left_join(rec_2015, sch_2015, copy = FALSE, by = c("player", "position", "team_name", "player_game_count", "player_id", "declined_penalties", "franchise_id")) 
-
-#2014 Stats
-stats_2014 <- rec_2014
 ```
 
 ```{r players by draft class}
@@ -512,8 +473,8 @@ dc2015_stats2014 <- stats_2014 %>%
 ```
 
 ```{r}
-long_data <- rbind(dc2016_stats2015, dc2017_stats2016, dc2018_stats2017, 
-                   dc2019_stats2018, dc2020_stats2019, dc2021_stats2020)
+long_data <- rbind(dc2015_stats2014, dc2016_stats2015, dc2017_stats2016, 
+  dc2018_stats2017, dc2019_stats2018, dc2020_stats2019, dc2021_stats2020)
 ```
 
 ```{r}
@@ -522,10 +483,13 @@ joined_data <- inner_join(long_data, pro_day,
   select(-c(Wonderlic, College))
   
 write.csv(joined_data, "data/full_data.csv", row.names = TRUE)
-
 head(joined_data)
 ```
 
+```{r pro joined stats (test)}
+pro2022stats <- read.csv("data/2022pronflstats.csv")
+pro_joined <- inner_join(joined_data, pro2022stats, by = c("player", "player_id", "position"))
+```
 
 
 
