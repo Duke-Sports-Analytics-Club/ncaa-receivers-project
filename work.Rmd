@@ -452,7 +452,11 @@ dc_2016_2 <- c("Sabian Holmes", "Kendrick Singleton", "Cameron Dickerson",
 dc2016_stats2015 <- stats_2015 %>% 
   filter(player %in% dc_2016 | player %in% dc_2016_2) %>% 
   left_join(stats_2014, by = c("player", "player_id", "position"), 
-            suffix = c("_draft", "_pre"))
+            suffix = c("_draft", "_pre")) %>% 
+  mutate(total_yards = yards_draft + yards_pre,
+         total_catch_percent = (receptions_draft + receptions_pre) / (targets_draft + targets_pre),
+         total_yprr = yprr_draft + yprr_pre,
+         total_first_downs = first_downs_draft+first_downs_pre)
   
 
 #2014 Stats of 2015 DC
