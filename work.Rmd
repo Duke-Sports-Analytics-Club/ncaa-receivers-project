@@ -21,22 +21,58 @@ library(ggrepel)
 ```
 
 ```{r load PFF data}
-stats_2014 <- read.csv("data_pff_receiver/2014_receiver_pff_data.csv")
-stats_2015 <- read.csv("data_pff_receiver/2015_receiver_pff_data.csv")
-stats_2016 <- read.csv("data_pff_receiver/2016_receiver_pff_data.csv")
-stats_2017 <- read.csv("data_pff_receiver/2017_receiver_pff_data.csv")
-stats_2018 <- read.csv("data_pff_receiver/2018_receiver_pff_data.csv")
-stats_2019 <- read.csv("data_pff_receiver/2019_receiver_pff_data.csv")
-stats_2020 <- read.csv("data_pff_receiver/2020_receiver_pff_data.csv")
+stats_2014 <- read.csv("data_pff_receiver/2014_receiver_pff_data.csv") %>% 
+  select(-c(avg_depth_of_target, avoided_tackles, contested_catch_rate, 
+            contested_receptions, contested_targets, declined_penalties, drops, 
+            franchise_id, fumbles, grades_pass_block, inline_rate, inline_snaps,
+            interceptions, longest, pass_block_rate, pass_blocks, penalties, 
+            slot_rate, slot_snaps, wide_rate, wide_snaps))
+stats_2015 <- read.csv("data_pff_receiver/2015_receiver_pff_data.csv") %>% 
+  select(-c(avg_depth_of_target, avoided_tackles, contested_catch_rate, 
+            contested_receptions, contested_targets, declined_penalties, drops, 
+            franchise_id, fumbles, grades_pass_block, inline_rate, inline_snaps,
+            interceptions, longest, pass_block_rate, pass_blocks, penalties, 
+            slot_rate, slot_snaps, wide_rate, wide_snaps))
+stats_2016 <- read.csv("data_pff_receiver/2016_receiver_pff_data.csv") %>% 
+  select(-c(avg_depth_of_target, avoided_tackles, contested_catch_rate, 
+            contested_receptions, contested_targets, declined_penalties, drops, 
+            franchise_id, fumbles, grades_pass_block, inline_rate, inline_snaps,
+            interceptions, longest, pass_block_rate, pass_blocks, penalties, 
+            slot_rate, slot_snaps, wide_rate, wide_snaps))
+stats_2017 <- read.csv("data_pff_receiver/2017_receiver_pff_data.csv") %>% 
+  select(-c(avg_depth_of_target, avoided_tackles, contested_catch_rate, 
+            contested_receptions, contested_targets, declined_penalties, drops, 
+            franchise_id, fumbles, grades_pass_block, inline_rate, inline_snaps,
+            interceptions, longest, pass_block_rate, pass_blocks, penalties, 
+            slot_rate, slot_snaps, wide_rate, wide_snaps))
+stats_2018 <- read.csv("data_pff_receiver/2018_receiver_pff_data.csv") %>% 
+  select(-c(avg_depth_of_target, avoided_tackles, contested_catch_rate, 
+            contested_receptions, contested_targets, declined_penalties, drops, 
+            franchise_id, fumbles, grades_pass_block, inline_rate, inline_snaps,
+            interceptions, longest, pass_block_rate, pass_blocks, penalties, 
+            slot_rate, slot_snaps, wide_rate, wide_snaps))
+stats_2019 <- read.csv("data_pff_receiver/2019_receiver_pff_data.csv") %>% 
+  select(-c(avg_depth_of_target, avoided_tackles, contested_catch_rate, 
+            contested_receptions, contested_targets, declined_penalties, drops, 
+            franchise_id, fumbles, grades_pass_block, inline_rate, inline_snaps,
+            interceptions, longest, pass_block_rate, pass_blocks, penalties, 
+            slot_rate, slot_snaps, wide_rate, wide_snaps))
+stats_2020 <- read.csv("data_pff_receiver/2020_receiver_pff_data.csv") %>% 
+  select(-c(avg_depth_of_target, avoided_tackles, contested_catch_rate, 
+            contested_receptions, contested_targets, declined_penalties, drops, 
+            franchise_id, fumbles, grades_pass_block, inline_rate, inline_snaps,
+            interceptions, longest, pass_block_rate, pass_blocks, penalties, 
+            slot_rate, slot_snaps, wide_rate, wide_snaps))
 pro_day <- read.csv("data/prodaystats.csv")
 ```
 
 ```{r players by draft class}
 #2020 Stats of 2021 DC
-dc_2021 <- c("DeVonta Smith" , "Elijah Moore" , "Jaelon Darden" , "Dax Milne" , 
-             "Austin Trammell" , "Marlon Williams" , "Tim Jones" , "Tylan Wallace" ,
-             "D'Wayne Eskridge" , "Jonathan Adams Jr." , "Kadarius Toney" , 
-             "Jaylen Waddle" , "Antonio Nunn" , "Dyami Brown" , "Rashod Bateman" ,
+dc_2021 <- c("Ja'Marr Chase", "DeVonta Smith" , "Elijah Moore" , "Dax Milne",
+             "Jaelon Darden" , "Austin Trammell" , "Marlon Williams" , 
+             "Tim Jones" , "Tylan Wallace" ,"D'Wayne Eskridge" ,
+             "Jonathan Adams Jr." , "Kadarius Toney" , "Jaylen Waddle" , 
+             "Antonio Nunn" , "Dyami Brown" , "Rashod Bateman" ,
              "Terrace Marshall Jr." , "Shi Smith" , "Amari Rodgers" , "Rondale Moore" ,
              "Isaiah McKoy" , "Damon Hazelton" , "Camden Harrison" , "Brevin Jordan" ,
              "Bailey Gaither" , "Tutu Atwell" , "Dez Fitzpatrick" , "Austin Watkins" ,
@@ -55,12 +91,14 @@ dc_2021 <- c("DeVonta Smith" , "Elijah Moore" , "Jaelon Darden" , "Dax Milne" ,
              "Frank Darby" , "Javon Turner" , "Adam Krumholz")
 
 dc2021_stats2020 <- stats_2020 %>% 
-  filter(player %in% dc_2021)
+  filter(player %in% dc_2021) %>% 
+  left_join(stats_2019, by = c("player", "player_id", "position"), 
+            suffix = c("_draft", "_pre"))
 
 #2019 Stats of 2020 DC
 dc_2020 <- c("Geraud Sanders" , "Tyler Johnson" , "CeeDee Lamb" , "Tee Higgins" ,
              "Isaiah Hodgins" , "Omar Bayless" , "Devin Duvernay" , "Jauan Jennings" ,
-             "Antonio Gandy-Golden" , "Ja'Marcus Bradley" , "James Proche" , 
+             "Antonio Gandy-Golden", "Ja'Marcus Bradley" , "James Proche" , 
              "Jerry Jeudy" , "Justin Jefferson" , "Laviska Shenault Jr." , 
              "Quintez Cephus" , "Brandon Arconado" , "Lawrence Cager" , 
              "Denzel Mims" , "Chase Claypool" , "Michael Pittman Jr." , 
@@ -125,7 +163,9 @@ dc_2020 <- c("Geraud Sanders" , "Tyler Johnson" , "CeeDee Lamb" , "Tee Higgins" 
              "Christian Owens" , "Darrius Scott" , "Chaz Collins" , "Shea Holebrook Jr.")
 
 dc2020_stats2019 <- stats_2019 %>% 
-  filter(player %in% dc_2020)
+  filter(player %in% dc_2020) %>% 
+  left_join(stats_2018, by = c("player", "player_id", "position"), 
+            suffix = c("_draft", "_pre"))
 
 #2018 Stats of 2019 DC
 dc_2019 <- c("Andy Isabella" , "J.J. Arcega-Whiteside" , "Greg Dortch" , "Parris Campbell" ,
@@ -191,7 +231,9 @@ dc_2019 <- c("Andy Isabella" , "J.J. Arcega-Whiteside" , "Greg Dortch" , "Parris
              "Lemar Harris")
 
 dc2019_stats2018 <- stats_2018 %>% 
-  filter(player %in% dc_2019)
+  filter(player %in% dc_2019) %>% 
+  left_join(stats_2017, by = c("player", "player_id", "position"), 
+            suffix = c("_draft", "_pre"))
 
 #2017 Stats of 2018 DC
 dc_2018 <- c("Michael Gallup" , "Trey Quinn" , "Cedrick Wilson" , "Anthony Miller" ,
@@ -250,7 +292,7 @@ dc_2018_2 <- c("Jaron Johnson" , "Austin Parker" , "Jeffery Mead" , "Brady Jones
                "Marlon Watts" , "Macan Wilson" , "Bryan LaCivita" , "Eldridge Massington" ,
                "Dante Jones" , "Tristan Davis" , "Devin Ross" , "Donovan Walker" ,
                "Xavier Hawkins" , "Jamarl Eiland" , "Clark Quisenberry" , 
-               "Marcus Gaines" , "Tucker Melcher" , "Roderick Proctor" , "Markell Pack" ,
+               "Marcus Gaines" , "Tucker Melcher" , "Roderick Proctor" , "Markell Pack",
                "Eric Cooper" , "Eric Luna" , "Quay Chambers" , "Darryl Richards" ,
                "Anthony Young" , "Keelan Ewaliko" , "Alex Van Dyke" , "Cameron Smith" ,
                "Gregory Hogan" , "T.L. Ford II" , "Damon Mitchell" , "Trevor Steinke" ,
@@ -264,7 +306,9 @@ dc_2018_2 <- c("Jaron Johnson" , "Austin Parker" , "Jeffery Mead" , "Brady Jones
                "Shelby Walker" , "Jacquille Veii")
 
 dc2018_stats2017 <- stats_2017 %>% 
-  filter(player %in% dc_2018 | player %in% dc_2018_2)
+  filter(player %in% dc_2018 | player %in% dc_2018_2) %>% 
+  left_join(stats_2016, by = c("player", "player_id", "position"), 
+            suffix = c("_draft", "_pre"))
 
 #2016 Stats of 2017 DC
 dc_2017 <- c("Jalen Rowell","Austin Carr","Dede Westbrook","Mike Williams", 
@@ -336,7 +380,9 @@ dc_2017_2 <- c("Larry Dace III", "Stephon Brown","Anthony Nash","Jake Maulhardt"
                "Brian Lemelle" , "Conner Smith" , "Darrion Pollard")
 
 dc2017_stats2016 <- stats_2016 %>% 
-  filter(player %in% dc_2017 | player %in% dc_2017_2)
+  filter(player %in% dc_2017 | player %in% dc_2017_2) %>% 
+  left_join(stats_2015, by = c("player", "player_id", "position"), 
+            suffix = c("_draft", "_pre"))
 
 #2015 Stats of 2016 DC
 dc_2016 <- c("Josh Doctson", "Rashard Higgins", "Daniel Braverman", 
@@ -404,7 +450,10 @@ dc_2016_2 <- c("Sabian Holmes", "Kendrick Singleton", "Cameron Dickerson",
                "Autrey Golden", "Christian Tober", "Derek Keaton", "Josh Boyle")
 
 dc2016_stats2015 <- stats_2015 %>% 
-  filter(player %in% dc_2016 | player %in% dc_2016_2)
+  filter(player %in% dc_2016 | player %in% dc_2016_2) %>% 
+  left_join(stats_2014, by = c("player", "player_id", "position"), 
+            suffix = c("_draft", "_pre"))
+  
 
 #2014 Stats of 2015 DC
 dc_2015 <- c("Amari Cooper", "Tyler Lockett", "DeVante Parker", 
@@ -469,12 +518,12 @@ dc_2015_2 <- c("Nick Stoner", "Issac Blakeney", "Mario Alford",
   "Gavin Otte", "Carl Caldwell", "Ross Apo", "Logan Hutton", "Jordan Duval",
   "LeKendrick Williams", "Dallas Burroughs", "Corey Dennis", "Andre Debose")
 dc2015_stats2014 <- stats_2014 %>% 
-  filter(player %in% dc_2015 | player %in% dc_2015_2)
+  filter(player %in% dc_2015 | player %in% dc_2015_2) 
 ```
 
 ```{r}
-long_data <- rbind(dc2015_stats2014, dc2016_stats2015, dc2017_stats2016, 
-  dc2018_stats2017, dc2019_stats2018, dc2020_stats2019, dc2021_stats2020)
+long_data <- rbind(dc2016_stats2015, dc2017_stats2016, dc2018_stats2017, 
+                   dc2019_stats2018, dc2020_stats2019, dc2021_stats2020)
 ```
 
 ```{r}
