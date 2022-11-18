@@ -711,7 +711,7 @@ pro_joined <- inner_join(joined_data, pro2022stats, by = c("player", "player_id"
 ```
 
 ```{r}
-ggplot(joined_data, aes(x = yprr_pre, y = yprr_draft)) +
+ggplot(joined_data, aes(x = yprr_draft, y = yprr_pre)) +
   geom_point()
 ggplot(joined_data, aes(x = total_yards, y = grades_offense)) +
   geom_point()
