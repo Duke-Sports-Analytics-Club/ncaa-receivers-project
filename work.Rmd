@@ -63,7 +63,7 @@ stats_2020 <- read.csv("data_pff_receiver/2020_receiver_pff_data.csv") %>%
             franchise_id, fumbles, grades_pass_block, inline_rate, inline_snaps,
             interceptions, longest, pass_block_rate, pass_blocks, penalties, 
             slot_rate, slot_snaps, wide_rate, wide_snaps))
-pro_day <- read.csv("data/prodaystats.csv")
+combine_stats <- read.csv("combinedStats.csv")
 ```
 
 ```{r players by draft class}
@@ -91,7 +91,7 @@ dc_2021 <- c("Ja'Marr Chase", "DeVonta Smith" , "Elijah Moore" , "Dax Milne",
              "Frank Darby" , "Javon Turner" , "Adam Krumholz")
 
 dc2021_stats2020 <- stats_2020 %>% 
-  filter(player %in% dc_2021) %>% 
+  filter(player %in% dc_2021 & position == "WR") %>% 
   left_join(stats_2019, by = c("player", "player_id", "position"), 
             suffix = c("_draft", "_pre")) |>
   rowwise() %>% 
@@ -192,7 +192,7 @@ dc_2020 <- c("Geraud Sanders" , "Tyler Johnson" , "CeeDee Lamb" , "Tee Higgins" 
              "Christian Owens" , "Darrius Scott" , "Chaz Collins" , "Shea Holebrook Jr.")
 
 dc2020_stats2019 <- stats_2019 %>% 
-  filter(player %in% dc_2020) %>% 
+  filter(player %in% dc_2020 & position == "WR") %>% 
   left_join(stats_2018, by = c("player", "player_id", "position"), 
             suffix = c("_draft", "_pre")) |>
   rowwise() %>% 
@@ -289,7 +289,7 @@ dc_2019 <- c("Andy Isabella" , "J.J. Arcega-Whiteside" , "Greg Dortch" , "Parris
              "Lemar Harris")
 
 dc2019_stats2018 <- stats_2018 %>% 
-  filter(player %in% dc_2019) %>% 
+  filter(player %in% dc_2019 & position == "WR") %>% 
   left_join(stats_2017, by = c("player", "player_id", "position"), 
             suffix = c("_draft", "_pre")) |>
   rowwise() %>% 
@@ -393,17 +393,14 @@ dc_2018_2 <- c("Jaron Johnson" , "Austin Parker" , "Jeffery Mead" , "Brady Jones
                "Shelby Walker" , "Jacquille Veii")
 
 dc2018_stats2017 <- stats_2017 %>% 
-  filter(player %in% dc_2018 | player %in% dc_2018_2) %>% 
+  filter(player %in% dc_2018 | player %in% dc_2018_2 & position == "WR") %>% 
   left_join(stats_2016, by = c("player", "player_id", "position"), 
             suffix = c("_draft", "_pre")) |>
   rowwise() %>% 
   mutate(total_yards = yards_draft + yards_pre,
-         total_catch_percent = sum(c(receptions_draft + receptions_pre), na.rm=TRUE) / sum(c(targets_draft + targets_pre),
-                                                                                           na.rm = TRUE),
-         total_target_percent = sum(c(targets_draft + targets_pre), na.rm = TRUE) / sum(c(routes_draft + routes_pre), 
-                                                                                        na.rm = TRUE),
-         total_route_percent = sum(c(routes_draft + routes_pre), na.rm = TRUE) / sum(c(pass_plays_draft + pass_plays_pre),
-                                                                                     na.rm = TRUE),
+         total_catch_percent = sum(c(receptions_draft + receptions_pre), na.rm=TRUE) / sum(c(targets_draft + targets_pre), na.rm = TRUE),
+         total_target_percent = sum(c(targets_draft + targets_pre), na.rm = TRUE) / sum(c(routes_draft + routes_pre), na.rm = TRUE),
+         total_route_percent = sum(c(routes_draft + routes_pre), na.rm = TRUE) / sum(c(pass_plays_draft + pass_plays_pre), na.rm = TRUE),
          total_drop_percent = sum(c(drops_draft,drops_pre), na.rm = TRUE) / sum(c(targets_draft,targets_pre), na.rm = TRUE),
          total_yprr = yprr_draft + yprr_pre,
          total_first_downs = sum(c(first_downs_draft,first_downs_pre), na.rm = TRUE),
@@ -496,30 +493,27 @@ dc_2017_2 <- c("Larry Dace III", "Stephon Brown","Anthony Nash","Jake Maulhardt"
                "Brian Lemelle" , "Conner Smith" , "Darrion Pollard")
 
 dc2017_stats2016 <- stats_2016 %>% 
-  filter(player %in% dc_2017 | player %in% dc_2017_2) %>% 
+  filter(player %in% dc_2017 | player %in% dc_2017_2 & position == "WR") %>% 
   left_join(stats_2015, by = c("player", "player_id", "position"), 
             suffix = c("_draft", "_pre")) |>
   rowwise() %>% 
   mutate(total_yards = yards_draft + yards_pre,
-         total_catch_percent = sum(c(receptions_draft + receptions_pre), na.rm=TRUE) / sum(c(targets_draft + targets_pre),
-                                                                                           na.rm = TRUE),
-         total_target_percent = sum(c(targets_draft + targets_pre), na.rm = TRUE) / sum(c(routes_draft + routes_pre), 
-                                                                                        na.rm = TRUE),
-         total_route_percent = sum(c(routes_draft + routes_pre), na.rm = TRUE) / sum(c(pass_plays_draft + pass_plays_pre),
-                                                                                     na.rm = TRUE),
+         total_catch_percent = sum(c(receptions_draft + receptions_pre), na.rm=TRUE) / sum(c(targets_draft + targets_pre), na.rm = TRUE),
+         total_target_percent = sum(c(targets_draft + targets_pre), na.rm = TRUE) / sum(c(routes_draft + routes_pre), na.rm = TRUE),
+         total_route_percent = sum(c(routes_draft + routes_pre), na.rm = TRUE) / sum(c(pass_plays_draft + pass_plays_pre), na.rm = TRUE),
          total_drop_percent = sum(c(drops_draft,drops_pre), na.rm = TRUE) / sum(c(targets_draft,targets_pre), na.rm = TRUE),
          total_yprr = yprr_draft + yprr_pre,
          total_first_downs = sum(c(first_downs_draft,first_downs_pre), na.rm = TRUE),
          total_yards_per_reception = sum(c(yards_per_reception_draft,yards_per_reception_pre), na.rm = TRUE),
          total_yards_after_catch_per_reception = sum(c(yards_after_catch_per_reception_draft,
-                                                       yards_after_catch_per_reception_pre), na.rm = TRUE),
+                                                       yards_after_catch_per_reception_pre), na.rm = TRUE) / 2,
          total_player_game_count = sum(c(player_game_count_draft,player_game_count_pre), na.rm = TRUE),
          total_touchdowns = sum(c(touchdowns_draft,touchdowns_pre), na.rm = TRUE),
          total_yards_per_game = ((sum(c(yards_draft,yards_pre), na.rm = TRUE)) / total_player_game_count), 
          total_yards_after_catch_per_game = ((sum(c(yards_after_catch_draft, yards_after_catch_pre), na.rm = TRUE)) /
                                                total_player_game_count), 
          total_targets_per_game = ((sum(c(targets_draft,targets_pre), na.rm = TRUE)) / total_player_game_count), 
-         total_targeted_qb_rating = sum(c(targeted_qb_rating_draft,targeted_qb_rating_pre), na.rm = TRUE) / 2,
+         total_targeted_qb_rating = sum(c(targeted_qb_rating_draft,targeted_qb_rating_pre), na.rm = TRUE) ,
          games_draft = (player_game_count_draft / sum(c(player_game_count_draft, player_game_count_pre), na.rm = TRUE)),
          grades_hands_drop = sum(c((games_draft*grades_hands_drop_draft),((1-games_draft)*grades_hands_drop_pre)), 
                                  na.rm = TRUE),
@@ -595,7 +589,7 @@ dc_2016_2 <- c("Sabian Holmes", "Kendrick Singleton", "Cameron Dickerson",
                "Autrey Golden", "Christian Tober", "Derek Keaton", "Josh Boyle")
 
 dc2016_stats2015 <- stats_2015 %>% 
-  filter(player %in% dc_2016 | player %in% dc_2016_2) %>% 
+  filter(player %in% dc_2016 | player %in% dc_2016_2 & position == "WR") %>% 
   left_join(stats_2014, by = c("player", "player_id", "position"), 
             suffix = c("_draft", "_pre")) %>% 
   rowwise() %>% 
@@ -692,18 +686,20 @@ dc_2015_2 <- c("Nick Stoner", "Issac Blakeney", "Mario Alford",
   "Gavin Otte", "Carl Caldwell", "Ross Apo", "Logan Hutton", "Jordan Duval",
   "LeKendrick Williams", "Dallas Burroughs", "Corey Dennis", "Andre Debose")
 dc2015_stats2014 <- stats_2014 %>% 
-  filter(player %in% dc_2015 | player %in% dc_2015_2) 
+  filter(player %in% dc_2015 | player %in% dc_2015_2 & position == "WR") 
 ```
 
 ```{r}
 long_data <- rbind(dc2016_stats2015, dc2017_stats2016, dc2018_stats2017, 
                    dc2019_stats2018, dc2020_stats2019, dc2021_stats2020)
+long_data <- long_data %>% 
+  as.data.frame() %>% 
+  filter(position == "WR")
 ```
 
 ```{r}
-joined_data <- inner_join(long_data, pro_day, 
-                          by = c("player" = "Name", "position" = "POS")) %>%
-  select(-c(Wonderlic, College))
+joined_data <- inner_join(long_data, combine_stats, 
+                          by = c("player" = "Name"))
   
 write.csv(joined_data, "data/full_data.csv", row.names = TRUE)
 head(joined_data)
@@ -714,6 +710,14 @@ pro2022stats <- read.csv("data/2022pronflstats.csv")
 pro_joined <- inner_join(joined_data, pro2022stats, by = c("player", "player_id", "position"))
 ```
 
+```{r}
+ggplot(joined_data, aes(x = yprr_pre, y = yprr_draft)) +
+  geom_point()
+ggplot(joined_data, aes(x = total_yards, y = grades_offense)) +
+  geom_point()
+ggplot(joined_data, aes(x = X40.Yard, y = total_yards_per_reception)) +
+  geom_point()
+```
 
 
 
