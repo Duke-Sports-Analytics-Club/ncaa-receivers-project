@@ -332,6 +332,12 @@ dc2019_stats2018 <- stats_2018 %>%
          grades_pass_route = sum(c((games_draft*grades_pass_route_draft),((1-games_draft)*grades_pass_route_pre)), 
                                  na.rm = TRUE))
 
+
+pro_2019 <- read_csv("data/2019_pro_stats.csv")
+dc_2019_pro_stats <- pro_2019 %>% 
+  inner_join(pro_2020, by = c("player", "position", "player_id"), suffix = c("1yr", "2yr"))
+dc_2019_stats <- inner_join(dc_2019_pro_stats, dc2019_stats2018, by = c("player_id", "player", "position"))
+
 #2017 Stats of 2018 DC
 dc_2018 <- c("Michael Gallup" , "Trey Quinn" , "Cedrick Wilson" , "Anthony Miller" ,
              "Marcell Ateman" , "Thomas Owens" , "James Washington" , "Cam Phillips" ,
@@ -433,6 +439,11 @@ dc2018_stats2017 <- stats_2017 %>%
          grades_pass_route = sum(c((games_draft*grades_pass_route_draft),((1-games_draft)*grades_pass_route_pre)), 
                                  na.rm = TRUE))
 
+pro_2018 <- read_csv("data/2018_pro_stats.csv")
+dc_2018_pro_stats <- pro_2018 %>% 
+  inner_join(pro_2019, by = c("player", "position", "player_id"), suffix = c("1yr", "2yr"))
+dc_2018_stats <- inner_join(dc_2018_pro_stats, dc2018_stats2017, by = c("player_id", "player", "position"))
+
 #2016 Stats of 2017 DC
 dc_2017 <- c("Jalen Rowell","Austin Carr","Dede Westbrook","Mike Williams", 
              "Zay Jones","Carlos Henderson","Corey Davis", "Taywan Taylor" , 
@@ -533,6 +544,11 @@ dc2017_stats2016 <- stats_2016 %>%
          grades_pass_route = sum(c((games_draft*grades_pass_route_draft),((1-games_draft)*grades_pass_route_pre)), 
                                  na.rm = TRUE))
 
+pro_2017 <- read_csv("data/2017_pro_stats.csv")
+dc_2017_pro_stats <- pro_2017 %>% 
+  inner_join(pro_2018, by = c("player", "position", "player_id"), suffix = c("1yr", "2yr"))
+dc_2017_stats <- inner_join(dc_2017_pro_stats, dc2017_stats2016, by = c("player_id", "player", "position"))
+
 #2015 Stats of 2016 DC
 dc_2016 <- c("Josh Doctson", "Rashard Higgins", "Daniel Braverman", 
              "Sterling Shepard", "Corey Coleman", "Tyler Boyd", "Garrett Brown", 
@@ -632,6 +648,10 @@ dc2016_stats2015 <- stats_2015 %>%
          grades_pass_route = sum(c((games_draft*grades_pass_route_draft),((1-games_draft)*grades_pass_route_pre)), 
                                  na.rm = TRUE))
   
+pro_2016 <- read_csv("data/2016_pro_stats.csv")
+dc_2016_pro_stats <- pro_2016 %>% 
+  inner_join(pro_2017, by = c("player", "position", "player_id"), suffix = c("1yr", "2yr"))
+dc_2016_stats <- inner_join(dc_2016_pro_stats, dc2016_stats2015, by = c("player_id", "player", "position"))
 
 #2014 Stats of 2015 DC
 dc_2015 <- c("Amari Cooper", "Tyler Lockett", "DeVante Parker", 
