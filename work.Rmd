@@ -700,6 +700,78 @@ long_data <- long_data %>%
 ```{r}
 joined_data <- inner_join(long_data, combine_stats, 
                           by = c("player" = "Name"))
+joined_data <- joined_data %>%
+  mutate(Power5 = if_else(
+    team_name_draft == "PITTSBURGH" |
+      team_name_draft == "MICH STATE" |
+      team_name_draft == "WASH STATE" |
+      team_name_draft == "WISCONSIN" |
+      team_name_draft == "ILLINOIS" |
+      team_name_draft == "COLORADO" |
+      team_name_draft == "TEXAS TECH" |
+      team_name_draft == "UCLA" |
+      team_name_draft == "OLE MISS" |
+      team_name_draft == "OKLAHOMA" |
+      team_name_draft == "BAYLOR" |
+      team_name_draft == "S CAROLINA" |
+      team_name_draft == "TCU" |
+      team_name_draft == "BYU" |
+      team_name_draft == "MISS STATE" |
+      team_name_draft == "ARIZONA ST" |
+      team_name_draft == "WASHINGTON" |
+      team_name_draft == "ARIZONA" |
+      team_name_draft == "GEORGIA" |
+      team_name_draft == "OREGON" |
+      team_name_draft == "CAL" |
+      team_name_draft == "N CAROLINA" |
+      team_name_draft == "MIAMI FL" |
+      team_name_draft == "AUBURN" |
+      team_name_draft == "DUKE" |
+      team_name_draft == "CLEMSON" |
+      team_name_draft == "NOTRE DAME" |
+      team_name_draft == "FLORIDA" |
+      team_name_draft == "IOWA STATE" |
+      team_name_draft == "IOWA" |
+      team_name_draft == "OHIO STATE" |
+      team_name_draft == "RUTGERS" |
+      team_name_draft == "BOSTON COL" |
+      team_name_draft == "TENNESSEE" |
+      team_name_draft == "SYRACUSE" |
+      team_name_draft == "VA TECH" |
+      team_name_draft == "USC" |
+      team_name_draft == "MICHIGAN" |
+      team_name_draft == "FLORIDA ST" |
+      team_name_draft == "ARKANSAS" |
+      team_name_draft == "TEXAS A&M" |
+      team_name_draft == "W VIRGINIA" |
+      team_name_draft == "PENN STATE" |
+      team_name_draft == "UTAH" |
+      team_name_draft == "ALABAMA" |
+      team_name_draft == "LOUISVILLE" |
+      team_name_draft == "LSU" |
+      team_name_draft == "STANFORD" |
+      team_name_draft == "OKLA STATE" |
+      team_name_draft == "INDIANA" |
+      team_name_draft == "MISSOURI" |
+      team_name_draft == "KANSAS ST" |
+      team_name_draft == "KANSAS" |
+      team_name_draft == "WAKE" |
+      team_name_draft == "NC STATE" |
+      team_name_draft == "TEXAS" |
+      team_name_draft == "MARYLAND" |
+      team_name_draft == "MINNESOTA" |
+      team_name_draft == "NEBRASKA" |
+      team_name_draft == "NORTHWESTERN" |
+      team_name_draft == "PURDUE" |
+      team_name_draft == "VIRGINIA" |
+      team_name_draft == "KENTUCKY" |
+      team_name_draft == "VANDERBILT" |
+      team_name_draft == "OREGON ST" |
+      team_name_draft == "GA TECH",
+    1, 0
+  ))
+joined_data <- joined_data %>% 
+  distinct(player_id, .keep_all = TRUE)
   
 write.csv(joined_data, "data/full_data.csv", row.names = TRUE)
 head(joined_data)
