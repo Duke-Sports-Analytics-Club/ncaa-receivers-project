@@ -720,8 +720,8 @@ dc2015_stats2014 <- stats_2014 %>%
 ```
 
 ```{r}
-long_data <- rbind(dc2016_stats2015, dc2017_stats2016, dc2018_stats2017, 
-                   dc2019_stats2018, dc2020_stats2019, dc2021_stats2020)
+long_data <- rbind(dc_2016_stats, dc_2017_stats, dc_2018_stats, 
+                   dc_2019_stats, dc_2020_stats, dc_2021_stats)
 long_data <- long_data %>% 
   as.data.frame() %>% 
   filter(position == "WR")
@@ -802,14 +802,6 @@ joined_data <- joined_data %>%
   ))
 joined_data <- joined_data %>% 
   distinct(player_id, .keep_all = TRUE)
-  
-write.csv(joined_data, "data/full_data.csv", row.names = TRUE)
-head(joined_data)
-```
-
-```{r pro joined stats (test)}
-pro2022stats <- read.csv("data/2022pronflstats.csv")
-pro_joined <- inner_join(joined_data, pro2022stats, by = c("player", "player_id", "position"))
 ```
 
 ```{r}
@@ -821,10 +813,6 @@ ggplot(joined_data, aes(x = X40.Yard, y = total_yards_per_reception)) +
   geom_point()
 ```
 
-```{r}
-pro_2020 <- read_csv("data/2020_pro_stats.csv")
-pro_2021 <- read_csv("data/2021_pro_stats.csv")
-```
 
 
 
