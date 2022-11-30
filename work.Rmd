@@ -123,6 +123,11 @@ dc2021_stats2020 <- stats_2020 %>%
          grades_offense = sum(c((games_draft*grades_offense_draft),((1-games_draft)*grades_offense_pre)), na.rm = TRUE),
          grades_pass_route = sum(c((games_draft*grades_pass_route_draft),((1-games_draft)*grades_pass_route_pre)), 
                                  na.rm = TRUE))
+pro_2022 <- read_csv("data/2022_pro_stats.csv")
+pro_2021 <- read_csv("data/2021_pro_stats.csv")
+dc_2021_pro_stats <- pro_2021 %>% 
+  inner_join(pro_2022, by = c("player", "position", "player_id"), suffix = c("1yr", "2yr"))
+dc_2021_stats <- inner_join(dc_2021_pro_stats, dc2021_stats2020, by = c("player_id", "player", "position"))
 
 #2019 Stats of 2020 DC
 dc_2020 <- c("Geraud Sanders" , "Tyler Johnson" , "CeeDee Lamb" , "Tee Higgins" ,
@@ -223,7 +228,12 @@ dc2020_stats2019 <- stats_2019 %>%
                                    na.rm = TRUE),
          grades_offense = sum(c((games_draft*grades_offense_draft),((1-games_draft)*grades_offense_pre)), na.rm = TRUE),
          grades_pass_route = sum(c((games_draft*grades_pass_route_draft),((1-games_draft)*grades_pass_route_pre)), 
-                                 na.rm = TRUE))
+                                 na.rm = TRUE)) 
+pro_2020 <- read_csv("data/2020_pro_stats.csv")
+dc_2020_pro_stats <- pro_2020 %>% 
+  inner_join(pro_2021, by = c("player", "position", "player_id"), suffix = c("1yr", "2yr"))
+dc_2020_stats <- inner_join(dc_2020_pro_stats, dc2020_stats2019, by = c("player_id", "player", "position"))
+  
 
 #2018 Stats of 2019 DC
 dc_2019 <- c("Andy Isabella" , "J.J. Arcega-Whiteside" , "Greg Dortch" , "Parris Campbell" ,
@@ -790,6 +800,14 @@ ggplot(joined_data, aes(x = total_yards, y = grades_offense)) +
 ggplot(joined_data, aes(x = X40.Yard, y = total_yards_per_reception)) +
   geom_point()
 ```
+
+```{r}
+pro_2020 <- read_csv("data/2020_pro_stats.csv")
+pro_2021 <- read_csv("data/2021_pro_stats.csv")
+```
+
+
+
 
 
 
