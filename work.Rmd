@@ -72,7 +72,7 @@ dc_2021 <- c("Ja'Marr Chase", "DeVonta Smith" , "Elijah Moore" , "Dax Milne",
              "Jaelon Darden" , "Austin Trammell" , "Marlon Williams" , 
              "Tim Jones" , "Tylan Wallace" ,"D'Wayne Eskridge" ,
              "Jonathan Adams Jr." , "Kadarius Toney" , "Jaylen Waddle" , 
-             "Antonio Nunn" , "Dyami Brown" , "Rashod Bateman" ,
+             "Antonio Nunn" , "Dyami Brown" , "Rashod Bateman",
              "Terrace Marshall Jr." , "Shi Smith" , "Amari Rodgers" , "Rondale Moore" ,
              "Isaiah McKoy" , "Damon Hazelton" , "Camden Harrison" , "Brevin Jordan" ,
              "Bailey Gaither" , "Tutu Atwell" , "Dez Fitzpatrick" , "Austin Watkins" ,
@@ -127,8 +127,7 @@ pro_2022 <- read_csv("data/2022_pro_stats.csv")
 pro_2021 <- read_csv("data/2021_pro_stats.csv")
 dc_2021_pro_stats <- pro_2021 %>% 
   inner_join(pro_2022, by = c("player", "position", "player_id"), suffix = c("1yr", "2yr"))
-dc_2021_stats <- inner_join(dc_2021_pro_stats, dc2021_stats2020, by = c("player_id", "player", "position"))
-dc_2021_two <- dc_2021_pro_stats |>
+dc_2021_stats <- inner_join(dc_2021_pro_stats, dc2021_stats2020, by = c("player_id", "player", "position")) %>% 
   select(-c(grades_pass_block1yr, grades_pass_block2yr)) |>
   rowwise() %>% 
   mutate(total_yards = yards1yr + yards2yr,
