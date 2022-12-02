@@ -130,6 +130,7 @@ dc_2021_pro_stats <- pro_2021 %>%
 dc_2021_stats <- inner_join(dc_2021_pro_stats, dc2021_stats2020, by = c("player_id", "player", "position"))
 dc_2021_two <- dc_2021_pro_stats |>
   select(-c(grades_pass_block1yr, grades_pass_block2yr)) |>
+  rowwise() %>% 
   mutate(total_yards = yards1yr + yards2yr,
          total_catch_percent = sum(c(receptions1yr + receptions2yr), na.rm=TRUE) / sum(c(targets1yr + targets2yr),
                                                                                            na.rm = TRUE),
@@ -264,6 +265,7 @@ dc_2020_pro_stats <- pro_2020 %>%
 dc_2020_stats <- inner_join(dc_2020_pro_stats, dc2020_stats2019, by = c("player_id", "player", "position"))
 dc_2020_two <- dc_2020_pro_stats |>
   select(-c(grades_pass_block1yr, grades_pass_block2yr)) |>
+  rowwise() %>% 
   mutate(total_yards = yards1yr + yards2yr,
          total_catch_percent = sum(c(receptions1yr + receptions2yr), na.rm=TRUE) / sum(c(targets1yr + targets2yr),
                                                                                            na.rm = TRUE),
@@ -397,6 +399,7 @@ dc_2019_pro_stats <- pro_2019 %>%
 dc_2019_stats <- inner_join(dc_2019_pro_stats, dc2019_stats2018, by = c("player_id", "player", "position"))
 dc_2019_two <- dc_2019_pro_stats |>
   select(-c(grades_pass_block1yr, grades_pass_block2yr)) |>
+  rowwise() %>% 
   mutate(total_yards = yards1yr + yards2yr,
          total_catch_percent = sum(c(receptions1yr + receptions2yr), na.rm=TRUE) / sum(c(targets1yr + targets2yr),
                                                                                            na.rm = TRUE),
@@ -532,6 +535,7 @@ dc_2018_pro_stats <- pro_2018 %>%
 dc_2018_stats <- inner_join(dc_2018_pro_stats, dc2018_stats2017, by = c("player_id", "player", "position"))
 dc_2018_two <- dc_2018_pro_stats |>
   select(-c(grades_pass_block1yr, grades_pass_block2yr)) |>
+  rowwise() %>% 
   mutate(total_yards = yards1yr + yards2yr,
          total_catch_percent = sum(c(receptions1yr + receptions2yr), na.rm=TRUE) / sum(c(targets1yr + targets2yr),
                                                                                            na.rm = TRUE),
@@ -666,6 +670,7 @@ dc_2017_pro_stats <- pro_2017 %>%
 dc_2017_stats <- inner_join(dc_2017_pro_stats, dc2017_stats2016, by = c("player_id", "player", "position"))
 dc_2017_two <- dc_2017_pro_stats |>
   select(-c(grades_pass_block1yr, grades_pass_block2yr)) |>
+  rowwise() %>% 
   mutate(total_yards = yards1yr + yards2yr,
          total_catch_percent = sum(c(receptions1yr + receptions2yr), na.rm=TRUE) / sum(c(targets1yr + targets2yr),
                                                                                            na.rm = TRUE),
@@ -799,6 +804,7 @@ dc_2016_pro_stats <- pro_2016 %>%
 dc_2016_stats <- inner_join(dc_2016_pro_stats, dc2016_stats2015, by = c("player_id", "player", "position"))
 dc_2016_two <- dc_2016_pro_stats |>
   select(-c(grades_pass_block1yr, grades_pass_block2yr)) |>
+  rowwise() %>% 
   mutate(total_yards = yards1yr + yards2yr,
          total_catch_percent = sum(c(receptions1yr + receptions2yr), na.rm=TRUE) / sum(c(targets1yr + targets2yr),
                                                                                            na.rm = TRUE),
