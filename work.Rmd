@@ -126,8 +126,7 @@ dc2021_stats2020 <- stats_2020 %>%
 pro_2022 <- read_csv("data/2022_pro_stats.csv")
 pro_2021 <- read_csv("data/2021_pro_stats.csv")
 dc_2021_pro_stats <- pro_2021 %>% 
-  inner_join(pro_2022, by = c("player", "position", "player_id"), suffix = c("1yr", "2yr"))
-dc_2021_stats <- inner_join(dc_2021_pro_stats, dc2021_stats2020, by = c("player_id", "player", "position")) %>% 
+  inner_join(pro_2022, by = c("player", "position", "player_id"), suffix = c("1yr", "2yr")) %>% 
   select(-c(grades_pass_block1yr, grades_pass_block2yr)) |>
   rowwise() %>% 
   mutate(total_yards = yards1yr + yards2yr,
@@ -261,8 +260,7 @@ dc2020_stats2019 <- stats_2019 %>%
 pro_2020 <- read_csv("data/2020_pro_stats.csv")
 dc_2020_pro_stats <- pro_2020 %>% 
   inner_join(pro_2021, by = c("player", "position", "player_id"), suffix = c("1yr", "2yr"))
-dc_2020_stats <- inner_join(dc_2020_pro_stats, dc2020_stats2019, by = c("player_id", "player", "position"))
-dc_2020_two <- dc_2020_pro_stats |>
+dc_2020_stats <- inner_join(dc_2020_pro_stats, dc2020_stats2019, by = c("player_id", "player", "position")) %>% 
   select(-c(grades_pass_block1yr, grades_pass_block2yr)) |>
   rowwise() %>% 
   mutate(total_yards = yards1yr + yards2yr,
@@ -362,7 +360,7 @@ dc2019_stats2018 <- stats_2018 %>%
   left_join(stats_2017, by = c("player", "player_id", "position"), 
             suffix = c("_draft", "_pre")) |>
   rowwise() %>% 
- mutate(total_yards = yards_draft + yards_pre,
+  mutate(total_yards = yards_draft + yards_pre,
          total_catch_percent = sum(c(receptions_draft + receptions_pre), na.rm=TRUE) / sum(c(targets_draft + targets_pre),
                                                                                            na.rm = TRUE),
          total_target_percent = sum(c(targets_draft + targets_pre), na.rm = TRUE) / sum(c(routes_draft + routes_pre), 
@@ -395,8 +393,7 @@ dc2019_stats2018 <- stats_2018 %>%
 pro_2019 <- read_csv("data/2019_pro_stats.csv")
 dc_2019_pro_stats <- pro_2019 %>% 
   inner_join(pro_2020, by = c("player", "position", "player_id"), suffix = c("1yr", "2yr"))
-dc_2019_stats <- inner_join(dc_2019_pro_stats, dc2019_stats2018, by = c("player_id", "player", "position"))
-dc_2019_two <- dc_2019_pro_stats |>
+dc_2019_stats <- inner_join(dc_2019_pro_stats, dc2019_stats2018, by = c("player_id", "player", "position")) %>% 
   select(-c(grades_pass_block1yr, grades_pass_block2yr)) |>
   rowwise() %>% 
   mutate(total_yards = yards1yr + yards2yr,
@@ -534,8 +531,7 @@ dc2018_stats2017 <- stats_2017 %>%
 pro_2018 <- read_csv("data/2018_pro_stats.csv")
 dc_2018_pro_stats <- pro_2018 %>% 
   inner_join(pro_2019, by = c("player", "position", "player_id"), suffix = c("1yr", "2yr"))
-dc_2018_stats <- inner_join(dc_2018_pro_stats, dc2018_stats2017, by = c("player_id", "player", "position"))
-dc_2018_two <- dc_2018_pro_stats |>
+dc_2018_stats <- inner_join(dc_2018_pro_stats, dc2018_stats2017, by = c("player_id", "player", "position")) |>
   select(-c(grades_pass_block1yr, grades_pass_block2yr)) |>
   rowwise() %>% 
   mutate(total_yards = yards1yr + yards2yr,
@@ -672,8 +668,7 @@ dc2017_stats2016 <- stats_2016 %>%
 pro_2017 <- read_csv("data/2017_pro_stats.csv")
 dc_2017_pro_stats <- pro_2017 %>% 
   inner_join(pro_2018, by = c("player", "position", "player_id"), suffix = c("1yr", "2yr"))
-dc_2017_stats <- inner_join(dc_2017_pro_stats, dc2017_stats2016, by = c("player_id", "player", "position"))
-dc_2017_two <- dc_2017_pro_stats |>
+dc_2017_stats <- inner_join(dc_2017_pro_stats, dc2017_stats2016, by = c("player_id", "player", "position")) |>
   select(-c(grades_pass_block1yr, grades_pass_block2yr)) |>
   rowwise() %>% 
   mutate(total_yards = yards1yr + yards2yr,
@@ -806,8 +801,7 @@ dc2016_stats2015 <- stats_2015 %>%
 pro_2016 <- read_csv("data/2016_pro_stats.csv")
 dc_2016_pro_stats <- pro_2016 %>% 
   inner_join(pro_2017, by = c("player", "position", "player_id"), suffix = c("1yr", "2yr"))
-dc_2016_stats <- inner_join(dc_2016_pro_stats, dc2016_stats2015, by = c("player_id", "player", "position"))
-dc_2016_two <- dc_2016_pro_stats |>
+dc_2016_stats <- inner_join(dc_2016_pro_stats, dc2016_stats2015, by = c("player_id", "player", "position")) |>
   select(-c(grades_pass_block1yr, grades_pass_block2yr)) |>
   rowwise() %>% 
   mutate(total_yards = yards1yr + yards2yr,
@@ -913,9 +907,8 @@ long_data <- long_data %>%
 ```
 
 ```{r}
-joined_data <- inner_join(long_data, combine_stats, 
-                          by = c("player" = "Name"))
-joined_data <- joined_data %>%
+full_data <- inner_join(long_data, combine_stats, 
+                          by = c("player" = "Name")) %>%
   mutate(Power5 = if_else(
     team_name_draft == "PITTSBURGH" |
       team_name_draft == "MICH STATE" |
@@ -984,9 +977,12 @@ joined_data <- joined_data %>%
       team_name_draft == "OREGON ST" |
       team_name_draft == "GA TECH",
     1, 0
-  ))
-joined_data <- joined_data %>% 
-  distinct(player_id, .keep_all = TRUE)
+  )) %>% 
+  distinct(player_id, .keep_all = TRUE) |>
+  select(-c(Shuttle, Cone))
+full_data$Arm[is.na(full_data$Arm)] <- mean(full_data$Arm,na.rm=TRUE)
+full_data$X40.Yard[is.na(full_data$X40.Yard)] <- mean(full_data$X40.Yard,na.rm=TRUE)
+full_data$Hand[is.na(full_data$Hand)] <- mean(full_data$Hand,na.rm=TRUE)
 ```
 
 ```{r}
