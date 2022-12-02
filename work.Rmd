@@ -994,6 +994,10 @@ ggplot(joined_data, aes(x = X40.Yard, y = total_yards_per_reception)) +
   geom_point()
 ```
 
+```{r}
+all_college_data = rbind(dc2016_stats2015, dc2017_stats2016, dc2018_stats2017, dc2019_stats2018, dc2020_stats2019, dc2021_stats2020)
+combine_college_data = inner_join(all_college_data, combine_stats, by = c("player" = "Name")) 
+```
 
 
 
