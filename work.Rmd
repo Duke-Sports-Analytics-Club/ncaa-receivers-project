@@ -999,6 +999,19 @@ all_college_data = rbind(dc2016_stats2015, dc2017_stats2016, dc2018_stats2017, d
 combine_college_data = inner_join(all_college_data, combine_stats, by = c("player" = "Name")) 
 ```
 
+```{r}
+full_data$playedA_Yr <- with(full_data, ifelse(player_game_count1yr > 0 | player_game_count2yr > 0, 1, 0))
+full_data$scoredTouchDown <- with(full_data, ifelse(touchdowns1yr > 0 | touchdowns2yr > 0, 1, 0))
+full_data$decentStarter <- with(full_data, ifelse(yards1yr > 100 | yards2yr > 100, 1, 0))
+full_data$greatStarter <- with(full_data, ifelse(yards1yr > 500 | yards2yr > 500, 1, 0))
+full_data$eliteStarter <- with(full_data, ifelse(yards1yr > 1000 | yards2yr > 1000, 1, 0))
+
+```
+
+```{r}
+full_data
+```
+
 
 
 
