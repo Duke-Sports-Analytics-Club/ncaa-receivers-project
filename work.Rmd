@@ -8,6 +8,8 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+### Load Packages
+
 ```{r load packages, warning = FALSE, message=FALSE}
 library(tidyverse)
 library(tidyr)
@@ -19,6 +21,8 @@ library(nflfastR)
 library(nflplotR)
 library(ggrepel)
 ```
+
+### Load PFF Data
 
 ```{r load PFF data}
 stats_2014 <- read.csv("data_pff_receiver/2014_receiver_pff_data.csv") %>% 
@@ -65,6 +69,8 @@ stats_2020 <- read.csv("data_pff_receiver/2020_receiver_pff_data.csv") %>%
             slot_rate, slot_snaps, wide_rate, wide_snaps))
 combine_stats <- read.csv("combinedStats.csv")
 ```
+
+### Stats by Draft Classes
 
 ```{r players by draft class}
 #2020 Stats of 2021 DC
@@ -898,13 +904,17 @@ dc2015_stats2014 <- stats_2014 %>%
   filter(player %in% dc_2015 | player %in% dc_2015_2 & position == "WR") 
 ```
 
+### Combine College Stats
+
 ```{r}
 long_data <- rbind(dc_2016_stats, dc_2017_stats, dc_2018_stats, 
-                   dc_2019_stats, dc_2020_stats, dc_2021_stats)
+                   dc_2019_stats, dc_2020_stats) #, dc_2021_stats)
 long_data <- long_data %>% 
   as.data.frame() %>% 
   filter(position == "WR")
 ```
+
+### Pro Stats
 
 ```{r}
 full_data <- inner_join(long_data, combine_stats, 
@@ -986,12 +996,12 @@ full_data$Hand[is.na(full_data$Hand)] <- mean(full_data$Hand,na.rm=TRUE)
 ```
 
 ```{r}
-ggplot(joined_data, aes(x = yprr_pre, y = yprr_draft)) +
-  geom_point()
-ggplot(joined_data, aes(x = total_yards, y = grades_offense)) +
-  geom_point()
-ggplot(joined_data, aes(x = X40.Yard, y = total_yards_per_reception)) +
-  geom_point()
+#ggplot(joined_data, aes(x = yprr_pre, y = yprr_draft)) +
+  #geom_point()
+#ggplot(joined_data, aes(x = total_yards, y = grades_offense)) +
+  #geom_point()
+#ggplot(joined_data, aes(x = X40.Yard, y = total_yards_per_reception)) +
+  #geom_point()
 ```
 
 ```{r}
@@ -999,18 +1009,35 @@ all_college_data = rbind(dc2016_stats2015, dc2017_stats2016, dc2018_stats2017, d
 combine_college_data = inner_join(all_college_data, combine_stats, by = c("player" = "Name")) 
 ```
 
+### Model Response Variables
+
 ```{r}
 full_data$playedA_Yr <- with(full_data, ifelse(player_game_count1yr > 0 | player_game_count2yr > 0, 1, 0))
 full_data$scoredTouchDown <- with(full_data, ifelse(touchdowns1yr > 0 | touchdowns2yr > 0, 1, 0))
 full_data$decentStarter <- with(full_data, ifelse(yards1yr > 100 | yards2yr > 100, 1, 0))
 full_data$greatStarter <- with(full_data, ifelse(yards1yr > 500 | yards2yr > 500, 1, 0))
 full_data$eliteStarter <- with(full_data, ifelse(yards1yr > 1000 | yards2yr > 1000, 1, 0))
-
 ```
 
 ```{r}
-full_data
+full_data %>% 
+  head()
 ```
+
+## Predicting NFL Success for NFL Players
+
+```{r}
+full_data %>% 
+  head()
+```
+
+## Predicting NFL Success for Players at Combine
+
+
+
+## Predicting NFL Success for Players in College
+
+
 
 
 
