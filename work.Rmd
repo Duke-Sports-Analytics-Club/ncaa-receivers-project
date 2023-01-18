@@ -1024,6 +1024,12 @@ full_data %>%
   head()
 ```
 
+```{r}
+response_data <- full_data %>% 
+  select(player_id, )
+```
+
+
 ## Predicting NFL Success for NFL Players
 
 ```{r}
@@ -1033,9 +1039,17 @@ full_data %>%
 
 ## Predicting NFL Success for Players at Combine
 
-
+```{r}
+combine_college_data %>% 
+  head()
+```
 
 ## Predicting NFL Success for Players in College
+
+```{r}
+all_college_data %>% 
+  head()
+```
 
 
 
