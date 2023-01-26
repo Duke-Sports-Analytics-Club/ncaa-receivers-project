@@ -955,12 +955,11 @@ full_data$scoredTouchDown <- with(full_data, ifelse(touchdowns1yr > 0 | touchdow
 full_data$decentStarter <- with(full_data, ifelse(yards1yr > 100 | yards2yr > 100, 1, 0))
 full_data$greatStarter <- with(full_data, ifelse(yards1yr > 500 | yards2yr > 500, 1, 0))
 full_data$eliteStarter <- with(full_data, ifelse(yards1yr > 1000 | yards2yr > 1000 | (yards1yr + yards1yr) > 1500, 1, 0))
-full_data$contributor <- with(full_data, ifelse(pass_plays1yr > 200 | pass_plays1yr > 200, 1, 0))
 ```
 
 ```{r}
 response_data <- full_data %>% 
-  select(player_id, playedA_Yr, scoredTouchDown, decentStarter, greatStarter, eliteStarter, contributor)
+  select(player_id, playedA_Yr, scoredTouchDown, decentStarter, greatStarter, eliteStarter)
 ```
 
 ## Predicting NFL Success for NFL Players
@@ -971,6 +970,19 @@ response_data <- full_data %>%
 full_data %>% 
   head()
 ```
+
+```{r good starter model}
+good_starter_nfl <- full_data %>% 
+  select(-c(player_id, player, position, team_name_draft, scoredTouchDown, playedA_Yr, decentStarter, eliteStarter))
+```
+
+```{r elite starter}
+elite_starter_nfl <- full_data %>% 
+  select(-c(player_id, player, position, team_name_draft, scoredTouchDown, playedA_Yr, decentStarter, greatStarter))
+```
+
+
+
 
 ## Predicting NFL Success for Players at Combine
 
@@ -990,9 +1002,25 @@ combine_data %>%
   head()
 ```
 
+```{r snap model}
+snap_model_com <- combine_data %>% 
+  select(-c(player_id, player, position, team_name_draft, scoredTouchDown, decentStarter, greatStarter, eliteStarter))
+```
+
+```{r decent starter model}
+decent_starter_com <- combine_data %>% 
+  select(-c(player_id, player, position, team_name_draft, scoredTouchDown, playedA_Yr, greatStarter, eliteStarter))
+```
+
+```{r great starter}
+great_starter_com <- combine_data %>% 
+  select(-c(player_id, player, position, team_name_draft, scoredTouchDown, playedA_Yr, decentStarter, eliteStarter))
+```
+
+
 ## Predicting NFL Success for Players in College
 
-*more interested in modeling great and good starter, played a year, contributor 
+*more interested in modeling great and decent starter, played a year, contributor 
 
 ```{r}
 college_data <- all_college_data %>% 
@@ -1008,3 +1036,17 @@ college_data %>%
   head()
 ```
 
+```{r snap model}
+snap_model_coll <- college_data %>% 
+  select(-c(player_id, player, position, team_name_draft, scoredTouchDown, decentStarter, greatStarter, eliteStarter))
+```
+
+```{r decent starter model}
+decent_starter_coll <- college_data %>% 
+  select(-c(player_id, player, position, team_name_draft, scoredTouchDown, playedA_Yr, greatStarter, eliteStarter))
+```
+
+```{r great starter}
+great_starter_coll <- college_data %>% 
+  select(-c(player_id, player, position, team_name_draft, scoredTouchDown, playedA_Yr, decentStarter, eliteStarter))
+```
