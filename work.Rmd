@@ -998,22 +998,29 @@ combine_data <- combine_college_data %>%
          decentStarter = coalesce(decentStarter, 0),
          greatStarter = coalesce(greatStarter, 0),
          eliteStarter = coalesce(eliteStarter, 0))
-combine_data %>% 
-  head()
+
+combine_cleaned <- combine_data |>
+  select(-c(Shuttle, Cone, Bench))
+
+combine_cleaned$X40.Yard[is.na(combine_cleaned$X40.Yard)]<-mean(combine_cleaned$X40.Yard,na.rm=TRUE)
+combine_cleaned$Arm[is.na(combine_cleaned$Arm)]<-mean(combine_cleaned$Arm, na.rm=TRUE)
+combine_cleaned$Broad[is.na(combine_cleaned$Broad)]<-mean(combine_cleaned$Broad, na.rm=TRUE)
+combine_cleaned$Vertical[is.na(combine_cleaned$Vertical)]<-mean(combine_cleaned$Vertical, na.rm=TRUE)
+combine_cleaned$Hand[is.na(combine_cleaned$Hand)]<-mean(combine_cleaned$Hand, na.rm=TRUE)
 ```
 
 ```{r snap model}
-snap_model_com <- combine_data %>% 
+snap_model_com <- combine_cleaned %>% 
   select(-c(player_id, player, position, team_name_draft, scoredTouchDown, decentStarter, greatStarter, eliteStarter))
 ```
 
 ```{r decent starter model}
-decent_starter_com <- combine_data %>% 
+decent_starter_com <- combine_cleaned %>% 
   select(-c(player_id, player, position, team_name_draft, scoredTouchDown, playedA_Yr, greatStarter, eliteStarter))
 ```
 
 ```{r great starter}
-great_starter_com <- combine_data %>% 
+great_starter_com <- combine_cleaned %>% 
   select(-c(player_id, player, position, team_name_draft, scoredTouchDown, playedA_Yr, decentStarter, eliteStarter))
 ```
 
@@ -1049,16 +1056,5 @@ decent_starter_coll <- college_data %>%
 ```{r great starter}
 great_starter_coll <- college_data %>% 
   select(-c(player_id, player, position, team_name_draft, scoredTouchDown, playedA_Yr, decentStarter, eliteStarter))
-```
-
-```{r combine clean na}
-combine_cleaned <- combine_data |>
-  select(-c(Shuttle, Cone, Bench))
-
-combine_cleaned$X40.Yard[is.na(combine_cleaned$X40.Yard)]<-mean(combine_cleaned$X40.Yard,na.rm=TRUE)
-combine_cleaned$Arm[is.na(combine_cleaned$Arm)]<-mean(combine_cleaned$Arm, na.rm=TRUE)
-combine_cleaned$Broad[is.na(combine_cleaned$Broad)]<-mean(combine_cleaned$Broad, na.rm=TRUE)
-combine_cleaned$Vertical[is.na(combine_cleaned$Vertical)]<-mean(combine_cleaned$Vertical, na.rm=TRUE)
-combine_cleaned$Hand[is.na(combine_cleaned$Hand)]<-mean(combine_cleaned$Hand, na.rm=TRUE)
 ```
 
