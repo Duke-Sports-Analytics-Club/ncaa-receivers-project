@@ -20,6 +20,7 @@ library(knitr)
 library(nflfastR)
 library(nflplotR)
 library(ggrepel)
+library(caret)
 ```
 
 ### Load PFF Data
@@ -940,8 +941,8 @@ full_data$Hand[is.na(full_data$Hand)] <- mean(full_data$Hand,na.rm=TRUE)
 ```{r}
 all_college_data = rbind(dc2016_stats2015, dc2017_stats2016, dc2018_stats2017, dc2019_stats2018, dc2020_stats2019, dc2021_stats2020) %>%
   drop_na(team_name_pre) %>% 
-  mutate(Power5_draft = if_else(team_name_draft %in% power5, 1, 0),
-         Power5_pre = if_else(team_name_pre %in% power5, 1, 0))
+  mutate(Power5_draft = as.factor(if_else(team_name_draft %in% power5, 1, 0)),
+         Power5_pre = as.factor(if_else(team_name_pre %in% power5, 1, 0)))
 combine_college_data = inner_join(all_college_data, combine_stats, by = c("player" = "Name"))
 ```
 
@@ -993,11 +994,11 @@ combine_data <- combine_college_data %>%
   merge(response_data, by = 'player_id', all.x = TRUE) %>% 
   distinct(player_id, .keep_all = TRUE) %>% 
   drop_na(grades_offense_pre) %>% 
-  mutate(playedA_Yr = coalesce(playedA_Yr, 0),
-         scoredTouchDown = coalesce(scoredTouchDown, 0),
-         decentStarter = coalesce(decentStarter, 0),
-         greatStarter = coalesce(greatStarter, 0),
-         eliteStarter = coalesce(eliteStarter, 0))
+  mutate(playedA_Yr = as.factor(coalesce(playedA_Yr, 0)),
+         scoredTouchDown = as.factor(coalesce(scoredTouchDown, 0)),
+         decentStarter = as.factor(coalesce(decentStarter, 0)),
+         greatStarter = as.factor(coalesce(greatStarter, 0)),
+         eliteStarter = as.factor(coalesce(eliteStarter, 0)))
 
 combine_cleaned <- combine_data |>
   select(-c(Shuttle, Cone, Bench))
@@ -1034,27 +1035,49 @@ college_data <- all_college_data %>%
   merge(response_data, by = 'player_id', all.x = TRUE) %>% 
   distinct(player_id, .keep_all = TRUE) %>% 
   drop_na(grades_offense_pre) %>% 
-  mutate(playedA_Yr = coalesce(playedA_Yr, 0),
-         scoredTouchDown = coalesce(scoredTouchDown, 0),
-         decentStarter = coalesce(decentStarter, 0),
-         greatStarter = coalesce(greatStarter, 0),
-         eliteStarter = coalesce(eliteStarter, 0))
+  mutate(playedA_Yr = as.factor(coalesce(playedA_Yr, 0)),
+         scoredTouchDown = as.factor(coalesce(scoredTouchDown, 0)),
+         decentStarter = as.factor(coalesce(decentStarter, 0)),
+         greatStarter = as.factor(coalesce(greatStarter, 0)),
+         eliteStarter = as.factor(coalesce(eliteStarter, 0)))
 college_data %>% 
   head()
 ```
 
+
 ```{r snap model}
-snap_model_coll <- college_data %>% 
-  select(-c(player_id, player, position, team_name_draft, scoredTouchDown, decentStarter, greatStarter, eliteStarter))
+snap_model_coll_df <- college_data %>% 
+  select(-c(player_id, player, position, team_name_draft, scoredTouchDown, decentStarter, greatStarter, eliteStarter, team_name_draft, team_name_pre))
 ```
 
 ```{r decent starter model}
-decent_starter_coll <- college_data %>% 
-  select(-c(player_id, player, position, team_name_draft, scoredTouchDown, playedA_Yr, greatStarter, eliteStarter))
+decent_starter_coll_df <- college_data %>% 
+  select(-c(player_id, player, position, team_name_draft, scoredTouchDown, playedA_Yr, greatStarter, eliteStarter, team_name_draft, team_name_pre))
 ```
 
 ```{r great starter}
-great_starter_coll <- college_data %>% 
-  select(-c(player_id, player, position, team_name_draft, scoredTouchDown, playedA_Yr, decentStarter, eliteStarter))
+great_starter_coll_df <- college_data %>% 
+  select(-c(player_id, player, position, team_name_draft, scoredTouchDown, playedA_Yr, decentStarter, eliteStarter, team_name_draft, team_name_pre))
 ```
+
+```{r}
+set.seed(1)
+index<-createDataPartition(snap_model_coll_df$playedA_Yr,p=0.7,list=FALSE)
+train<-snap_model_coll_df[index,]
+test<-snap_model_coll_df[-index,]
+snap_model_coll  <- glm(playedA_Yr~., data=train, family = "binomial")
+summary(snap_model_coll)
+```
+
+```{r}
+snap_model_coll_df2 <- snap_model_coll_df %>% 
+  select(total_yards, total_catch_percent, total_target_percent, total_route_percent, total_drop_percent, total_yprr, total_first_downs, total_yards_per_reception, total_yards_after_catch_per_reception, total_player_game_count, total_touchdowns, total_yards_per_game, total_targets_per_game, total_targeted_qb_rating, games_draft, grades_hands_drop, grades_hands_fumble, grades_offense, grades_pass_route, Power5_draft, Power5_pre, playedA_Yr)
+index<-createDataPartition(snap_model_coll_df2$playedA_Yr,p=0.7,list=FALSE)
+train<-snap_model_coll_df2[index,]
+test<-snap_model_coll_df2[-index,]
+snap_model_coll_2  <- glm(playedA_Yr~., data=train, family = "binomial")
+summary(snap_model_coll_2)
+```
+
+
 
