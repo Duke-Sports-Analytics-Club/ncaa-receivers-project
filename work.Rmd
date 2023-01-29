@@ -1050,3 +1050,15 @@ decent_starter_coll <- college_data %>%
 great_starter_coll <- college_data %>% 
   select(-c(player_id, player, position, team_name_draft, scoredTouchDown, playedA_Yr, decentStarter, eliteStarter))
 ```
+
+```{r combine clean na}
+combine_cleaned <- combine_data |>
+  select(-c(Shuttle, Cone, Bench))
+
+combine_cleaned$X40.Yard[is.na(combine_cleaned$X40.Yard)]<-mean(combine_cleaned$X40.Yard,na.rm=TRUE)
+combine_cleaned$Arm[is.na(combine_cleaned$Arm)]<-mean(combine_cleaned$Arm, na.rm=TRUE)
+combine_cleaned$Broad[is.na(combine_cleaned$Broad)]<-mean(combine_cleaned$Broad, na.rm=TRUE)
+combine_cleaned$Vertical[is.na(combine_cleaned$Vertical)]<-mean(combine_cleaned$Vertical, na.rm=TRUE)
+combine_cleaned$Hand[is.na(combine_cleaned$Hand)]<-mean(combine_cleaned$Hand, na.rm=TRUE)
+```
+
