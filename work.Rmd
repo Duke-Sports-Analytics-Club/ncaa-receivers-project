@@ -1011,6 +1011,7 @@ combine_cleaned$Hand[is.na(combine_cleaned$Hand)]<-mean(combine_cleaned$Hand, na
 ```
 
 ```{r snap df}
+install.packages("caret")
 snap_model_com <- combine_cleaned %>% 
   select(-c(player_id, player, position, team_name_draft, scoredTouchDown, decentStarter, greatStarter, eliteStarter, Power5_pre, Team, team_name_pre, games_draft, Power5_pre))
 ```
@@ -1022,17 +1023,27 @@ train<-snap_model_com[index,]
 test<-snap_model_com[-index,]
 snap_model_com_res  <- glm(playedA_Yr~., data=train, family = "binomial")
 summary(snap_model_com_res)
+pred <- predict(snap_model_com_res, test, type = "response")
+pred <- as.integer(pred>0.5)
+conf_snap_1 <- confusionMatrix(as.factor(pred),test$playedA_Yr)
+conf_snap_1
 ```
 
 ```{r snap model 2}
 set.seed(1)
 snap_model_com2 <- snap_model_com %>% 
-  select(total_yards, total_catch_percent, total_target_percent, total_route_percent, total_drop_percent, total_yprr, total_first_downs, total_yards_per_reception, total_yards_after_catch_per_reception, total_player_game_count, total_touchdowns, total_yards_per_game, total_targets_per_game, total_targeted_qb_rating, grades_hands_drop, grades_hands_fumble, grades_offense, grades_pass_route, Power5_draft, playedA_Yr)
+  select(total_yards, total_catch_percent, total_target_percent, total_route_percent, total_drop_percent, total_yprr, total_first_downs, total_yards_per_reception, total_yards_after_catch_per_reception, total_player_game_count, total_touchdowns, total_yards_per_game, total_targets_per_game, total_targeted_qb_rating, grades_hands_drop, grades_hands_fumble, grades_offense, grades_pass_route, Power5_draft, playedA_Yr, Height, Weight, Arm, Hand, X40.Yard, Broad, Vertical)
 index<-createDataPartition(snap_model_com2$playedA_Yr,p=0.7,list=FALSE)
 train<-snap_model_com2[index,]
 test<-snap_model_com2[-index,]
 snap_model_com2_res <- glm(playedA_Yr~., data=train, family = "binomial")
 summary(snap_model_com2_res)
+
+pred_2 <- predict(snap_model_com2_res, test, type = "response")
+pred_2 <- as.integer(pred_2>0.5)
+conf_snap_2 <- confusionMatrix(as.factor(pred_2),test$playedA_Yr)
+conf_snap_2
+
 ```
 
 
@@ -1048,17 +1059,28 @@ train<-decent_starter_com[index,]
 test<-decent_starter_com[-index,]
 decent_starter_com_res  <- glm(decentStarter~., data=train, family = "binomial")
 summary(decent_starter_com_res)
+
+pred_dec <- predict(decent_starter_com_res, test, type = "response")
+pred_dec <- as.integer(pred_dec>0.5)
+conf_dec <- confusionMatrix(as.factor(pred_dec), test$decentStarter)
+conf_dec
 ```
 
 ```{r decent starter model 2}
 set.seed(2)
 decent_starter_com2 <- decent_starter_com %>% 
-  select(total_yards, total_catch_percent, total_target_percent, total_route_percent, total_drop_percent, total_yprr, total_first_downs, total_yards_per_reception, total_yards_after_catch_per_reception, total_player_game_count, total_touchdowns, total_yards_per_game, total_targets_per_game, total_targeted_qb_rating, grades_hands_drop, grades_hands_fumble, grades_offense, grades_pass_route, Power5_draft, decentStarter)
+  select(total_yards, total_catch_percent, total_target_percent, total_route_percent, total_drop_percent, total_yprr, total_first_downs, total_yards_per_reception, total_yards_after_catch_per_reception, total_player_game_count, total_touchdowns, total_yards_per_game, total_targets_per_game, total_targeted_qb_rating, grades_hands_drop, grades_hands_fumble, grades_offense, grades_pass_route, Power5_draft, decentStarter, Height, Weight, Arm, Hand, X40.Yard, Broad, Vertical)
 index<-createDataPartition(decent_starter_com2$decentStarter,p=0.7,list=FALSE)
 train<-decent_starter_com2[index,]
 test<-decent_starter_com2[-index,]
 decent_starter_com2_res <- glm(decentStarter~., data=train, family = "binomial")
 summary(decent_starter_com2_res)
+
+pred_dec_2 <- predict(decent_starter_com2_res, test, type = "response")
+pred_dec_2 <- as.integer(pred_dec_2>0.5)
+conf_dec_2 <- confusionMatrix(as.factor(pred_dec_2),test$decentStarter)
+conf_dec_2
+
 ```
 
 
@@ -1074,17 +1096,28 @@ train<-great_starter_com[index,]
 test<-great_starter_com[-index,]
 great_starter_com_res  <- glm(greatStarter~., data=train, family = "binomial")
 summary(great_starter_com_res)
+
+pred_great <- predict(great_starter_com_res, test, type = "response")
+pred_great <- as.integer(pred_great>0.5)
+conf_great <- confusionMatrix(as.factor(pred_great),test$greatStarter)
+conf_great
 ```
 
 ```{r great starter model 2}
 set.seed(1)
 great_starter_com2 <- great_starter_com %>% 
-  select(total_yards, total_catch_percent, total_target_percent, total_route_percent, total_drop_percent, total_yprr, total_first_downs, total_yards_per_reception, total_yards_after_catch_per_reception, total_player_game_count, total_touchdowns, total_yards_per_game, total_targets_per_game, total_targeted_qb_rating, grades_hands_drop, grades_hands_fumble, grades_offense, grades_pass_route, Power5_draft, greatStarter)
+  select(total_yards, total_catch_percent, total_target_percent, total_route_percent, total_drop_percent, total_yprr, total_first_downs, total_yards_per_reception, total_yards_after_catch_per_reception, total_player_game_count, total_touchdowns, total_yards_per_game, total_targets_per_game, total_targeted_qb_rating, grades_hands_drop, grades_hands_fumble, grades_offense, grades_pass_route, Power5_draft, greatStarter, Height, Weight, Arm, Hand, X40.Yard, Broad, Vertical)
 index<-createDataPartition(great_starter_com2$greatStarter,p=0.7,list=FALSE)
 train<-great_starter_com2[index,]
 test<-great_starter_com2[-index,]
 great_starter_com2_res <- glm(greatStarter~., data=train, family = "binomial")
 summary(great_starter_com2_res)
+
+pred_great_2 <- predict(great_starter_com2_res, test, type = "response")
+pred_great_2 <- as.integer(pred_great_2>0.5)
+conf_great_2 <- confusionMatrix(as.factor(pred_great_2),test$greatStarter)
+conf_great_2
+
 ```
 
 ## Predicting NFL Success for Players in College
@@ -1196,6 +1229,8 @@ train<-great_starter_coll_df2[index,]
 test<-great_starter_coll_df2[-index,]
 great_starter_coll_df2  <- glm(greatStarter~., data=train, family = "binomial")
 summary(great_starter_coll_df2)
+
+
 ```
 
 
