@@ -1012,7 +1012,7 @@ combine_cleaned$Hand[is.na(combine_cleaned$Hand)]<-mean(combine_cleaned$Hand, na
 
 ```{r snap df}
 snap_model_com <- combine_cleaned %>% 
-  select(-c(player_id, player, position, team_name_draft, scoredTouchDown, decentStarter, greatStarter, eliteStarter))
+  select(-c(player_id, player, position, team_name_draft, scoredTouchDown, decentStarter, greatStarter, eliteStarter, Power5_pre, Team, team_name_pre, games_draft))
 ```
 
 ```{r snap model 1}
@@ -1026,7 +1026,7 @@ summary(snap_model_com_res)
 
 ```{r snap model 2}
 snap_model_com2 <- snap_model_com %>% 
-  select(total_yards, total_catch_percent, total_target_percent, total_route_percent, total_drop_percent, total_yprr, total_first_downs, total_yards_per_reception, total_yards_after_catch_per_reception, total_player_game_count, total_touchdowns, total_yards_per_game, total_targets_per_game, total_targeted_qb_rating, games_draft, grades_hands_drop, grades_hands_fumble, grades_offense, grades_pass_route, Power5_draft, Power5_pre, playedA_Yr)
+  select(total_yards, total_catch_percent, total_target_percent, total_route_percent, total_drop_percent, total_yprr, total_first_downs, total_yards_per_reception, total_yards_after_catch_per_reception, total_player_game_count, total_touchdowns, total_yards_per_game, total_targets_per_game, total_targeted_qb_rating, grades_hands_drop, grades_hands_fumble, grades_offense, grades_pass_route, Power5_draft, playedA_Yr)
 index<-createDataPartition(snap_model_com2$playedA_Yr,p=0.7,list=FALSE)
 train<-snap_model_com2[index,]
 test<-snap_model_com2[-index,]
@@ -1037,7 +1037,7 @@ summary(snap_model_com2_res)
 
 ```{r decent starter df}
 decent_starter_com <- combine_cleaned %>% 
-  select(-c(player_id, player, position, team_name_draft, scoredTouchDown, playedA_Yr, greatStarter, eliteStarter))
+  select(-c(player_id, player, position, team_name_draft, scoredTouchDown, playedA_Yr, greatStarter, eliteStarter, Team, team_name_pre, Power5_pre, games_draft))
 ```
 
 ```{r decent starter model 1}
@@ -1051,7 +1051,7 @@ summary(decent_starter_com_res)
 
 ```{r decent starter model 2}
 decent_starter_com2 <- decent_starter_com %>% 
-  select(total_yards, total_catch_percent, total_target_percent, total_route_percent, total_drop_percent, total_yprr, total_first_downs, total_yards_per_reception, total_yards_after_catch_per_reception, total_player_game_count, total_touchdowns, total_yards_per_game, total_targets_per_game, total_targeted_qb_rating, games_draft, grades_hands_drop, grades_hands_fumble, grades_offense, grades_pass_route, Power5_draft, Power5_pre, decentStarter)
+  select(total_yards, total_catch_percent, total_target_percent, total_route_percent, total_drop_percent, total_yprr, total_first_downs, total_yards_per_reception, total_yards_after_catch_per_reception, total_player_game_count, total_touchdowns, total_yards_per_game, total_targets_per_game, total_targeted_qb_rating, grades_hands_drop, grades_hands_fumble, grades_offense, grades_pass_route, Power5_draft, decentStarter)
 index<-createDataPartition(decent_starter_com2$decentStarter,p=0.7,list=FALSE)
 train<-decent_starter_com2[index,]
 test<-decent_starter_com2[-index,]
@@ -1062,7 +1062,7 @@ summary(decent_starter_com2_res)
 
 ```{r great starter df}
 great_starter_com <- combine_cleaned %>% 
-  select(-c(player_id, player, position, team_name_draft, scoredTouchDown, playedA_Yr, decentStarter, eliteStarter))
+  select(-c(player_id, player, position, team_name_draft, scoredTouchDown, playedA_Yr, decentStarter, eliteStarter, Team, team_name_pre, Power5_pre))
 ```
 
 ```{r great starter model 1}
@@ -1076,7 +1076,7 @@ summary(great_starter_com_res)
 
 ```{r great starter model 2}
 great_starter_com2 <- great_starter_com %>% 
-  select(total_yards, total_catch_percent, total_target_percent, total_route_percent, total_drop_percent, total_yprr, total_first_downs, total_yards_per_reception, total_yards_after_catch_per_reception, total_player_game_count, total_touchdowns, total_yards_per_game, total_targets_per_game, total_targeted_qb_rating, games_draft, grades_hands_drop, grades_hands_fumble, grades_offense, grades_pass_route, Power5_draft, Power5_pre, greatStarter)
+  select(total_yards, total_catch_percent, total_target_percent, total_route_percent, total_drop_percent, total_yprr, total_first_downs, total_yards_per_reception, total_yards_after_catch_per_reception, total_player_game_count, total_touchdowns, total_yards_per_game, total_targets_per_game, total_targeted_qb_rating, grades_hands_drop, grades_hands_fumble, grades_offense, grades_pass_route, Power5_draft, greatStarter)
 index<-createDataPartition(great_starter_com2$greatStarter,p=0.7,list=FALSE)
 train<-great_starter_com2[index,]
 test<-great_starter_com2[-index,]
@@ -1116,7 +1116,7 @@ decent_starter_coll_df <- college_data %>%
 
 ```{r great starter}
 great_starter_coll_df <- college_data %>% 
-  select(-c(player_id, player, position, team_name_draft, scoredTouchDown, playedA_Yr, decentStarter, eliteStarter, team_name_draft, team_name_pre))
+  select(-c(player_id, player, position, team_name_draft, scoredTouchDown, playedA_Yr, decentStarter, eliteStarter, team_name_pre))
 ```
 
 ```{r}
@@ -1130,7 +1130,7 @@ summary(snap_model_coll)
 
 ```{r}
 snap_model_coll_df2 <- snap_model_coll_df %>% 
-  select(total_yards, total_catch_percent, total_target_percent, total_route_percent, total_drop_percent, total_yprr, total_first_downs, total_yards_per_reception, total_yards_after_catch_per_reception, total_player_game_count, total_touchdowns, total_yards_per_game, total_targets_per_game, total_targeted_qb_rating, games_draft, grades_hands_drop, grades_hands_fumble, grades_offense, grades_pass_route, Power5_draft, Power5_pre, playedA_Yr)
+  select(total_yards, total_catch_percent, total_target_percent, total_route_percent, total_drop_percent, total_yprr, total_first_downs, total_yards_per_reception, total_yards_after_catch_per_reception, total_player_game_count, total_touchdowns, total_yards_per_game, total_targets_per_game, total_targeted_qb_rating, games_draft, grades_hands_drop, grades_hands_fumble, grades_offense, grades_pass_route, Power5_draft, playedA_Yr)
 index<-createDataPartition(snap_model_coll_df2$playedA_Yr,p=0.7,list=FALSE)
 train<-snap_model_coll_df2[index,]
 test<-snap_model_coll_df2[-index,]
