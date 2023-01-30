@@ -1084,10 +1084,9 @@ great_starter_com2_res <- glm(greatStarter~., data=train, family = "binomial")
 summary(great_starter_com2_res)
 ```
 
-
 ## Predicting NFL Success for Players in College
 
-*more interested in modeling great and decent starter, played a year, contributor 
+*more interested in modeling great and decent starter, played a year, contributor*
 
 ```{r}
 college_data <- all_college_data %>% 
@@ -1104,22 +1103,22 @@ college_data %>%
 ```
 
 
-```{r snap model}
+```{r snap data}
 snap_model_coll_df <- college_data %>% 
-  select(-c(player_id, player, position, team_name_draft, scoredTouchDown, decentStarter, greatStarter, eliteStarter, team_name_draft, team_name_pre))
+  select(-c(player_id, player, position, team_name_draft, scoredTouchDown, decentStarter, greatStarter, eliteStarter, team_name_draft, team_name_pre, Power5_pre))
 ```
 
-```{r decent starter model}
+```{r decent starter data}
 decent_starter_coll_df <- college_data %>% 
-  select(-c(player_id, player, position, team_name_draft, scoredTouchDown, playedA_Yr, greatStarter, eliteStarter, team_name_draft, team_name_pre))
+  select(-c(player_id, player, position, team_name_draft, scoredTouchDown, playedA_Yr, greatStarter, eliteStarter, team_name_draft, team_name_pre, Power5_pre))
 ```
 
-```{r great starter}
+```{r great starter data}
 great_starter_coll_df <- college_data %>% 
-  select(-c(player_id, player, position, team_name_draft, scoredTouchDown, playedA_Yr, decentStarter, eliteStarter, team_name_pre))
+  select(-c(player_id, player, position, team_name_draft, scoredTouchDown, playedA_Yr, decentStarter, eliteStarter, team_name_draft, team_name_pre, Power5_pre))
 ```
 
-```{r}
+```{r general model}
 set.seed(1)
 index<-createDataPartition(snap_model_coll_df$playedA_Yr,p=0.7,list=FALSE)
 train<-snap_model_coll_df[index,]
@@ -1128,7 +1127,10 @@ snap_model_coll  <- glm(playedA_Yr~., data=train, family = "binomial")
 summary(snap_model_coll)
 ```
 
-```{r}
+**For each model from 1 to 2 I removed grades-hands-fumble, total_yards_per_reception, total_first_downs, total_route_percent, grades_pass_route**
+
+```{r snap model 1}
+set.seed(12321)
 snap_model_coll_df2 <- snap_model_coll_df %>% 
   select(total_yards, total_catch_percent, total_target_percent, total_route_percent, total_drop_percent, total_yprr, total_first_downs, total_yards_per_reception, total_yards_after_catch_per_reception, total_player_game_count, total_touchdowns, total_yards_per_game, total_targets_per_game, total_targeted_qb_rating, games_draft, grades_hands_drop, grades_hands_fumble, grades_offense, grades_pass_route, Power5_draft, playedA_Yr)
 index<-createDataPartition(snap_model_coll_df2$playedA_Yr,p=0.7,list=FALSE)
@@ -1137,6 +1139,62 @@ test<-snap_model_coll_df2[-index,]
 snap_model_coll_2  <- glm(playedA_Yr~., data=train, family = "binomial")
 summary(snap_model_coll_2)
 ```
+
+```{r snap model 2}
+set.seed(1)
+snap_model_coll_df3 <- snap_model_coll_df %>% 
+  select(total_yards, total_catch_percent, total_target_percent, total_drop_percent, total_yprr, total_yards_after_catch_per_reception, total_player_game_count, total_touchdowns, total_yards_per_game, total_targets_per_game, total_targeted_qb_rating, games_draft, grades_hands_drop, grades_offense, Power5_draft, playedA_Yr)
+index<-createDataPartition(snap_model_coll_df2$playedA_Yr,p=0.7,list=FALSE)
+train<-snap_model_coll_df3[index,]
+test<-snap_model_coll_df3[-index,]
+snap_model_coll_3  <- glm(playedA_Yr~., data=train, family = "binomial")
+summary(snap_model_coll_3)
+```
+
+```{r decent starter model 1}
+set.seed(1)
+decent_starter_coll_df2 <- decent_starter_coll_df %>% 
+  select(total_yards, total_catch_percent, total_target_percent, total_route_percent, total_drop_percent, total_yprr, total_first_downs, total_yards_per_reception, total_yards_after_catch_per_reception, total_player_game_count, total_touchdowns, total_yards_per_game, total_targets_per_game, total_targeted_qb_rating, games_draft, grades_hands_drop, grades_hands_fumble, grades_offense, grades_pass_route, Power5_draft, decentStarter)
+index<-createDataPartition(decent_starter_coll_df2$decentStarter,p=0.7,list=FALSE)
+train<-decent_starter_coll_df2[index,]
+test<-decent_starter_coll_df2[-index,]
+decent_starter_coll_df2 <- glm(decentStarter~., data=train, family = "binomial")
+summary(decent_starter_coll_df2)
+```
+
+```{r decent starter model 2}
+set.seed(1)
+decent_starter_coll_df2 <- decent_starter_coll_df %>% 
+  select(total_yards, total_catch_percent, total_target_percent, total_drop_percent, total_yprr, total_yards_after_catch_per_reception, total_player_game_count, total_touchdowns, total_yards_per_game, total_targets_per_game, total_targeted_qb_rating, games_draft, grades_hands_drop, grades_offense, Power5_draft, decentStarter)
+index<-createDataPartition(decent_starter_coll_df2$decentStarter,p=0.7,list=FALSE)
+train<-decent_starter_coll_df2[index,]
+test<-decent_starter_coll_df2[-index,]
+decent_starter_coll_df2 <- glm(decentStarter~., data=train, family = "binomial")
+summary(decent_starter_coll_df2)
+```
+
+```{r great starter model 1}
+set.seed(1)
+great_starter_coll_df2 <- great_starter_coll_df %>% 
+  select(total_yards, total_catch_percent, total_target_percent, total_route_percent, total_drop_percent, total_yprr, total_first_downs, total_yards_per_reception, total_yards_after_catch_per_reception, total_player_game_count, total_touchdowns, total_yards_per_game, total_targets_per_game, total_targeted_qb_rating, games_draft, grades_hands_drop, grades_hands_fumble, grades_offense, grades_pass_route, Power5_draft, greatStarter)
+index<-createDataPartition(great_starter_coll_df2$greatStarter,p=0.7,list=FALSE)
+train<-great_starter_coll_df2[index,]
+test<-great_starter_coll_df2[-index,]
+great_starter_coll_df2 <- glm(greatStarter~., data=train, family = "binomial")
+summary(great_starter_coll_df2)
+```
+
+```{r great starter model 2}
+set.seed(1)
+great_starter_coll_df2 <- great_starter_coll_df %>% 
+  select(total_yards, total_catch_percent, total_target_percent, total_drop_percent, total_yprr, total_yards_after_catch_per_reception, total_player_game_count, total_touchdowns, total_yards_per_game, total_targets_per_game, total_targeted_qb_rating, games_draft, grades_hands_drop, grades_offense, Power5_draft, greatStarter)
+index<-createDataPartition(great_starter_coll_df2$greatStarter,p=0.7,list=FALSE)
+train<-great_starter_coll_df2[index,]
+test<-great_starter_coll_df2[-index,]
+great_starter_coll_df2  <- glm(greatStarter~., data=train, family = "binomial")
+summary(great_starter_coll_df2)
+```
+
 
 
 
