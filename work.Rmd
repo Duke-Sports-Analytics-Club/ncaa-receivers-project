@@ -1185,6 +1185,11 @@ train<-snap_model_coll_df3[index,]
 test<-snap_model_coll_df3[-index,]
 snap_model_coll_3  <- glm(playedA_Yr~., data=train, family = "binomial")
 summary(snap_model_coll_3)
+
+pred_snap <- predict(snap_model_coll_3, test, type = "response")
+pred_snap <- as.integer(pred_snap>0.5)
+conf_snap <- confusionMatrix(as.factor(pred_snap),test$playedA_Yr)
+conf_snap
 ```
 
 ```{r decent starter model 1}
@@ -1205,8 +1210,13 @@ decent_starter_coll_df2 <- decent_starter_coll_df %>%
 index<-createDataPartition(decent_starter_coll_df2$decentStarter,p=0.7,list=FALSE)
 train<-decent_starter_coll_df2[index,]
 test<-decent_starter_coll_df2[-index,]
-decent_starter_coll_df2 <- glm(decentStarter~., data=train, family = "binomial")
+decent_starter_coll_2 <- glm(decentStarter~., data=train, family = "binomial")
 summary(decent_starter_coll_df2)
+
+pred_decent <- predict(decent_starter_coll_2, test, type = "response")
+pred_decent <- as.integer(pred_snap>0.5)
+conf_decent <- confusionMatrix(as.factor(pred_decent),test$decentStarter)
+conf_decent
 ```
 
 ```{r great starter model 1}
@@ -1227,10 +1237,13 @@ great_starter_coll_df2 <- great_starter_coll_df %>%
 index<-createDataPartition(great_starter_coll_df2$greatStarter,p=0.7,list=FALSE)
 train<-great_starter_coll_df2[index,]
 test<-great_starter_coll_df2[-index,]
-great_starter_coll_df2  <- glm(greatStarter~., data=train, family = "binomial")
+great_starter_coll_2  <- glm(greatStarter~., data=train, family = "binomial")
 summary(great_starter_coll_df2)
 
-
+pred_great <- predict(great_starter_coll_2, test, type = "response")
+pred_great <- as.integer(pred_great>0.5)
+conf_great <- confusionMatrix(as.factor(pred_decent),test$greatStarter)
+conf_great
 ```
 
 
