@@ -1023,6 +1023,7 @@ train<-snap_model_com[index,]
 test<-snap_model_com[-index,]
 snap_model_com_res  <- glm(playedA_Yr~., data=train, family = "binomial")
 summary(snap_model_com_res)
+
 pred <- predict(snap_model_com_res, test, type = "response")
 pred <- as.integer(pred>0.5)
 conf_snap_1 <- confusionMatrix(as.factor(pred),test$playedA_Yr)
@@ -1106,7 +1107,7 @@ conf_great
 ```{r great starter model 2}
 set.seed(1)
 great_starter_com2 <- great_starter_com %>% 
-  select(total_yards, total_catch_percent, total_target_percent, total_route_percent, total_drop_percent, total_yprr, total_first_downs, total_yards_per_reception, total_yards_after_catch_per_reception, total_player_game_count, total_touchdowns, total_yards_per_game, total_targets_per_game, total_targeted_qb_rating, grades_hands_drop, grades_hands_fumble, grades_offense, grades_pass_route, Power5_draft, greatStarter, Height, Weight, Arm, Hand, X40.Yard, Broad, Vertical)
+  select(total_yards, total_target_percent, total_route_percent, total_drop_percent, total_yprr, total_first_downs, total_yards_per_reception, total_yards_after_catch_per_reception, total_player_game_count, total_touchdowns, total_yards_per_game, total_targets_per_game, total_targeted_qb_rating, grades_hands_drop, grades_hands_fumble, grades_offense, grades_pass_route, Power5_draft, greatStarter, Height, Weight, Arm, Hand, X40.Yard, Broad, Vertical)
 index<-createDataPartition(great_starter_com2$greatStarter,p=0.7,list=FALSE)
 train<-great_starter_com2[index,]
 test<-great_starter_com2[-index,]
@@ -1199,8 +1200,8 @@ decent_starter_coll_df2 <- decent_starter_coll_df %>%
 index<-createDataPartition(decent_starter_coll_df2$decentStarter,p=0.7,list=FALSE)
 train<-decent_starter_coll_df2[index,]
 test<-decent_starter_coll_df2[-index,]
-decent_starter_coll_df2 <- glm(decentStarter~., data=train, family = "binomial")
-summary(decent_starter_coll_df2)
+decent_starter_coll_2 <- glm(decentStarter~., data=train, family = "binomial")
+summary(decent_starter_coll_2)
 ```
 
 ```{r decent starter model 2}
@@ -1211,7 +1212,7 @@ index<-createDataPartition(decent_starter_coll_df2$decentStarter,p=0.7,list=FALS
 train<-decent_starter_coll_df2[index,]
 test<-decent_starter_coll_df2[-index,]
 decent_starter_coll_2 <- glm(decentStarter~., data=train, family = "binomial")
-summary(decent_starter_coll_df2)
+summary(decent_starter_coll_2)
 
 pred_decent <- predict(decent_starter_coll_2, test, type = "response")
 pred_decent <- as.integer(pred_snap>0.5)
@@ -1226,8 +1227,8 @@ great_starter_coll_df2 <- great_starter_coll_df %>%
 index<-createDataPartition(great_starter_coll_df2$greatStarter,p=0.7,list=FALSE)
 train<-great_starter_coll_df2[index,]
 test<-great_starter_coll_df2[-index,]
-great_starter_coll_df2 <- glm(greatStarter~., data=train, family = "binomial")
-summary(great_starter_coll_df2)
+great_starter_coll_2 <- glm(greatStarter~., data=train, family = "binomial")
+summary(great_starter_coll_2)
 ```
 
 ```{r great starter model 2}
@@ -1238,7 +1239,7 @@ index<-createDataPartition(great_starter_coll_df2$greatStarter,p=0.7,list=FALSE)
 train<-great_starter_coll_df2[index,]
 test<-great_starter_coll_df2[-index,]
 great_starter_coll_2  <- glm(greatStarter~., data=train, family = "binomial")
-summary(great_starter_coll_df2)
+summary(great_starter_coll_2)
 
 pred_great <- predict(great_starter_coll_2, test, type = "response")
 pred_great <- as.integer(pred_great>0.5)
