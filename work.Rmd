@@ -1244,3 +1244,11 @@ pred_great <- as.integer(pred_great>0.50)
 conf_great <- confusionMatrix(as.factor(pred_decent),test$greatStarter)
 conf_great
 ```
+
+```{r}
+combine_stats %>% 
+  arrange(X40.Yard) %>% 
+  head() %>% 
+  kable()
+```
+
