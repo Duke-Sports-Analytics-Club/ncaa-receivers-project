@@ -1030,7 +1030,7 @@ conf_snap_1 <- confusionMatrix(as.factor(pred),test$playedA_Yr)
 conf_snap_1
 ```
 
-```{r snap model 2}
+```{r snap model col 2}
 set.seed(1)
 snap_model_com2 <- snap_model_com %>% 
   select(total_yards, total_catch_percent, total_target_percent, total_route_percent, total_drop_percent, total_yprr, total_first_downs, total_yards_per_reception, total_yards_after_catch_per_reception, total_player_game_count, total_touchdowns, total_yards_per_game, total_targets_per_game, total_targeted_qb_rating, grades_hands_drop, grades_hands_fumble, grades_offense, grades_pass_route, Power5_draft, playedA_Yr, Height, Weight, Arm, Hand, X40.Yard, Broad, Vertical)
@@ -1053,7 +1053,7 @@ decent_starter_com <- combine_cleaned %>%
   select(-c(player_id, player, position, team_name_draft, scoredTouchDown, playedA_Yr, greatStarter, eliteStarter, Team, team_name_pre, Power5_pre, games_draft, Date, Title))
 ```
 
-```{r decent starter model 1}
+```{r decent starter mdl 1}
 set.seed(2)
 index<-createDataPartition(decent_starter_com$decentStarter,p=0.7,list=FALSE)
 train<-decent_starter_com[index,]
@@ -1067,7 +1067,7 @@ conf_dec <- confusionMatrix(as.factor(pred_dec), test$decentStarter)
 conf_dec
 ```
 
-```{r decent starter model 2}
+```{r decent starter mdl 2}
 set.seed(2)
 decent_starter_com2 <- decent_starter_com %>% 
   select(total_yards, total_catch_percent, total_target_percent, total_route_percent, total_drop_percent, total_yprr, total_first_downs, total_yards_per_reception, total_yards_after_catch_per_reception, total_player_game_count, total_touchdowns, total_yards_per_game, total_targets_per_game, total_targeted_qb_rating, grades_hands_drop, grades_hands_fumble, grades_offense, grades_pass_route, Power5_draft, decentStarter, Height, Weight, Arm, Hand, X40.Yard, Broad, Vertical)
@@ -1090,7 +1090,7 @@ great_starter_com <- combine_cleaned %>%
   select(-c(player_id, player, position, team_name_draft, scoredTouchDown, playedA_Yr, decentStarter, eliteStarter, Team, team_name_pre, Power5_pre))
 ```
 
-```{r great starter model 1}
+```{r great starter mdl 1}
 set.seed(3)
 index<-createDataPartition(great_starter_com$greatStarter,p=0.7,list=FALSE)
 train<-great_starter_com[index,]
@@ -1104,7 +1104,7 @@ conf_great <- confusionMatrix(as.factor(pred_great),test$greatStarter)
 conf_great
 ```
 
-```{r great starter model 2}
+```{r great starter mdl 2}
 set.seed(1)
 great_starter_com2 <- great_starter_com %>% 
   select(total_yards, total_target_percent, total_route_percent, total_drop_percent, total_yprr, total_first_downs, total_yards_per_reception, total_yards_after_catch_per_reception, total_player_game_count, total_touchdowns, total_yards_per_game, total_targets_per_game, total_targeted_qb_rating, grades_hands_drop, grades_hands_fumble, grades_offense, grades_pass_route, Power5_draft, greatStarter, Height, Weight, Arm, Hand, X40.Yard, Broad, Vertical)
@@ -1164,7 +1164,7 @@ snap_model_coll  <- glm(playedA_Yr~., data=train, family = "binomial")
 summary(snap_model_coll)
 ```
 
-```{r snap model 1}
+```{r snap model col}
 set.seed(12321)
 snap_model_coll_df2 <- snap_model_coll_df %>% 
   select(total_yards, total_catch_percent, total_target_percent, total_route_percent, total_drop_percent, total_yprr, total_first_downs, total_yards_per_reception, total_yards_after_catch_per_reception, total_player_game_count, total_touchdowns, total_yards_per_game, total_targets_per_game, total_targeted_qb_rating, games_draft, grades_hands_drop, grades_hands_fumble, grades_offense, grades_pass_route, Power5_draft, playedA_Yr)
