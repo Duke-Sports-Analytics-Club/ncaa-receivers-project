@@ -968,8 +968,8 @@ response_data <- full_data %>%
 *more interested in modeling Elite starter and great starter, might need to add some more response variables for higher thresholds
 
 ```{r}
-full_data %>% 
-  head()
+full_data <- full_data %>% 
+  select(-contains(c("1yr", "2yr")))
 ```
 
 ```{r good starter model}
@@ -1011,7 +1011,6 @@ combine_cleaned$Hand[is.na(combine_cleaned$Hand)]<-mean(combine_cleaned$Hand, na
 ```
 
 ```{r snap df}
-install.packages("caret")
 snap_model_com <- combine_cleaned %>% 
   select(-c(player_id, player, position, team_name_draft, scoredTouchDown, decentStarter, greatStarter, eliteStarter, Power5_pre, Team, team_name_pre, games_draft, Power5_pre))
 ```
