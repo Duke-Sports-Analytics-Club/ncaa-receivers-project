@@ -1043,7 +1043,6 @@ pred_2 <- predict(snap_model_com2_res, test, type = "response")
 pred_2 <- as.integer(pred_2>0.5)
 conf_snap_2 <- confusionMatrix(as.factor(pred_2),test$playedA_Yr)
 conf_snap_2
-
 ```
 
 
@@ -1117,7 +1116,6 @@ pred_great_2 <- predict(great_starter_com2_res, test, type = "response")
 pred_great_2 <- as.integer(pred_great_2>0.5)
 conf_great_2 <- confusionMatrix(as.factor(pred_great_2),test$greatStarter)
 conf_great_2
-
 ```
 
 ## Predicting NFL Success for Players in College
