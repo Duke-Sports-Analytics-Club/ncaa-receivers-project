@@ -21,6 +21,7 @@ library(nflfastR)
 library(nflplotR)
 library(ggrepel)
 library(caret)
+library(pROC)
 ```
 
 ### Load PFF Data
@@ -982,6 +983,9 @@ elite_starter_nfl <- full_data %>%
   select(-c(player_id, player, position, team_name_draft, scoredTouchDown, playedA_Yr, decentStarter, greatStarter))
 ```
 
+```{r}
+saveRDS(full_data, "full_data.rds")
+```
 
 
 
