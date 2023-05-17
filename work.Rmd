@@ -1048,21 +1048,26 @@ library(pROC)
 # calculate ROC curve and AUC for data 1
 roc_all <- roc(test$playedA_Yr, pred)
 auc_all <- auc(roc_all)
-auc_all
-plot(roc_all, main = "ROC Curve", xlab = "False Positive Rate", ylab = "True Positive Rate", col = "blue")
-plot(roc_all, main=paste("ROC Curve (AUC=", round(auc_all, 2), ")"), print.auc=TRUE)
+#auc_all
+#plot(roc_all, main = "ROC Curve", xlab = "False Positive Rate", ylab = "True Positive Rate", col = "blue")
+#plot(roc_all, main=paste("ROC Curve (AUC=", round(auc_all, 2), ")"), print.auc=TRUE)
 
 # calculate ROC curve and AUC for data 2
 roc_pre <- roc(test_seasons$playedA_Yr, pred_2)
 auc_pre <- auc(roc_pre)
-auc_pre
-plot(roc_pre, main=paste("ROC Curve (AUC=", round(auc_pre, 2), ")"), print.auc=TRUE)
+#auc_pre
+#plot(roc_pre, main=paste("ROC Curve (AUC=", round(auc_pre, 2), ")"), print.auc=TRUE)
 
 # calculate ROC curve and AUC for data 3
 roc_post <- roc(test_total$playedA_Yr, pred_3)
 auc_post <- auc(roc_post)
-auc_post
-plot(roc_post, main=paste("ROC Curve (AUC=", round(auc_post, 2), ")"), print.auc=TRUE)
+#auc_post
+#plot(roc_post, main=paste("ROC Curve (AUC=", round(auc_post, 2), ")"), print.auc=TRUE)
+
+plot(roc_all, main = "Played in the NFL ROC Curve (College & Combine Data)", xlab = "False Positive Rate", ylab = "True Positive Rate", col = "blue")
+lines(roc_pre, col = "red")
+lines(roc_post, col = "green")
+legend("bottomright",legend=c("Model 1","Model 2","Model 3"),pch=15,col=c("blue","red",'green'))
 ```
 
 ## Predicting NFL Success for Players in College
@@ -1155,20 +1160,25 @@ library(pROC)
 # calculate ROC curve and AUC for data 1
 roc_coll_all <- roc(test_coll$playedA_Yr, pred_coll)
 auc_coll_all <- auc(roc_coll_all)
-auc_coll_all
-plot(roc_coll_all, main=paste("ROC Curve (AUC=", round(auc_coll_all, 2), ")"), print.auc=TRUE)
+#auc_coll_all
+#plot(roc_coll_all, main=paste("ROC Curve (AUC=", round(auc_coll_all, 2), ")"), print.auc=TRUE)
 
 # calculate ROC curve and AUC for data 2
 roc_coll_pre <- roc(test_seasons_coll$playedA_Yr, pred_coll_2)
 auc_coll_pre <- auc(roc_coll_pre)
-auc_coll_pre
-plot(roc_coll_pre, main=paste("ROC Curve (AUC=", round(auc_coll_pre, 2), ")"), print.auc=TRUE)
+#auc_coll_pre
+#plot(roc_coll_pre, main=paste("ROC Curve (AUC=", round(auc_coll_pre, 2), ")"), print.auc=TRUE)
 
 # calculate ROC curve and AUC for data 3
 roc_coll_post <- roc(test_total_coll$playedA_Yr, pred_coll_3)
 auc_coll_post <- auc(roc_coll_post)
-auc_coll_post
-plot(roc_coll_post, main=paste("ROC Curve (AUC=", round(auc_coll_post, 2), ")"), print.auc=TRUE)
+#auc_coll_post
+#plot(roc_coll_post, main=paste("ROC Curve (AUC=", round(auc_coll_post, 2), ")"), print.auc=TRUE)
+
+plot(roc_coll_all, main = "Played in the NFL ROC Curve (College Data)", xlab = "False Positive Rate", ylab = "True Positive Rate", col = "blue")
+lines(roc_coll_pre, col = "red")
+lines(roc_coll_post, col = "green")
+legend("bottomright",legend=c("Model 1","Model 2","Model 3"),pch=15,col=c("blue","red",'green'))
 ```
 
 
