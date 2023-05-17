@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.269">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Predicting Success of NFL Prospects Using College Statistics, PFF Grades, and Combine Results</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="report-final_files/libs/clipboard/clipboard.min.js"></script>
+<script src="report-final_files/libs/quarto-html/quarto.js"></script>
+<script src="report-final_files/libs/quarto-html/popper.min.js"></script>
+<script src="report-final_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="report-final_files/libs/quarto-html/anchor.min.js"></script>
+<link href="report-final_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="report-final_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="report-final_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="report-final_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="report-final_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Predicting Success of NFL Prospects Using College Statistics, PFF Grades, and Combine Results</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jack Miller, Namh Lahade, Matthew Paul, Caspian Svenson </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="cell">
+
+</div>
+<div class="cell">
+
+</div>
+<section id="introduction" class="level1">
+<h1>1 Introduction</h1>
+<section id="background-information" class="level2">
+<h2 class="anchored" data-anchor-id="background-information">1.1 Background Information</h2>
+<p>Scouting plays a vital role in the construction of NFL rosters, as teams are constantly trying to identify talented players who can contribute to their success on the field. Traditionally, scouts have relied on subjective evaluations based on game footage and the so-called “eye-test” to assess player potential. However, with the rise of analytics in sports, new methodologies are emerging to complement traditional scouting methods. In this project, we delve into the realm of statistical analysis to predict the success of NFL players, focusing specifically on the challenging task of evaluating Wide Receivers (WRs).</p>
+<p>The wide variety of successful Wide Receivers presents a unique challenge for scouts attempting to uncover the next Justin Jefferson. With teams utilizing varying numbers and types of receivers in their offensive schemes, the skill set required to excel as a WR in the NFL varies heavily from player to player and offense to offense. Beyond possessing exceptional physical attributes, such as speed, agility, and catching ability, successful WRs must also demonstrate an innate understanding of route running, precise timing, and the ability to read and react to complex defensive coverages.</p>
+<p>To tackle this intricate evaluation process, we leverage a combination of data sources, including advanced player performance metrics from Pro Football Focus (PFF), results from the NFL Combine, and comprehensive college statistics also gathered from PFF. By integrating these datasets and employing statistical modeling techniques, we aim to develop a predictive framework that can assist scouts, coaches, and general managers in making informed decisions when selecting and developing WR talent.</p>
+<p>By harnessing the power of data-driven insights, we seek to enhance the efficacy of player evaluations and provide a more objective basis for assessing the potential impact of WR prospects in the NFL. Through this project, we aim to shed light on the key factors that contribute to a WR’s success, bridging the gap between traditional scouting and analytical methodologies to enhance roster construction strategies in the evolving landscape of the NFL.</p>
+</section>
+<section id="aims" class="level2">
+<h2 class="anchored" data-anchor-id="aims">1.2 Aims</h2>
+<p>The primary objective of our project is to investigate the significance of college statistics, NFL Combine results, and Pro Football Focus (PFF) grades in predicting the likelihood of a player’s success in the NFL. While previous research has predominantly focused on utilizing college statistics and combine numbers to forecast NFL success among college draft prospects, we aim to extend this analysis by incorporating PFF college grades, a relatively novel metric in the field of player evaluation.</p>
+<p>Our project seeks to contribute to the existing body of knowledge by examining the collective impact of college statistics, NFL Combine results, and PFF grades on the prediction of both a player’s likelihood of making it to the NFL and their potential for success within the league. By considering a comprehensive set of scouting metrics, we aim to gain insights into the relative importance of each factor in determining a player’s NFL trajectory.</p>
+<p>To ensure the robustness and reliability of our findings, we have limited our analysis to NFL draft classes that provide a sufficient amount of data for comprehensive evaluation. Specifically, we have focused on the NFL draft classes spanning from 2016 to 2020. This selection enables us to leverage two years of college data, incorporating PFF college grades, and two years of NFL data, which will serve as our measure of success.</p>
+<p>By examining this specific timeframe, we not only capitalize on the availability of PFF college grades for Division 1 athletes since 2014 but also ensure that we have an adequate sample size of players with both comprehensive college and professional performance data. Through this approach, we aim to enhance our understanding of the combined predictive power of college statistics, NFL Combine results, and PFF grades in forecasting a player’s journey to the NFL and their subsequent success within the league.</p>
+<p>Ultimately, our project endeavors to provide valuable insights that can inform decision-making processes for talent evaluation, player development, and roster construction strategies in the dynamic and competitive landscape of professional football.</p>
+</section>
+<section id="exploratory-data-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="exploratory-data-analysis">1.3 Exploratory Data Analysis</h2>
+</section>
+</section>
+<section id="methods" class="level1">
+<h1>2 Methods</h1>
+<section id="analysis-plan" class="level2">
+<h2 class="anchored" data-anchor-id="analysis-plan">2.1 Analysis Plan</h2>
+</section>
+<section id="modeling" class="level2">
+<h2 class="anchored" data-anchor-id="modeling">2.2 Modeling</h2>
+<section id="college-model" class="level4">
+<h4 class="anchored" data-anchor-id="college-model">College Model</h4>
+<p>Our first model examines NFL prospects’ college statistics and PFF grades in trying to predict whether they will make it to the league.</p>
+</section>
+<section id="combine-model" class="level4">
+<h4 class="anchored" data-anchor-id="combine-model">Combine Model</h4>
+<p>Our second model also examines NFL prospects’ college statistics and PFF grades in trying to predict whether they will make it to the league. However, we also include Combine and Pro Day statistics for players who either attended the NFL Combine or have available Pro Day times.</p>
+</section>
+<section id="nfl-model" class="level4">
+<h4 class="anchored" data-anchor-id="nfl-model">NFL Model</h4>
+<p>Our final model only examines</p>
+</section>
+</section>
+<section id="model-diagnostics" class="level2">
+<h2 class="anchored" data-anchor-id="model-diagnostics">2.3 Model Diagnostics</h2>
+</section>
+<section id="model-selection" class="level2">
+<h2 class="anchored" data-anchor-id="model-selection">2.4 Model Selection</h2>
+</section>
+</section>
+<section id="results" class="level1">
+<h1>3 Results</h1>
+<section id="predicting-who-will-play-in-the-nfl" class="level2">
+<h2 class="anchored" data-anchor-id="predicting-who-will-play-in-the-nfl">3.1 Predicting Who Will Play in the NFL</h2>
+</section>
+<section id="predicting-who-will-be-successful-in-the-nfl" class="level2">
+<h2 class="anchored" data-anchor-id="predicting-who-will-be-successful-in-the-nfl">3.2 Predicting Who Will Be Successful in the NFL</h2>
+</section>
+</section>
+<section id="discussion" class="level1">
+<h1>4 Discussion</h1>
+</section>
+<section id="references" class="level1">
+<h1>5 References</h1>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

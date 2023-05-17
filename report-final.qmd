@@ -1,15 +1,7 @@
 ---
-title: "Predicting Success of NFL Proespects Using PFF and Combine Results"
-subtitle: "2023 DSAC Final Project"
-author: "Jack Miller, Namh Lahade, Matthew Paul, Caspian Svenson"
-format:
-  pdf:
-    fontsize: 11pt
-    geometry:
-      - top = 10mm
-      - bottom = 25mm
-      - left = 22mm
-      - right = 22 mm
+title: "Predicting Success of NFL Prospects Using College Statistics, PFF Grades, and Combine Results"
+authors: "Jack Miller, Namh Lahade, Matthew Paul, Caspian Svenson"
+format: html
 bibliography: references.bib
 nocite: |
   @*
@@ -49,7 +41,7 @@ college_data <- readRDS("college_data.rds")
 
 Scouting plays a vital role in the construction of NFL rosters, as teams are constantly trying to identify talented players who can contribute to their success on the field. Traditionally, scouts have relied on subjective evaluations based on game footage and the so-called "eye-test" to assess player potential. However, with the rise of analytics in sports, new methodologies are emerging to complement traditional scouting methods. In this project, we delve into the realm of statistical analysis to predict the success of NFL players, focusing specifically on the challenging task of evaluating Wide Receivers (WRs).
 
-The role of a Wide Receiver presents unique challenges for scouts. With teams utilizing varying numbers and types of receivers in their offensive schemes, the skill set required to excel as a WR in the NFL varies heavily from player to player and offense to offense. Beyond possessing exceptional physical attributes, such as speed, agility, and catching ability, successful WRs must also demonstrate an innate understanding of route running, precise timing, and the ability to read and react to complex defensive coverages.
+The wide variety of successful Wide Receivers presents a unique challenge for scouts attempting to uncover the next Justin Jefferson. With teams utilizing varying numbers and types of receivers in their offensive schemes, the skill set required to excel as a WR in the NFL varies heavily from player to player and offense to offense. Beyond possessing exceptional physical attributes, such as speed, agility, and catching ability, successful WRs must also demonstrate an innate understanding of route running, precise timing, and the ability to read and react to complex defensive coverages.
 
 To tackle this intricate evaluation process, we leverage a combination of data sources, including advanced player performance metrics from Pro Football Focus (PFF), results from the NFL Combine, and comprehensive college statistics also gathered from PFF. By integrating these datasets and employing statistical modeling techniques, we aim to develop a predictive framework that can assist scouts, coaches, and general managers in making informed decisions when selecting and developing WR talent.
 
@@ -59,7 +51,7 @@ By harnessing the power of data-driven insights, we seek to enhance the efficacy
 
 The primary objective of our project is to investigate the significance of college statistics, NFL Combine results, and Pro Football Focus (PFF) grades in predicting the likelihood of a player's success in the NFL. While previous research has predominantly focused on utilizing college statistics and combine numbers to forecast NFL success among college draft prospects, we aim to extend this analysis by incorporating PFF college grades, a relatively novel metric in the field of player evaluation.
 
-Our project seeks to contribute to the existing body of knowledge by examining the collective impact of college statistics, NFL Combine results, and PFF grades on the prediction of both a player's likelihood of making it to the NFL and their potential for success within the league. By considering a comprehensive set of scouting metrics, including PFF grades and NFL Combine and Pro Day statistics, we aim to gain insights into the relative importance of each factor in determining a player's NFL trajectory.
+Our project seeks to contribute to the existing body of knowledge by examining the collective impact of college statistics, NFL Combine results, and PFF grades on the prediction of both a player's likelihood of making it to the NFL and their potential for success within the league. By considering a comprehensive set of scouting metrics, we aim to gain insights into the relative importance of each factor in determining a player's NFL trajectory.
 
 To ensure the robustness and reliability of our findings, we have limited our analysis to NFL draft classes that provide a sufficient amount of data for comprehensive evaluation. Specifically, we have focused on the NFL draft classes spanning from 2016 to 2020. This selection enables us to leverage two years of college data, incorporating PFF college grades, and two years of NFL data, which will serve as our measure of success.
 
@@ -101,4 +93,14 @@ Our final model only examines
 
 # 4 Discussion
 
+- not many people with pro and college stats (only 2 years of pro stats)
+    - had to predict whether theyd make it and could only use pro players to predict success
+- not many years of PFF data
+- not many people invited to combine + all data not readily available
+
+
 # 5 References
+
+https://bleacherreport.com/articles/1645756-how-do-scouts-break-down-nfl-wide-receiver-prospects
+
+
