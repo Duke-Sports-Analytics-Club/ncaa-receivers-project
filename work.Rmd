@@ -1,7 +1,10 @@
 ---
-title: "Predicting NFL Wide Receiver Success Using Combine Measurables and PFF College Data"
+title: Predicting NFL Wide Receiver Success Using Combine Measurables and PFF College
+  Data
 author: "Jack Miller, Namh Lahade, Matthew Paul, Caspian Svenson"
-output: pdf_document
+output:
+  html_document:
+    df_print: paged
 ---
 
 ```{r setup, include=FALSE}
@@ -22,6 +25,7 @@ library(nflplotR)
 library(ggrepel)
 library(caret)
 library(pROC)
+library(car)
 ```
 
 ### Load PFF Data
@@ -1010,19 +1014,25 @@ train<-snap_model_com[index,]
 test<-snap_model_com[-index,]
 
 train_total <- train %>% 
-  select(-c(player_game_count_draft, caught_percent_draft, drop_rate_draft, drops_draft, first_downs_draft, grades_hands_drop_draft, grades_hands_fumble_draft, grades_offense_draft, grades_hands_drop_draft, grades_hands_fumble_draft, grades_offense_draft, grades_pass_route_draft, pass_plays_draft, receptions_draft, route_rate_draft, routes_draft, targeted_qb_rating_draft, targets_draft, touchdowns_draft, yards_draft, yards_after_catch_draft, yards_after_catch_per_reception_draft, yards_per_reception_draft, yprr_draft, player_game_count_pre, caught_percent_pre, drop_rate_pre, drops_pre, first_downs_pre, grades_hands_drop_pre, grades_hands_fumble_pre, grades_offense_pre, grades_pass_route_pre, pass_plays_pre, receptions_pre, route_rate_pre, routes_pre, targeted_qb_rating_pre, targets_pre, touchdowns_pre, yards_pre, yards_after_catch_pre, yards_after_catch_per_reception_pre, yards_per_reception_pre, yprr_pre)) #add all total and combine
+  select(-c(player_game_count_draft, caught_percent_draft, drop_rate_draft, drops_draft, first_downs_draft, grades_hands_drop_draft, grades_hands_fumble_draft, grades_offense_draft, grades_pass_route_draft, pass_plays_draft, receptions_draft, route_rate_draft, routes_draft, targeted_qb_rating_draft, targets_draft, touchdowns_draft, yards_draft, yards_after_catch_draft, yards_after_catch_per_reception_draft, yards_per_reception_draft, yprr_draft, player_game_count_pre, caught_percent_pre, drop_rate_pre, drops_pre, first_downs_pre, grades_hands_drop_pre, grades_hands_fumble_pre, grades_offense_pre, grades_pass_route_pre, pass_plays_pre, receptions_pre, route_rate_pre, routes_pre, targeted_qb_rating_pre, targets_pre, touchdowns_pre, yards_pre, yards_after_catch_pre, yards_after_catch_per_reception_pre, yards_per_reception_pre, yprr_pre)) #add all total and combine
 
 test_total <- test %>% 
-   select(-c(player_game_count_draft, caught_percent_draft, drop_rate_draft, drops_draft, first_downs_draft, grades_hands_drop_draft, grades_hands_fumble_draft, grades_offense_draft, grades_hands_drop_draft, grades_hands_fumble_draft, grades_offense_draft, grades_pass_route_draft, pass_plays_draft, receptions_draft, route_rate_draft, routes_draft, targeted_qb_rating_draft, targets_draft, touchdowns_draft, yards_draft, yards_after_catch_draft, yards_after_catch_per_reception_draft, yards_per_reception_draft, yprr_draft, player_game_count_pre, caught_percent_pre, drop_rate_pre, drops_pre, first_downs_pre, grades_hands_drop_pre, grades_hands_fumble_pre, grades_offense_pre, grades_pass_route_pre, pass_plays_pre, receptions_pre, route_rate_pre, routes_pre, targeted_qb_rating_pre, targets_pre, touchdowns_pre, yards_pre, yards_after_catch_pre, yards_after_catch_per_reception_pre, yards_per_reception_pre, yprr_pre))
+   select(-c(player_game_count_draft, caught_percent_draft, drop_rate_draft, drops_draft, first_downs_draft, grades_hands_drop_draft, grades_hands_fumble_draft, grades_offense_draft, grades_pass_route_draft, pass_plays_draft, receptions_draft, route_rate_draft, routes_draft, targeted_qb_rating_draft, targets_draft, touchdowns_draft, yards_draft, yards_after_catch_draft, yards_after_catch_per_reception_draft, yards_per_reception_draft, yprr_draft, player_game_count_pre, caught_percent_pre, drop_rate_pre, drops_pre, first_downs_pre, grades_hands_drop_pre, grades_hands_fumble_pre, grades_offense_pre, grades_pass_route_pre, pass_plays_pre, receptions_pre, route_rate_pre, routes_pre, targeted_qb_rating_pre, targets_pre, touchdowns_pre, yards_pre, yards_after_catch_pre, yards_after_catch_per_reception_pre, yards_per_reception_pre, yprr_pre))
   
 train_seasons <- train %>% 
-  select(player_game_count_draft, caught_percent_draft, drop_rate_draft, drops_draft, first_downs_draft, grades_hands_drop_draft, grades_hands_fumble_draft, grades_offense_draft, grades_hands_drop_draft, grades_hands_fumble_draft, grades_offense_draft, grades_pass_route_draft, pass_plays_draft, receptions_draft, route_rate_draft, routes_draft, targeted_qb_rating_draft, targets_draft, touchdowns_draft, yards_draft, yards_after_catch_draft, yards_after_catch_per_reception_draft, yards_per_reception_draft, yprr_draft, player_game_count_pre, caught_percent_pre, drop_rate_pre, drops_pre, first_downs_pre, grades_hands_drop_pre, grades_hands_fumble_pre, grades_offense_pre, grades_pass_route_pre, pass_plays_pre, receptions_pre, route_rate_pre, routes_pre, targeted_qb_rating_pre, targets_pre, touchdowns_pre, yards_pre, yards_after_catch_pre, yards_after_catch_per_reception_pre, yards_per_reception_pre, yprr_pre, Power5_draft, Height, Weight, Arm, Hand, X40.Yard, Vertical, Broad, playedA_Yr)
+  select(player_game_count_draft, caught_percent_draft, drop_rate_draft, drops_draft, first_downs_draft, grades_hands_drop_draft, grades_hands_fumble_draft, grades_offense_draft, grades_pass_route_draft, pass_plays_draft, receptions_draft, route_rate_draft, routes_draft, targeted_qb_rating_draft, targets_draft, touchdowns_draft, yards_draft, yards_after_catch_draft, yards_after_catch_per_reception_draft, yards_per_reception_draft, yprr_draft, player_game_count_pre, caught_percent_pre, drop_rate_pre, drops_pre, first_downs_pre, grades_hands_drop_pre, grades_hands_fumble_pre, grades_offense_pre, grades_pass_route_pre, pass_plays_pre, receptions_pre, route_rate_pre, routes_pre, targeted_qb_rating_pre, targets_pre, touchdowns_pre, yards_pre, yards_after_catch_pre, yards_after_catch_per_reception_pre, yards_per_reception_pre, yprr_pre, Power5_draft, Height, Weight, Arm, Hand, X40.Yard, Vertical, Broad, playedA_Yr)
 
 test_seasons <- test %>% 
-  select(player_game_count_draft, caught_percent_draft, drop_rate_draft, drops_draft, first_downs_draft, grades_hands_drop_draft, grades_hands_fumble_draft, grades_offense_draft, grades_hands_drop_draft, grades_hands_fumble_draft, grades_offense_draft, grades_pass_route_draft, pass_plays_draft, receptions_draft, route_rate_draft, routes_draft, targeted_qb_rating_draft, targets_draft, touchdowns_draft, yards_draft, yards_after_catch_draft, yards_after_catch_per_reception_draft, yards_per_reception_draft, yprr_draft, player_game_count_pre, caught_percent_pre, drop_rate_pre, drops_pre, first_downs_pre, grades_hands_drop_pre, grades_hands_fumble_pre, grades_offense_pre, grades_pass_route_pre, pass_plays_pre, receptions_pre, route_rate_pre, routes_pre, targeted_qb_rating_pre, targets_pre, touchdowns_pre, yards_pre, yards_after_catch_pre, yards_after_catch_per_reception_pre, yards_per_reception_pre, yprr_pre, Power5_draft, Height, Weight, Arm, Hand, X40.Yard, Vertical, Broad, playedA_Yr)
+  select(player_game_count_draft, caught_percent_draft, drop_rate_draft, drops_draft, first_downs_draft, grades_hands_drop_draft, grades_hands_fumble_draft, grades_offense_draft, grades_pass_route_draft, pass_plays_draft, receptions_draft, route_rate_draft, routes_draft, targeted_qb_rating_draft, targets_draft, touchdowns_draft, yards_draft, yards_after_catch_draft, yards_after_catch_per_reception_draft, yards_per_reception_draft, yprr_draft, player_game_count_pre, caught_percent_pre, drop_rate_pre, drops_pre, first_downs_pre, grades_hands_drop_pre, grades_hands_fumble_pre, grades_offense_pre, grades_pass_route_pre, pass_plays_pre, receptions_pre, route_rate_pre, routes_pre, targeted_qb_rating_pre, targets_pre, touchdowns_pre, yards_pre, yards_after_catch_pre, yards_after_catch_per_reception_pre, yards_per_reception_pre, yprr_pre, Power5_draft, Height, Weight, Arm, Hand, X40.Yard, Vertical, Broad, playedA_Yr)
+
+train <- train %>% 
+  select(grades_offense_draft, receptions_pre, yprr_pre, yards_pre, yards_draft, receptions_pre, yprr_pre, grades_offense_pre, Power5_draft, Height, Weight, Arm, Hand, X40.Yard, Vertical, Broad, playedA_Yr)
 
 snap_model_com_res  <- glm(playedA_Yr~., data=train, family = "binomial")
 summary(snap_model_com_res)
+
+cov_matrix <- vcov(snap_model_com_res)
+print(cov_matrix)
 
 snap_model_pre <- glm(playedA_Yr~., data=train_seasons, family = "binomial")
 summary(snap_model_pre)
@@ -1065,9 +1075,9 @@ auc_post <- auc(roc_post)
 #plot(roc_post, main=paste("ROC Curve (AUC=", round(auc_post, 2), ")"), print.auc=TRUE)
 
 plot(roc_all, main = "Played in the NFL ROC Curve (College & Combine Data)", xlab = "False Positive Rate", ylab = "True Positive Rate", col = "blue")
-lines(roc_pre, col = "red")
-lines(roc_post, col = "green")
-legend("bottomright",legend=c("Model 1","Model 2","Model 3"),pch=15,col=c("blue","red",'green'))
+lines(roc_pre, col = "green")
+lines(roc_post, col = "red")
+legend("bottomright",legend=c("All Stats Model","Totals Model","Seasons Model"),pch=15,col=c("blue","red","green"))
 ```
 
 ## Predicting NFL Success for Players in College
@@ -1108,6 +1118,7 @@ snap_model_coll_df <- college_data %>%
   #select(-c(player_id, player, position, team_name_draft, scoredTouchDown, playedA_Yr, decentStarter, eliteStarter, team_name_draft, team_name_pre, Power5_pre))
 ```
 
+
 ```{r snap-college model}
 set.seed(1)
 index<-createDataPartition(snap_model_coll_df$playedA_Yr,p=0.7,list=FALSE)
@@ -1138,20 +1149,17 @@ summary(snap_model_coll_post)
 
 ```{r conf-matrix college}
 pred_coll <- predict(snap_model_coll_res, test_coll, type = "response")
-pred_coll <- as.integer(pred_coll > 0.5)
-conf_snap_coll <- confusionMatrix(as.factor(pred_coll),test_coll$playedA_Yr)
+#conf_snap_coll <- confusionMatrix(as.factor(pred_coll),test_coll$playedA_Yr)
 
 pred_coll_2 <- predict(snap_model_coll_pre, test_seasons_coll, type = "response")
-pred_coll_2 <- as.integer(pred_coll_2 > 0.5)
-conf_snap_coll_2 <- confusionMatrix(as.factor(pred_coll_2),test_seasons_coll$playedA_Yr)
+#conf_snap_coll_2 <- confusionMatrix(as.factor(pred_coll_2),test_seasons_coll$playedA_Yr)
 
 pred_coll_3 <- predict(snap_model_coll_post, test_total_coll, type = "response")
-pred_coll_3 <- as.integer(pred_coll_3>0.5)
-conf_snap_coll_3 <- confusionMatrix(as.factor(pred_coll_3),test_total_coll$playedA_Yr)
+#conf_snap_coll_3 <- confusionMatrix(as.factor(pred_coll_3),test_total_coll$playedA_Yr)
 
-conf_snap_coll
-conf_snap_coll_2
-conf_snap_coll_3
+#conf_snap_coll
+#conf_snap_coll_2
+#conf_snap_coll_3
 ```
 
 ```{r ROC curves}
@@ -1178,8 +1186,5 @@ auc_coll_post <- auc(roc_coll_post)
 plot(roc_coll_all, main = "Played in the NFL ROC Curve (College Data)", xlab = "False Positive Rate", ylab = "True Positive Rate", col = "blue")
 lines(roc_coll_pre, col = "red")
 lines(roc_coll_post, col = "green")
-legend("bottomright",legend=c("Model 1","Model 2","Model 3"),pch=15,col=c("blue","red",'green'))
+legend("bottomright",legend=c("All Stats Model","Seasons Model","Totals Model"),pch=15,col=c("blue","red",'green'))
 ```
-
-
-
