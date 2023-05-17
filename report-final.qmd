@@ -47,17 +47,17 @@ college_data <- readRDS("college_data.rds")
 
 ## 1.1 Background Information
 
-Scouting is one of the most important aspects of roster construction in the NFL. For many years, traditional scouting methods have involved watching tape and evaluating players using the "eye-test". However, many analytical scouting methods are starting to complement these traditional scouting methods. Two of the biggest analytical
+Scouting is one of the most important aspects of roster construction in the NFL. For many years, traditional scouting methods have involved watching tape and evaluating players using the "eye-test". However, many analytical scouting methods are starting to complement these traditional scouting methods. Two of the biggest analytical.
+
+One of the hardest positions to scout in the NFL is the Wide Receiver (WR). Because teams use varying amounts of receivers and varying types of receivers, there is much that goes into being a good and productive WR in the NFL.
 
 ## 1.2 Aims
 
-The main goal of our project is to test which college statistics, NFL Combine results, and PFF grades are significant to predicting whether a player will make it to the NFL and be successful.
+The main goal of our project is to test which college statistics, NFL Combine results, and PFF grades are significant to predicting whether a player will make it to the NFL and be successful. Previous work to predict NFL success among college draft prospects has focused solely on college statistics and combine numbers. We hope to be one of the first groups to understand the impact that PFF college grades in addition to these scouting metrics have on predicting whether a player will make it to the league and whether they will be successful. Because PFF college grades only became available for Division 1 athletes in 2014 and we also want to use NFL statistics to measure success, we chose to only use NFL draft classes with two years of college data and two years of NFL data. This means we are only examining the 2016-2020 NFL draft classes as these are the only players we have enough professional and college data to examine.
 
 ## 1.3 Exploratory Data Analysis
 
-```{r}
-ggplot(college_data, aes(x = ))
-```
+
 
 
 # 2 Methods
