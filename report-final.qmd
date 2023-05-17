@@ -1,7 +1,7 @@
 ---
 title: "Predicting Success of NFL Proespects Using PFF and Combine Results"
 subtitle: "2023 DSAC Final Project"
-author: "Jack Miller, Namh Lahade, Caspian Svenson, "
+author: "Jack Miller, Namh Lahade, Matthew Paul, Caspian Svenson"
 format:
   pdf:
     fontsize: 11pt
@@ -47,13 +47,25 @@ college_data <- readRDS("college_data.rds")
 
 ## 1.1 Background Information
 
-Scouting is one of the most important aspects of roster construction in the NFL. For many years, traditional scouting methods have involved watching tape and evaluating players using the "eye-test". However, many analytical scouting methods are starting to complement these traditional scouting methods. Two of the biggest analytical.
+Scouting plays a vital role in the construction of NFL rosters, as teams are constantly trying to identify talented players who can contribute to their success on the field. Traditionally, scouts have relied on subjective evaluations based on game footage and the so-called "eye-test" to assess player potential. However, with the rise of analytics in sports, new methodologies are emerging to complement traditional scouting methods. In this project, we delve into the realm of statistical analysis to predict the success of NFL players, focusing specifically on the challenging task of evaluating Wide Receivers (WRs).
 
-One of the hardest positions to scout in the NFL is the Wide Receiver (WR). Because teams use varying amounts of receivers and varying types of receivers, there is much that goes into being a good and productive WR in the NFL.
+The role of a Wide Receiver presents unique challenges for scouts. With teams utilizing varying numbers and types of receivers in their offensive schemes, the skill set required to excel as a WR in the NFL varies heavily from player to player and offense to offense. Beyond possessing exceptional physical attributes, such as speed, agility, and catching ability, successful WRs must also demonstrate an innate understanding of route running, precise timing, and the ability to read and react to complex defensive coverages.
+
+To tackle this intricate evaluation process, we leverage a combination of data sources, including advanced player performance metrics from Pro Football Focus (PFF), results from the NFL Combine, and comprehensive college statistics also gathered from PFF. By integrating these datasets and employing statistical modeling techniques, we aim to develop a predictive framework that can assist scouts, coaches, and general managers in making informed decisions when selecting and developing WR talent.
+
+By harnessing the power of data-driven insights, we seek to enhance the efficacy of player evaluations and provide a more objective basis for assessing the potential impact of WR prospects in the NFL. Through this project, we aim to shed light on the key factors that contribute to a WR's success, bridging the gap between traditional scouting and analytical methodologies to enhance roster construction strategies in the evolving landscape of the NFL.
 
 ## 1.2 Aims
 
-The main goal of our project is to test which college statistics, NFL Combine results, and PFF grades are significant to predicting whether a player will make it to the NFL and be successful. Previous work to predict NFL success among college draft prospects has focused solely on college statistics and combine numbers. We hope to be one of the first groups to understand the impact that PFF college grades in addition to these scouting metrics have on predicting whether a player will make it to the league and whether they will be successful. Because PFF college grades only became available for Division 1 athletes in 2014 and we also want to use NFL statistics to measure success, we chose to only use NFL draft classes with two years of college data and two years of NFL data. This means we are only examining the 2016-2020 NFL draft classes as these are the only players we have enough professional and college data to examine.
+The primary objective of our project is to investigate the significance of college statistics, NFL Combine results, and Pro Football Focus (PFF) grades in predicting the likelihood of a player's success in the NFL. While previous research has predominantly focused on utilizing college statistics and combine numbers to forecast NFL success among college draft prospects, we aim to extend this analysis by incorporating PFF college grades, a relatively novel metric in the field of player evaluation.
+
+Our project seeks to contribute to the existing body of knowledge by examining the collective impact of college statistics, NFL Combine results, and PFF grades on the prediction of both a player's likelihood of making it to the NFL and their potential for success within the league. By considering a comprehensive set of scouting metrics, including PFF grades and NFL Combine and Pro Day statistics, we aim to gain insights into the relative importance of each factor in determining a player's NFL trajectory.
+
+To ensure the robustness and reliability of our findings, we have limited our analysis to NFL draft classes that provide a sufficient amount of data for comprehensive evaluation. Specifically, we have focused on the NFL draft classes spanning from 2016 to 2020. This selection enables us to leverage two years of college data, incorporating PFF college grades, and two years of NFL data, which will serve as our measure of success.
+
+By examining this specific timeframe, we not only capitalize on the availability of PFF college grades for Division 1 athletes since 2014 but also ensure that we have an adequate sample size of players with both comprehensive college and professional performance data. Through this approach, we aim to enhance our understanding of the combined predictive power of college statistics, NFL Combine results, and PFF grades in forecasting a player's journey to the NFL and their subsequent success within the league.
+
+Ultimately, our project endeavors to provide valuable insights that can inform decision-making processes for talent evaluation, player development, and roster construction strategies in the dynamic and competitive landscape of professional football.
 
 ## 1.3 Exploratory Data Analysis
 
