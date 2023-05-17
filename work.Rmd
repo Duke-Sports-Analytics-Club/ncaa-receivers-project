@@ -26,6 +26,7 @@ library(ggrepel)
 library(caret)
 library(pROC)
 library(car)
+library(randomForest)
 ```
 
 ### Load PFF Data
@@ -1003,8 +1004,6 @@ saveRDS(combine_cleaned, "combine_cleaned.rds")
 ```{r snap df}
 snap_model_com <- combine_cleaned %>% 
   select(-c(player_id, player, position, team_name_draft, scoredTouchDown, decentStarter, greatStarter, eliteStarter, Power5_pre, Team, team_name_pre, games_draft, Power5_pre, Date, Title))
-
-colSums(is.na(snap_model_com))
 ```
 
 ```{r snap model 1}
@@ -1029,16 +1028,18 @@ train <- train %>%
   select(grades_offense_draft, receptions_pre, yprr_pre, yards_pre, yards_draft, receptions_pre, yprr_pre, grades_offense_pre, Power5_draft, Height, Weight, Arm, Hand, X40.Yard, Vertical, Broad, playedA_Yr)
 
 snap_model_com_res  <- glm(playedA_Yr~., data=train, family = "binomial")
-summary(snap_model_com_res)
+#summary(snap_model_com_res)
 
 cov_matrix <- vcov(snap_model_com_res)
-print(cov_matrix)
+#print(cov_matrix)
 
 snap_model_pre <- glm(playedA_Yr~., data=train_seasons, family = "binomial")
-summary(snap_model_pre)
+#summary(snap_model_pre)
 
 snap_model_post <- glm(playedA_Yr~., data=train_total, family = "binomial")
-summary(snap_model_post)
+#summary(snap_model_post)
+
+rf_model_com <- randomForest(playedA_Yr ~., data = train)
 
 pred <- predict(snap_model_com_res, test, type = "response")
 #conf_snap <- confusionMatrix(as.factor(pred),test$playedA_Yr)
@@ -1048,6 +1049,9 @@ pred_2 <- predict(snap_model_pre, test_seasons, type = "response")
 
 pred_3 <- predict(snap_model_post, test_total, type = "response")
 #conf_snap_3 <- confusionMatrix(as.factor(pred_3),test_total$playedA_Yr)
+
+rf_preds <- predict(rf_model_com, newdata = test, type = "prob")
+rf_preds <- rf_preds[,2]
 
 #conf_snap
 #conf_snap_2
@@ -1074,10 +1078,15 @@ auc_post <- auc(roc_post)
 #auc_post
 #plot(roc_post, main=paste("ROC Curve (AUC=", round(auc_post, 2), ")"), print.auc=TRUE)
 
+# calculate ROC curve and AUC for RF
+roc_com_rf <- roc(test$playedA_Yr, rf_preds)
+auc_com_rf <- auc(roc_com_rf)
+
 plot(roc_all, main = "Played in the NFL ROC Curve (College & Combine Data)", xlab = "False Positive Rate", ylab = "True Positive Rate", col = "blue")
 lines(roc_pre, col = "green")
 lines(roc_post, col = "red")
-legend("bottomright",legend=c("All Stats Model","Totals Model","Seasons Model"),pch=15,col=c("blue","red","green"))
+lines(roc_com_rf, col = "yellow")
+legend("bottomright",legend=c("All Stats Model","Seasons Model","Totals Model", "RF Model"),pch=15,col=c("blue","green",'red','yellow'))
 ```
 
 ## Predicting NFL Success for Players in College
@@ -1120,6 +1129,9 @@ snap_model_coll_df <- college_data %>%
 
 
 ```{r snap-college model}
+snap_model_coll_df <- snap_model_coll_df %>% 
+  drop_na()
+
 set.seed(1)
 index<-createDataPartition(snap_model_coll_df$playedA_Yr,p=0.7,list=FALSE)
 train_coll<-snap_model_coll_df[index,]
@@ -1138,13 +1150,12 @@ test_seasons_coll <- test %>%
   select(player_game_count_draft, caught_percent_draft, drop_rate_draft, drops_draft, first_downs_draft, grades_hands_drop_draft, grades_hands_fumble_draft, grades_offense_draft, grades_hands_drop_draft, grades_hands_fumble_draft, grades_offense_draft, grades_pass_route_draft, pass_plays_draft, receptions_draft, route_rate_draft, routes_draft, targeted_qb_rating_draft, targets_draft, touchdowns_draft, yards_draft, yards_after_catch_draft, yards_after_catch_per_reception_draft, yards_per_reception_draft, yprr_draft, player_game_count_pre, caught_percent_pre, drop_rate_pre, drops_pre, first_downs_pre, grades_hands_drop_pre, grades_hands_fumble_pre, grades_offense_pre, grades_pass_route_pre, pass_plays_pre, receptions_pre, route_rate_pre, routes_pre, targeted_qb_rating_pre, targets_pre, touchdowns_pre, yards_pre, yards_after_catch_pre, yards_after_catch_per_reception_pre, yards_per_reception_pre, yprr_pre, Power5_draft, playedA_Yr)
 
 snap_model_coll_res  <- glm(playedA_Yr~., data=train_coll, family = "binomial")
-summary(snap_model_coll_res)
 
 snap_model_coll_pre <- glm(playedA_Yr~., data=train_seasons_coll, family = "binomial")
-summary(snap_model_coll_pre)
 
 snap_model_coll_post <- glm(playedA_Yr~., data=train_total_coll, family = "binomial")
-summary(snap_model_coll_post)
+
+rf_model_coll <- randomForest(playedA_Yr ~., data = train_coll)
 ```
 
 ```{r conf-matrix college}
@@ -1156,6 +1167,9 @@ pred_coll_2 <- predict(snap_model_coll_pre, test_seasons_coll, type = "response"
 
 pred_coll_3 <- predict(snap_model_coll_post, test_total_coll, type = "response")
 #conf_snap_coll_3 <- confusionMatrix(as.factor(pred_coll_3),test_total_coll$playedA_Yr)
+
+rf_predictions <- predict(rf_model_coll, newdata = test_coll, type = "prob")
+rf_predictions <- rf_predictions[,2]
 
 #conf_snap_coll
 #conf_snap_coll_2
@@ -1183,8 +1197,13 @@ auc_coll_post <- auc(roc_coll_post)
 #auc_coll_post
 #plot(roc_coll_post, main=paste("ROC Curve (AUC=", round(auc_coll_post, 2), ")"), print.auc=TRUE)
 
+# calculate ROC curve and AUC for RF
+roc_coll_rf <- roc(test_coll$playedA_Yr, rf_predictions)
+auc_coll_rf <- auc(roc_coll_rf)
+
 plot(roc_coll_all, main = "Played in the NFL ROC Curve (College Data)", xlab = "False Positive Rate", ylab = "True Positive Rate", col = "blue")
 lines(roc_coll_pre, col = "red")
 lines(roc_coll_post, col = "green")
-legend("bottomright",legend=c("All Stats Model","Seasons Model","Totals Model"),pch=15,col=c("blue","red",'green'))
+lines(roc_coll_rf, col = "yellow")
+legend("bottomright",legend=c("All Stats Model","Seasons Model","Totals Model", "RF Model"),pch=15,col=c("blue","red",'green', 'yellow'))
 ```
