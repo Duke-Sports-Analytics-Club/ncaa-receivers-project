@@ -1207,3 +1207,34 @@ lines(roc_coll_post, col = "green")
 lines(roc_coll_rf, col = "yellow")
 legend("bottomright",legend=c("All Stats Model","Seasons Model","Totals Model", "RF Model"),pch=15,col=c("blue","red",'green', 'yellow'))
 ```
+
+
+
+
+
+# RDS Files
+
+```{r}
+#| label: save-model-rds
+saveRDS(snap_model_com_res, file = "data/all_com_mod.rds")
+saveRDS(snap_model_pre, file = "data/season_com_mod.rds")
+saveRDS(snap_model_post, file = "data/totals_com_mod.rds")
+saveRDS(rf_model_com, file = "data/com_rf_mod.rds")
+
+saveRDS(snap_model_coll_res, file = "data/all_coll_mod.rds")
+saveRDS(snap_model_coll_pre, file = "data/season_coll_mod.rds")
+saveRDS(snap_model_coll_post, file = "data/totals_coll_mod.rds")
+saveRDS(rf_model_coll, file = "data/coll_rf_mod.rds")
+```
+
+```{r}
+#| label: save-test-rds
+saveRDS(test, file = "data/test.rds")
+saveRDS(test_seasons, file = "data/test_seasons.rds")
+saveRDS(test_total, file = "data/test_total.rds")
+
+
+saveRDS(test_coll, file = "data/test_coll.rds")
+saveRDS(test_seasons_coll, file = "data/test_seasons_coll.rds")
+saveRDS(test_total_coll, file = "data/test_total_coll.rds")
+```
