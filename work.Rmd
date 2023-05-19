@@ -1003,7 +1003,7 @@ saveRDS(combine_cleaned, "combine_cleaned.rds")
 
 ```{r}
 combine_cleaned = combine_cleaned %>%
-  mutate(Combine = if_else(Title == "Combine", 1, 0))
+  mutate(Combine = as.factor(if_else(Title == "Combine", 1, 0)))
 ```
 
 ```{r snap df}
@@ -1029,25 +1029,13 @@ train_seasons <- train %>%
 test_seasons <- test %>% 
   select(player_game_count_draft, caught_percent_draft, drop_rate_draft, drops_draft, first_downs_draft, grades_hands_drop_draft, grades_hands_fumble_draft, grades_offense_draft, grades_pass_route_draft, pass_plays_draft, receptions_draft, route_rate_draft, routes_draft, targeted_qb_rating_draft, targets_draft, touchdowns_draft, yards_draft, yards_after_catch_draft, yards_after_catch_per_reception_draft, yards_per_reception_draft, yprr_draft, player_game_count_pre, caught_percent_pre, drop_rate_pre, drops_pre, first_downs_pre, grades_hands_drop_pre, grades_hands_fumble_pre, grades_offense_pre, grades_pass_route_pre, pass_plays_pre, receptions_pre, route_rate_pre, routes_pre, targeted_qb_rating_pre, targets_pre, touchdowns_pre, yards_pre, yards_after_catch_pre, yards_after_catch_per_reception_pre, yards_per_reception_pre, yprr_pre, Power5_draft, Height, Weight, Arm, Hand, X40.Yard, Vertical, Broad, playedA_Yr, Combine)
 
-train <- train %>% 
-  select(grades_offense_draft, receptions_pre, yprr_pre, yards_pre, yards_draft, receptions_pre, yprr_pre, grades_offense_pre, Power5_draft, Height, Weight, Arm, Hand, X40.Yard, Vertical, Broad, playedA_Yr)
-
-snap_model_com_res  <- glm(playedA_Yr~., data=train, family = "binomial")
-#summary(snap_model_com_res)
-
-cov_matrix <- vcov(snap_model_com_res)
-#print(cov_matrix)
-
-snap_model_pre <- glm(playedA_Yr~. + Combine * X40.Yard, data=train_seasons, family = "binomial")
+snap_model_pre <- glm(playedA_Yr~. + Power5_draft*grades_offense_pre + Power5_draft*grades_offense_draft + Combine * X40.Yard, data=train_seasons, family = "binomial")
 #summary(snap_model_pre)
 
-snap_model_post <- glm(playedA_Yr~., data=train_total, family = "binomial")
+snap_model_post <- glm(playedA_Yr~. + Power5_draft*grades_offense + Combine * X40.Yard, data=train_total, family = "binomial")
 #summary(snap_model_post)
 
 rf_model_com <- randomForest(playedA_Yr ~., data = train)
-
-pred <- predict(snap_model_com_res, test, type = "response")
-#conf_snap <- confusionMatrix(as.factor(pred),test$playedA_Yr)
 
 pred_2 <- predict(snap_model_pre, test_seasons, type = "response")
 #conf_snap_2 <- confusionMatrix(as.factor(pred_2),test_seasons$playedA_Yr)
@@ -1063,13 +1051,6 @@ rf_preds <- rf_preds[,2]
 #conf_snap_3
 
 library(pROC)
-
-# calculate ROC curve and AUC for data 1
-roc_all <- roc(test$playedA_Yr, pred)
-auc_all <- auc(roc_all)
-#auc_all
-#plot(roc_all, main = "ROC Curve", xlab = "False Positive Rate", ylab = "True Positive Rate", col = "blue")
-#plot(roc_all, main=paste("ROC Curve (AUC=", round(auc_all, 2), ")"), print.auc=TRUE)
 
 # calculate ROC curve and AUC for data 2
 roc_pre <- roc(test_seasons$playedA_Yr, pred_2)
@@ -1087,15 +1068,10 @@ auc_post <- auc(roc_post)
 roc_com_rf <- roc(test$playedA_Yr, rf_preds)
 auc_com_rf <- auc(roc_com_rf)
 
-plot(roc_all, main = "Played in the NFL ROC Curve (College & Combine Data)", xlab = "False Positive Rate", ylab = "True Positive Rate", col = "blue")
-lines(roc_pre, col = "green")
-lines(roc_post, col = "red")
-lines(roc_com_rf, col = "yellow")
-legend("bottomright",legend=c("All Stats Model","Seasons Model","Totals Model", "RF Model"),pch=15,col=c("blue","green",'red','yellow'))
-```
-
-```{r}
- summary(snap_model_pre)
+plot(roc_pre, main = "Played in the NFL ROC Curve (College & Combine Data)", xlab = "False Positive Rate", ylab = "True Positive Rate", col = "blue")
+lines(roc_post, col = "green")
+lines(roc_com_rf, col = "red")
+legend("bottomright",legend=c("Seasons Model","Totals Model", "RF Model"),pch=15,col=c("blue","green",'red'))
 ```
 
 ## Predicting NFL Success for Players in College
@@ -1168,7 +1144,7 @@ rf_model_coll <- randomForest(playedA_Yr ~., data = train_coll)
 ```
 
 ```{r}
-summary(snap_model_coll_post)
+summary(snap_model_coll_pre)
 ```
 
 
