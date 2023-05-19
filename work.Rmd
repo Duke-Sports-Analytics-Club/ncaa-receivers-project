@@ -1207,12 +1207,10 @@ legend("bottomright",legend=c("All Stats Model","Seasons Model","Totals Model", 
 
 ```{r}
 #| label: save-model-rds
-saveRDS(snap_model_com_res, file = "data/all_com_mod.rds")
 saveRDS(snap_model_pre, file = "data/season_com_mod.rds")
 saveRDS(snap_model_post, file = "data/totals_com_mod.rds")
 saveRDS(rf_model_com, file = "data/com_rf_mod.rds")
 
-saveRDS(snap_model_coll_res, file = "data/all_coll_mod.rds")
 saveRDS(snap_model_coll_pre, file = "data/season_coll_mod.rds")
 saveRDS(snap_model_coll_post, file = "data/totals_coll_mod.rds")
 saveRDS(rf_model_coll, file = "data/coll_rf_mod.rds")
