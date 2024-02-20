@@ -27,6 +27,7 @@ library(caret)
 library(pROC)
 library(car)
 library(randomForest)
+library(combineR)
 ```
 
 ### Load PFF Data
@@ -74,12 +75,112 @@ stats_2020 <- read.csv("data_pff_receiver/2020_receiver_pff_data.csv") %>%
             franchise_id, fumbles, grades_pass_block, inline_rate, inline_snaps,
             interceptions, longest, pass_block_rate, pass_blocks, penalties, 
             slot_rate, slot_snaps, wide_rate, wide_snaps))
-combine_stats <- read.csv("combinedStats.csv")
+stats_2021 <- read.csv("data_pff_receiver/2021_receiver_pff_data.csv") %>% 
+  select(-c(avg_depth_of_target, avoided_tackles, contested_catch_rate, 
+            contested_receptions, contested_targets, declined_penalties, 
+            franchise_id, fumbles, grades_pass_block, inline_rate, inline_snaps,
+            interceptions, longest, pass_block_rate, pass_blocks, penalties, 
+            slot_rate, slot_snaps, wide_rate, wide_snaps))
+stats_2022 <- read.csv("data_pff_receiver/2022_receiver_pff_data.csv") %>% 
+  select(-c(avg_depth_of_target, avoided_tackles, contested_catch_rate, 
+            contested_receptions, contested_targets, declined_penalties, 
+            franchise_id, fumbles, grades_pass_block, inline_rate, inline_snaps,
+            interceptions, longest, pass_block_rate, pass_blocks, penalties, 
+            slot_rate, slot_snaps, wide_rate, wide_snaps))
+stats_2023 <- read.csv("data_pff_receiver/2023_receiver_pff_data.csv") %>% 
+  select(-c(avg_depth_of_target, avoided_tackles, contested_catch_rate, 
+            contested_receptions, contested_targets, declined_penalties, 
+            franchise_id, fumbles, grades_pass_block, inline_rate, inline_snaps,
+            interceptions, longest, pass_block_rate, pass_blocks, penalties, 
+            slot_rate, slot_snaps, wide_rate, wide_snaps))
+#combine_stats <- read.csv("combinedStats.csv")
 ```
+
+```{r}
+combine_data <- combine_data(start_year = 2015, end_year = 2023) %>% 
+  filter(position == "WR")
+```
+
 
 ### Stats by Draft Classes
 
 ```{r players by draft class}
+#2023 Stats of 2024 DC
+dc_2024 <- c("Malik Nabers", "Malik Washington", "Marvin Harrison Jr.", "Rome Odunze", "Joshua Cephus", "Troy Franklin", "Xavier Legette", "Tahj Washington", "Roman Wilson", "Drake Stoops", "Javon Baker", "Sam Pinckney", "Trevor Wilson", "Luke McCaffrey", "Tyler Brennan", "Malachi Corley", "Kamdyn Benjamin", "Jermaine Burton", "Ladd McConkey", "Ali Jennings", "Isaiah Williams", "Langston Anderson", "Lawrence Keys III", "Kaedin Robinson", "Brenden Rice", "Ainias Smith", "Steven McBride", "Jamari Thrash", "Jeff Foreman", "Ricky Pearsall", "Rashod Owens", "Elijhah Badger", "Jacob Cowing", "Jake Bailey", "Noah Smith", "Daniel Jackson", "Matt Salerno", "Jaelen Gill", "Braden Smith", "Treon Sibley", "Wyatt Wilson", "Logan Loya", "Ja'Lynn Polk", "Brennan Presley", "Jaylin Lane", "Jeshaun Jones", "Smoke Harris", "Courtney Jackson", "Khaleb Hood", "Brian Thomas Jr.", "Darrell Harding Jr.", "Johnny Wilson", "Jacoby Jones", "Marcus Rosemy-Jacksaint", "JaQuae Jackson", "Cam Johnson", "Dominic Gicinto", "Anthony Gould", "Adonai Mitchell", "Haakon Anderson", "Tayvion Robinson", "Theo Wease", "Jeremiah Hixon", "Terrell Vaughn", "Tyrone Howell", "Jha'Quan Jackson", "Reggie Brown", "Jacob Bernard", "Phillip Brooks", "Koby Drake", "Jonathan Davidson", "Lideatrick Griffin", "Bub Means", "Xavier Worthy", "Ryan Davis", "Bryce Kirtz", "Sam Wiglusz", "Rweha Munyagi Jr.", "Kobe Hudson", "Casey Washington", "Devin Carter", "Jalen McMillan", "Ben Rollins", "Raymond Niro III", "Cornelius Johnson", "Dayton Wade", "Keon Coleman", "Xzavier Henderson", "Tejhaun Palmer", "Perry Carter", "Odieu Hilaire", "Erik Brooks", "Deshon Stoudemire", "Montorie Foster Jr.", "Jake McConnachie", "Gunner Gentry", "Amad Anderson Jr.", "Jalen Jackson", "E.J. Williams", "Lincoln Victor", "John Humphreys", "Tauskie Dove", "Devaughn Vele", "Tanner Knue", "Nick Nash", "Abdul Janneh", "Jesiah Irish", "Eddie Lewis", "Kacper Rutkiewicz", "Tykee Ogle-Kellogg", "Devontez Walker", "Xavier Weaver", "Bryce Childress", "Michael Brown Stephens", "Genson Hooper Price", "Giles Jackson", "Key'Shawn Smith", "Jalon Calhoun", "Ryan O'Keefe", "Dalevon Campbell", "Adam Beale", "Evan Prater", "Warren Thompson", "Corey Crooms", "Wyatt Wieland", "Roderic Burns", "Leon Johnson III", "Mac Dalena", "Jakarius Caston", "DeMeer Blankumsee", "Bradley Rozner", "Jordan Kerley", "Xavier White", "Christian Dremel", "Dee Williams", "Ife Adeyi", "Da'Quan Felton", "Austin Bolt", "Taj Davis", "Jordan Whittington", "Phoenix Sproles", "Jaren Randle", "Spencer Curtis", "Darius Lassiter", "Luke Floriea", "Dane Kinamon", "Kyre Duplessis", "Kyren Lacy", "Koby Duru", "Al'vonte Woodard", "Taylor Morin", "A.J. Henning", "Peter LeBlanc", "Stephen Gosnell", "Allan Houston", "Chase Lane", "Deon Fountain", "Dalvin Smith", "Hamp Greene", "Ryan Marquez", "Latreal Jones", "Daniel Jackson", "Andrew Erickson", "Deuce Spann", "Devin Voisin", "Ja'Khi Douglas", "Josiah Norwood", "Brian Hightower", "Elijah Smoot", "Tre Mosley", "Adam Jones", "Stefan Cobbs", "Leroy Thomas", "Malachai Jones", "Boobie Curry", "Brett Buckman", "Cade McDonald", "Dante Wright", "Tyler Harrell", "Jaylon Barden", "Billy Kemp IV", "Noah Frith", "Marcus Washington", "Darryle Simmons", "Quinton Lane", "Jonah Panoke", "Jadon Jackson", "Charles Ross", "Caleb McMillan", "Mark Pope", "Erik Pizarro", "Jaylon Robinson", "Payton Mangrum")
+
+dc_2024_2 <- c("Ja'Cyais Credle", "Kaleb Carter", "Cedric Tillman", "Kearis Jackson", "Omari Kelly", "Donavon Greene", "Nick Mardner", "Chris Autman-Bell", "Jalen Preston", "Jayshon Jackson", "Kaden Prather", "Jayden Reed", "Demario Douglas", "Cameron Ross", "Andrew Sowinski", "Dawson Menegatti", "Isaiah Washington", "Jalen Bracey", "Ahmarean Brown", "Dominick Blaylock", "Ahmad Edwards", "Joseph Scates", "Tru Edwards", "Thomas Pannunzio", "Xavier Johnson", "Justin Robinson", "Dequece Carter", "Ramel Keyton", "Jaden Walley", "P.J. Wells", "Cadarrius Thompson", "Jeremiah Webb", "Randy Fields Jr.", "Kyle Ford", "Billy Bowens", "Daniel George", "Zyell Griffin", "Sean Shaw Jr.", "Dalen Cambre", "Darion Williamson", "Mycah Pittman", "Kentron Poitier", "Quaterrius Tolbert", "Austin Osborne", "Tyrese Chambers", "Talik Keaton", "Dino Tomlin", "Julian Ortega-Jones", "Monroe Young", "Troy Omeire", "Je'Quan Burton", "Freddie Roberson", "Jayden Umbarger", "Anthony Queeley", "John Jackson III", "Dimitri Stanley", "Javon Antonio", "Isaac Smith", "Jeremiah Gradowitz", "Shane Hooks", "Devin Maddox", "Hamze El-Zayat", "Jack Kennedy", "Chris Bellamy", "Cole Harrity", "Dee Wiggins", "Matt Sykes", "Kaylon Horton", "Dane Olson", "Jamarye Joiner", "Ryan Cragun", "Bryce Farrell", "Hampton Earle", "Seth Porter", "Davis Patterson", "Melquan Stovall", "Zakhari Franklin", "DJ England-Chisolm", "Jarrad Baker", "Ay'Jaun Marshall", "Joe Wilkins Jr.", "Camari Williams", "Isaah Crocker", "T.J. Jones", "Geordon Porter", "Beau Corrales", "Peyton Sawyer", "Chris Autman-Bell", "Javon Ivory", "Michael Bittner", "Isaac Ross", "Aidan Bitter", "Jarett Garner", "Nick Mardner", "Jack Coulson", "Isaiah Hamilton", "Jontavis Robertson", "Sean Brown", "Kevens Clercius", "Nico Ragaini", "Xavier Guillory", "Jsi Hatfield", "Trent Whittemore", "Jovoni Johnson-McCray", "Jehlani Galloway", "D'Marcus Adams", "Shea Whiting", "Giovanni Sanders", "BJ Alexander", "Jalen Knox", "Keyon Lesane", "Veshe Daniyan", "Kordell David", "Rykem Laney", "Colin O'Connor", "Miles Marshall", "Tamatoa Mokiao-Atimalala", "Steven Fiso", "Marcus Rogers", "Alante Brown", "Emery Simmons")
+
+#2022 Stats of 2023 DC
+dc_2023 <- c("Puka Nacua", "Xavier Hutchinson", "Josh Downs", "Kris Thornton", "Rashee Rice", "Demario Douglas", "Tank Dell", "Charlie Jones", "Elijah Cooks", "Trey Palmer", "A.T. Perry", "Trea Shropshire", "Jake Bobo", "Jordan Addison", "Jared Wayne", "Tyler Hudson", "Keylon Stokes", "Jonathan Mingo", "RaJae' Johnson", "Nikko Remigio", "Jalin Hyatt", "Malik Heath", "Ronnie Bell", "Michael Jefferson", "Marvin Mims Jr.", "Isaiah Winstead", "Quentin Johnston", "Jason Brownlee", "Parker Washington", "Zay Flowers", "C.J. Johnson", "Justin Shorter", "Antoine Green", "Jalen Cropper", "Justin Marshall", "Gavin Holmes", "Shemar Thornton", "Zane Pope", "Mac Hippenhammer", "Cole Tucker", "Shocky Jacques-Louis", "Brian Cobbs", "Shae Wyatt", "Barrett Banister", "Tyler Scott", "Kazmeir Allen", "Keytaon Thompson", "Grant DuBose", "Adonicas Sanders", "Matt Landers", "Pokey Wilson", "Malik Knowles", "Michael Wilson", "Jayshon Jackson", "Jose Barbon", "Champ Flemings", "Taye Barber", "Jacob Copeland", "Robert Ferrel", "Jayden Reed", "Jaylen Dixon", "Jadon Haselwood", "Bryce Ford-Wheaton", "Renard Bell", "Tyjon Lindsey", "Duece Watts", "Bryan Thompson", "Tre Tucker", "Jalen Wayne", "Cedric Tillman", "Devaughn Cooper", "Marcell Barbee", "D.J. Matthews Jr.", "James Bostic", "Reynaldo Flores", "Daewood Davis", "Quian Williams", "Amare Jones", "Jeremy Singleton", "Sean Ryan", "Dylan Drummond", "Thayer Thomas", "KeSean Carter", "Tre'Shaun Harrison", "Gabriel Rogers", "Sam James", "Chase Cota", "Aron Cruickshank", "Mitchell Tinsley", "Joseph Ngata", "Terrance Greene Jr.", "Kade Warner", "Isaiah Esdale", "Jesse Matthews", "Victor Tucker", "Zion Bowens", "Izaiah Gathings", "Nick Williams", "Tyrell Shavers", "Jaray Jenkins", "Derius Davis", "Kayshon Boutte", "Brycen Tremayne", "Elijah Higgins", "Carlos Carriere", "JuanCarlos Santana", "Cameron Sullivan-Brown", "Jevin Frett", "Justice Powers", "Jalen Brooks", "Rakim Jarrett", "B.J. Casteel", "Hassan Beydoun", "Shameen Jones", "Braydon Johnson", "Braden Lenzy", "Devin Ravenel", "Te'Vailance Hunt", "Yusuf Ali", "Yo'Heinz Tyler", "Darryl Jones", "Dontayvion Wicks", "E.J. Jenkins", "Javen Banks", "CJ Lewis", "Amir Abdur-Rahman", "Rontavius Groves", "Justin McGriff", "Malachi Carter", "Jaylen Hall", "Daniel Arias", "Dontay Demus Jr.", "Isaiah Epps", "Caleb Snead", "Jalen Walker", "James Phillips", "Shedrick Jackson", "R.J. Sneed II", "Donny Navarro III")
+
+#2021 Stats of 2022 DC
+dc_2022 <- c("Jerreth Sterns", "Deven Thompkins", "Wan'Dale Robinson", "Makai Polk", "Jahan Dotson", "Josh Johnson", "David Bell", "Jalen Tolbert", "John Metchie III", "Skyy Moore", "Calvin Turner Jr.", "Calvin Austin III", "Charleston Rambo", "Drake London", "Tay Martin", "Stanley Berryhill III", "Jack Sorenson", "Jameson Williams", "Khalil Shakir", "Jaquarii Roberson", "Romeo Doubs", "Kalil Pimpleton", "Travell Harris", "Garrett Wilson", "Chris Olave", "Jaivon Heiligh", "Ty Fryfogle", "Calvin Jackson Jr.", "Tyquan Thornton", "Tyler Snead", "Corey Sutton", "Dontario Drummond", "Kyle Philips", "Chris Pierce", "Bo Melton", "Emeka Emezie", "Justin Garrett", "Treylon Burks", "Derek Wright", "Thomas Hennigan", "Alec Pierce", "Kevin Austin Jr.", "Velus Jones Jr.", "Justin Hall", "Kwamie Lassiter II", "Brandon Bowling", "Stephon Robinson Jr.", "Mike Harley Jr.", "JaCorey Sullivan", "Malik Williams", "Jared Wyatt", "Britain Covey", "Samori Toure", "Jalen Nailor", "Nykeim Johnson", "Tre Turner", "Erik Ezukanma", "Keshunn Abram", "Reggie Roberson Jr.", "Audie Omotosho", "Danny Gray", "Justyn Ross", "Tyrice Richie", "Jackson Anthrop", "Kaylon Geiger", "Brandon Johnson", "Jarrin Pierce", "Neil Pau'u", "Kyric McGowan", "Ra'Shaun Henry", "Demetris Robertson", "Keke Chism", "Bryce Singleton", "Trevon Bradford", "Kekoa Crawford", "Randle Jones", "Keric Wheatfall", "Willie Johnson", "Dominic Johnson", "Josh Ali", "Donald Stewart", "Slade Bolden", "Jimmy Marshall", "Kendric Pryor", "Brandon Robinson", "Danny Davis III", "Trevon Clark", "Jake Herslow", "Braylon Sanders", "Michael Woods II", "Devon Williams", "Octavius Evans", "Ezra Naylor II", "Elijah Kothe", "Kevin Shaa", "Kameron Brown", "Taysir Mack", "Andrew Parchment", "Jared Sparks", "Cameron Odom", "Michael Young Jr.", "Drew Estrada", "Andre Bodison", "Jared Smart", "CJ Windham", "Jaetavian Toles", "Jahcour Pearson", "Ayden Eberhardt", "JaVonta Payton")
+
+dc2022_stats2021 <- stats_2021 %>% 
+  filter(player %in% dc_2022 & position == "WR") %>% 
+  left_join(stats_2020, by = c("player", "player_id", "position"), 
+            suffix = c("_draft", "_pre")) |>
+  rowwise() %>% 
+  mutate(total_yards = yards_draft + yards_pre,
+         total_receptions = sum(c(receptions_draft + receptions_pre), na.rm=TRUE),
+         total_targets = sum(c(targets_draft + targets_pre)),
+         total_catch_percent = total_receptions / total_targets,
+         total_routes = sum(c(routes_draft + routes_pre), na.rm = TRUE),
+         total_target_percent = total_targets / total_routes,
+         total_route_percent = total_routes / sum(c(pass_plays_draft + pass_plays_pre), na.rm = TRUE),
+         total_drop_percent = sum(c(drops_draft+drops_pre), na.rm = TRUE) / sum(c(targets_draft+targets_pre), na.rm = TRUE),
+         total_yac = sum(c(yards_after_catch_per_reception_draft + yards_after_catch_per_reception_pre), na.rm=TRUE),
+         total_yprr = total_yards / total_routes,
+         total_first_downs = sum(c(first_downs_draft+first_downs_pre), na.rm = TRUE),
+         total_yards_per_reception = total_yards / total_receptions,
+         total_yards_after_catch_per_reception = total_yac / total_receptions,
+         total_player_game_count = sum(c(player_game_count_draft+player_game_count_pre), na.rm = TRUE),
+         total_touchdowns = sum(c(touchdowns_draft+touchdowns_pre), na.rm = TRUE),
+         total_yards_per_game = total_yards / total_player_game_count, 
+         total_yards_after_catch_per_game = total_yac / total_player_game_count,
+         total_targets_per_game = total_targets / total_player_game_count, 
+         games_draft = (player_game_count_draft / sum(c(player_game_count_draft + player_game_count_pre), na.rm = TRUE)),
+         grades_hands_drop = sum(c((games_draft*grades_hands_drop_draft)+((1-games_draft)*grades_hands_drop_pre)), 
+                                 na.rm = TRUE),
+         grades_hands_fumble = sum(c((games_draft*grades_hands_fumble_draft)+((1-games_draft)*grades_hands_fumble_pre)),
+                                   na.rm = TRUE),
+         grades_offense = sum(c((games_draft*grades_offense_draft)+((1-games_draft)*grades_offense_pre)), na.rm = TRUE),
+         grades_pass_route = sum(c((games_draft*grades_pass_route_draft)+((1-games_draft)*grades_pass_route_pre)), 
+                                 na.rm = TRUE))
+
+pro_2023 <- read_csv("data/2023_pro_stats.csv")
+pro_2022 <- read_csv("data/2022_pro_stats.csv")
+dc_2022_pro_stats <- pro_2022 %>% 
+  inner_join(pro_2023, by = c("player", "position", "player_id"), suffix = c("1yr", "2yr")) %>% 
+  select(-c(grades_pass_block1yr, grades_pass_block2yr)) |>
+  rowwise() %>% 
+  mutate(total_yards = yards1yr + yards2yr,
+         total_receptions = sum(c(receptions1yr + receptions2yr), na.rm=TRUE),
+         total_targets = sum(c(targets1yr + targets2yr)),
+         total_catch_percent = total_receptions / total_targets,
+         total_routes = sum(c(routes1yr + routes2yr), na.rm = TRUE),
+         total_target_percent = total_targets / total_routes,
+         total_route_percent = total_routes / sum(c(pass_plays1yr + pass_plays2yr), na.rm = TRUE),
+         total_drop_percent = sum(c(drops1yr+drops2yr), na.rm = TRUE) / sum(c(targets1yr+targets2yr), na.rm = TRUE),
+         total_yac = sum(c(yards_after_catch_per_reception1yr + yards_after_catch_per_reception2yr), na.rm=TRUE),
+         total_yprr = total_yards / total_routes,
+         total_first_downs = sum(c(first_downs1yr+first_downs2yr), na.rm = TRUE),
+         total_yards_per_reception = total_yards / total_receptions,
+         total_yards_after_catch_per_reception = total_yac / total_receptions,
+         total_player_game_count = sum(c(player_game_count1yr+player_game_count2yr), na.rm = TRUE),
+         total_touchdowns = sum(c(touchdowns1yr+touchdowns2yr), na.rm = TRUE),
+         total_yards_per_game = total_yards / total_player_game_count, 
+         total_yards_after_catch_per_game = total_yac / total_player_game_count,
+         total_targets_per_game = total_targets / total_player_game_count, 
+         games2yr = (player_game_count2yr / sum(c(player_game_count2yr + player_game_count1yr), na.rm = TRUE)),
+         grades_hands_drop = sum(c((games2yr*grades_hands_drop2yr)+((1-games2yr)*grades_hands_drop1yr)), 
+                                 na.rm = TRUE),
+         grades_hands_fumble = sum(c((games2yr*grades_hands_fumble2yr)+((1-games2yr)*grades_hands_fumble1yr)),
+                                   na.rm = TRUE),
+         grades_offense = sum(c((games2yr*grades_offense2yr)+((1-games2yr)*grades_offense1yr)), na.rm = TRUE),
+         grades_pass_route = sum(c((games2yr*grades_pass_route2yr)+((1-games2yr)*grades_pass_route1yr)), 
+                                 na.rm = TRUE))
+
 #2020 Stats of 2021 DC
 dc_2021 <- c("Ja'Marr Chase", "DeVonta Smith" , "Elijah Moore" , "Dax Milne",
              "Jaelon Darden" , "Austin Trammell" , "Marlon Williams" , 
@@ -922,7 +1023,7 @@ full_data$Hand[is.na(full_data$Hand)] <- mean(full_data$Hand,na.rm=TRUE)
 ```
 
 ```{r}
-all_college_data = rbind(dc2016_stats2015, dc2017_stats2016, dc2018_stats2017, dc2019_stats2018, dc2020_stats2019, dc2021_stats2020) %>%
+all_college_data = rbind(dc2016_stats2015, dc2017_stats2016, dc2018_stats2017, dc2019_stats2018, dc2020_stats2019, dc2021_stats2020, dc2022_stats2021) %>%
   drop_na(team_name_pre) %>% 
   mutate(Power5_draft = as.factor(if_else(team_name_draft %in% power5, 1, 0)),
          Power5_pre = as.factor(if_else(team_name_pre %in% power5, 1, 0)))
@@ -1024,10 +1125,10 @@ test_total <- test %>%
    select(-c(player_game_count_draft, caught_percent_draft, drop_rate_draft, drops_draft, first_downs_draft, grades_hands_drop_draft, grades_hands_fumble_draft, grades_offense_draft, grades_pass_route_draft, pass_plays_draft, receptions_draft, route_rate_draft, routes_draft, targeted_qb_rating_draft, targets_draft, touchdowns_draft, yards_draft, yards_after_catch_draft, yards_after_catch_per_reception_draft, yards_per_reception_draft, yprr_draft, player_game_count_pre, caught_percent_pre, drop_rate_pre, drops_pre, first_downs_pre, grades_hands_drop_pre, grades_hands_fumble_pre, grades_offense_pre, grades_pass_route_pre, pass_plays_pre, receptions_pre, route_rate_pre, routes_pre, targeted_qb_rating_pre, targets_pre, touchdowns_pre, yards_pre, yards_after_catch_pre, yards_after_catch_per_reception_pre, yards_per_reception_pre, yprr_pre))
   
 train_seasons <- train %>% 
-  select(player_game_count_draft, caught_percent_draft, drop_rate_draft, drops_draft, first_downs_draft, grades_hands_drop_draft, grades_hands_fumble_draft, grades_offense_draft, grades_pass_route_draft, pass_plays_draft, receptions_draft, route_rate_draft, routes_draft, targeted_qb_rating_draft, targets_draft, touchdowns_draft, yards_draft, yards_after_catch_draft, yards_after_catch_per_reception_draft, yards_per_reception_draft, yprr_draft, player_game_count_pre, caught_percent_pre, drop_rate_pre, drops_pre, first_downs_pre, grades_hands_drop_pre, grades_hands_fumble_pre, grades_offense_pre, grades_pass_route_pre, pass_plays_pre, receptions_pre, route_rate_pre, routes_pre, targeted_qb_rating_pre, targets_pre, touchdowns_pre, yards_pre, yards_after_catch_pre, yards_after_catch_per_reception_pre, yards_per_reception_pre, yprr_pre, Power5_draft, Height, Weight, Arm, Hand, X40.Yard, Vertical, Broad, playedA_Yr, Combine)
+  select(player_game_count_draft, drop_rate_draft, drops_draft, grades_hands_drop_draft, grades_offense_draft, pass_plays_draft, receptions_draft, routes_draft, targeted_qb_rating_draft, targets_draft, yards_draft, yards_after_catch_per_reception_draft, yards_per_reception_draft, yprr_draft, caught_percent_pre, drop_rate_pre, drops_pre, grades_hands_drop_pre, grades_offense_pre, targets_pre, yards_pre, yards_after_catch_per_reception_pre, yards_per_reception_pre, yprr_pre, Power5_draft, Hand, X40.Yard, Vertical, playedA_Yr, Combine)
 
 test_seasons <- test %>% 
-  select(player_game_count_draft, caught_percent_draft, drop_rate_draft, drops_draft, first_downs_draft, grades_hands_drop_draft, grades_hands_fumble_draft, grades_offense_draft, grades_pass_route_draft, pass_plays_draft, receptions_draft, route_rate_draft, routes_draft, targeted_qb_rating_draft, targets_draft, touchdowns_draft, yards_draft, yards_after_catch_draft, yards_after_catch_per_reception_draft, yards_per_reception_draft, yprr_draft, player_game_count_pre, caught_percent_pre, drop_rate_pre, drops_pre, first_downs_pre, grades_hands_drop_pre, grades_hands_fumble_pre, grades_offense_pre, grades_pass_route_pre, pass_plays_pre, receptions_pre, route_rate_pre, routes_pre, targeted_qb_rating_pre, targets_pre, touchdowns_pre, yards_pre, yards_after_catch_pre, yards_after_catch_per_reception_pre, yards_per_reception_pre, yprr_pre, Power5_draft, Height, Weight, Arm, Hand, X40.Yard, Vertical, Broad, playedA_Yr, Combine)
+  select(player_game_count_draft, drop_rate_draft, drops_draft, grades_hands_drop_draft, grades_offense_draft, pass_plays_draft, receptions_draft, routes_draft, targeted_qb_rating_draft, targets_draft, yards_draft, yards_after_catch_per_reception_draft, yards_per_reception_draft, yprr_draft, caught_percent_pre, drop_rate_pre, drops_pre, grades_hands_drop_pre, grades_offense_pre, targets_pre, yards_pre, yards_after_catch_per_reception_pre, yards_per_reception_pre, yprr_pre, Power5_draft, Hand, X40.Yard, Vertical, playedA_Yr, Combine)
 
 snap_model_pre <- glm(playedA_Yr~. + Power5_draft*grades_offense_pre + Power5_draft*grades_offense_draft + Combine * X40.Yard, data=train_seasons, family = "binomial")
 #summary(snap_model_pre)
@@ -1073,6 +1174,7 @@ lines(roc_post, col = "green")
 lines(roc_com_rf, col = "red")
 legend("bottomright",legend=c("Seasons Model","Totals Model", "RF Model"),pch=15,col=c("blue","green",'red'))
 ```
+
 
 ## Predicting NFL Success for Players in College
 

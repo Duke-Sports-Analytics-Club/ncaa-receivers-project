@@ -49,12 +49,45 @@ The main goal of our project is to test which college statistics, NFL Combine re
 
 #### College Model
 
-Our first model examines NFL prospects' college statistics and PFF grades in trying to predict whether they will make it to the league.
+Our first model examines college PFF grades and college statistics to predict whether or not a wide receiver prospect will make it to the league. The purpose of this model was to identify the variables most indicative of whether college receiver prospects successfully jump from college to pro and earn opportunities within the NFL. Among the numerous available college statistics and PFF grades, we wanted to gain insight into what specific statistics carry the most weight for NFL decision makers when drafting or signing receiver prospects.
 
+Within the context of this model, logging a single snap in an NFL game meant a player was classified as having made it to the NFL. This was tracked by a binary variable that we created, with 1's indicating the player had successfully made it to the NFL. In building our model, we decided to use this as the binary response variable, and our various college statistics and PFF grades as the predictors. We started by applying this response variable to four slightly different models as we tried to identify the specific function and range of data that would allow for the best predictions:
+
+- One model used logistic regression on a data frame with statistics and PFF grades from each player’s final season in college (753 observations)
+- One model used logistic regression on a data frame with total statistics and PFF grades from each player’s final two seasons in college (753 observations)
+- One model used logistic regression on a data frame with all the statistics and PFF grades from each players individual college season, as well as their totals from the final two seasons (753 observations)
+- One model used a random forest function on a data frame with all the statistics and PFF grades from each players individual college season, as well as their totals from the final two seasons (753 observations)
+
+We were aware of the fact that we were fitting complex models that incorporated a large number of predictors, and that we didn't have a huge number of observations. We understood that this introduced the potential for a lack of randomness in our data and perhaps overfitting. This was why we decided to fit one of our models with a random forest function. We hoped this might introduce more randomness to our data and decrease the effects that any outliers might have on our models.
+
+Our next step was to identify which of these four models was best for predicting whether a prospect made it to the NFL. Once we found this model, we would be able to narrow in on the specific college statistics or PFF grades that most heavily influence these predictions. To identify the best model we started by using each one to predict the response variable for our three different test data frames. We then calculated the Receiver Operating Characteristic (ROC) curves and Area Under the Curve (AUC) values for each of the predictions. 
+
+INSERT ROC CURVE PLOT
+
+By plotting the ROC for each model and visualizing the AUC, we were able to see that the logistic regression model using the total statistics from the final two years of college for each prospect performed the best. This model had the largest AUC, meaning that it was most effective at successfully predicating instances of players making it to the league and minimizing instances of false predictions.
+Now that we found our best initial model for predicating opportunities in the NFL based on college statistics and PFF grades, we wanted to maximize the effectiveness of this model. This meant removing any variables from our model with high p-values, as they likely indicate that they were not significantly associated with prospects playing a snap in the NFL. These variables included number of targets, target percentage, targets per game, number of yards, number of receptions, number of games played, PFF grades on plays running routes, and the percentage of plays running routes. Improving our model also meant removing variables with insignificant coefficient values, as this indicates that increases in the value of this the variable had a very marginal effect on the percent chance of making it to the NFL. Variables that were cut because of low coefficient values included the number of first downs gained, and PFF grades on fumbling.
 
 #### Combine Model
 
-Our second model also examines NFL prospects' college statistics and PFF grades in trying to predict whether they will make it to the league. However, we also include Combine and Pro Day statistics for players who either attended the NFL Combine or have available Pro Day times.
+Our second model also examines college PFF grades and college statistics to predict whether or not a wide receiver prospect will make it to the league. However, in this model we also include Combine and Pro Day statistics for players who either attended the NFL Combine or have available Pro Day times. Every draft cycle, when grading prospects, the fans and media seem to place significant weight on combine drills and measurables like the 40-yard dash. We hoped that this model would provide insight into the extent at which NFL decision makers truly value these measurables when drafting or signing players.
+The aim here was to identify the combine statistics that best predict whether a prospect will get a shot in the NFL. In building our model with combine data, we again used the variable indicating whether or not a prospect logged a snap in the NFL as our binary response variable. All of the same college statistics and PFF grades from our initial previous models were included as predictors, but with the addition of combine and pro day statistics.
+Only a portion of college prospects get invited to the combine or have official public pro day statistics. This made the data frames used to train these models much smaller than the data frames from our previous models (753 vs 187 observations). For one reason or another, some of these players may not have completed every drill or measurement at the combine or at their pro day, resulting in NA values. These NA values would corrupt our models. To address this we decided to fill in any NA values with the mean of that specific drill or measurement. This would protect against the harm of NA values while allowing us to include players who didn't do every drill or measurement.
+
+This time, we began with three initial models, each one with differing functions and ranges in statistics:
+
+- One model used logistic regression on a data frame with combine data and college statistics and PFF grades from each player’s final two seasons (187 observations)
+- One model used logistic regression on a data frame with combine data and PFF grades and total college statistics from each players entire college career (187 observations)
+- One model used a random forest function on a data frame with combine data and all the college statistics and PFF grades from each individual season, as well as the totals from the final two seasons (187 observations)
+
+We anticipated that the random forest model might perform the best due to the smaller number of observations in the data used for these models. By randomly sampling the data with replacement, we expected this model to introduce more randomness and combat the issues presented by regression models that are trained on smaller amounts of data. We tested our models by once again calculating the Receiver Operating Characteristic (ROC) curves and plotting them to visualize the Area Under the Curve (AUC) values for each model.
+
+INSERT ROC CURVE PLOT
+
+While our hypothesis proved correct, the difference in performance between the random forest model and the logistic regression models was minimal. The random forest model had the largest AUC, but not by much. It had a better false positive rate than the logistic regression models, meaning that it would make less predictions about prospects making it to the NFL that would turn out to be false. However, the true positive rate, meaning how often the model successfully predicated a prospect would make it to the NFL, was similar for the random forest and logistic regression models. Additionally, random forest models are much harder to interpret than logistic regression models. This would make it very hard to identify the specific variables (college production, combine statistics, etc.) that were most or least indicative of making it to the NFL. For these reasons, we decided to select one of the two logistic regression models for our combine model. 
+
+Both logistic regression models performed similarly. However, the one with statistics from just the final two seasons (compared to total statistics from college) had a higher true positive rate. We decided that it made the most sense to prioritize the true positive rate over the false positive rate. In our eyes, the benefit of projecting a player and hitting is greater than the harm of projecting a player and missing. For this reason, we selected the logistic regression model with combine statistics and college statistics from the final season two seasons as our combine model. 
+After selecting our combine model, we once again performed backward selection to eliminate insignificant variables and maximize the effectiveness of the model. During this process we removed 24 variables and successfully improved our model, ultimately lowering the AIC from 172 to 160. The combine related variables that were removed included the broad jump, arm length, weight, and height.
+
 
 #### NFL Model
 
@@ -72,9 +105,30 @@ Our final model only examines
 
 ## 3.1 Predicting Who Will Play in the NFL
 
+Four variables from our college model stood out as being statistically significant and having notable effects on the likelihood of college prospects making it to the NFL:
+* Keep in mind that for each of the stats from our college model, they represent the total across a player’s final two seasons in college
 
+- Our binary Power 5 conference variable had a coefficient value of 1.389. Exponentiating this coefficient gives us an odds ratio of approximately e^1.389 ≈ 4. This means, according to our model, that players coming from Power 5 schools have around four times higher odds of playing a snap in the NFL. 
+- Our variable for average yards after catch per reception had a coefficient value of 0.822. Exponentiating this coefficient gives an odds ratio of approximately e^0.822 ≈ 2.276. This means, according to our model, that for every yard increase in average yards after catch, the odds of playing a snap in the NFL increase by around 2.276 times.
+- Our variable for average yards per reception had a coefficient value of 0.278. Exponentiating this coefficient gives an odds ratio of approximately e^0.278 ≈ 1.320. This means, according to our model, that for every yard increase in yards per reception, the odds of playing a snap in the NFL increase by around 1.320 times.
+- Our variable for college PFF offensive grades had a coefficient value of 0.169. Exponentiating this coefficient gives an odds ratio of approximately e^0.169 ≈ 1.183. This means, according to our model, that for every unit increase of 1 in a college PFF grade, the odds of playing a snap in the NFL increase by around 1.183 times.
 
+Our combine model, which included the same variables as our college model plus combine statistics, continued to confirm the significance of average yards after catch, yards per reception, and PFF grades in predicating whether a player will make the NFL: 
 
+* Keep in mind that for each of the stats in our combine model, they represent the stats from each player’s final season or their second to last season
+
+- Our variable for average yards after catch per reception from each player’s final season had a coefficient value of 0.467. Exponentiating this coefficient gives an odds ratio of approximately e^0.467 ≈ 1.595. This means, according to our model, that for every yard increase in average yards after catch, the odds of playing a snap in the NFL increase by around 1.595 times.
+- Our variable for average yards after catch per reception from each player’s 2nd to last season had a very similar coefficient of 0.325, suggesting each additional average yard after catch is associated with an increase in the odds of playing a snap in the NFL by 1.384 times.
+- Our variable for average yards per reception from each player’s final season had a coefficient value of 1.060. Exponentiating this coefficient gives an odds ratio of approximately e^1.060 ≈ 2.882. This means, according to our model, that for every yard increase in yards per reception, the odds of playing a snap in the NFL increase by around 2.882 times.
+- Our variable for college PFF offensive grades from each player’s final season was interacted with our binary Power 5 variable. The coefficient value for this variable was 0.365. Exponentiating this coefficient gives an odds ratio of approximately e^0.365 ≈ 1.440. This means, according to our model, that the odds of playing a snap in the NFL are approximately 1.440 times higher with an increase of 1 unit in PFF grade for players from Power 5 schools.
+
+Beyond confirming significant variables from our college model, our combine model also examined the significance of combine statistics and measurements. Our model indicated that the vertical was statistically significant and had a meaningful coefficient.
+
+- Our variable for verticals from the combine or pro days had a coefficient value of 0.261. Exponentiating this coefficient gives an odds ratio of approximately e^0.261 ≈ 1.297. This means, according to our model, that for every inch increase in the vertical, the odds of playing a snap in the NFL increase by around 1.297 times.
+
+We were surprised to see that all of the other combine related statistics had irrelevant coefficients or were statistically insignificant. This included. the 40-yard dash, the broad jump, arm length, height, and weight.
+
+Ultimately, our models suggested PFF offensive grades, YAC ability, yards per reception, the vertical, and being from a Power 5 conference to be among the most influential variables in determining the likelihood of a college wide receiver prospect making it to the NFL. 
 
 ## 3.2 Predicting Who Will Be Successful in the NFL
 
